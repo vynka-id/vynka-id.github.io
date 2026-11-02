@@ -1,11 +1,253 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <title>VYNKA Dashboard</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard | VYNKA</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#080e1a;color:#edf3ff;font-family:'DM Sans',sans-serif;min-height:100vh}
+button,input,textarea{font:inherit}
+button{cursor:pointer}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:235px;background:#101b2c;border-right:1px solid #23344d;padding:25px 18px;flex-shrink:0}
+.logo{font:700 25px 'Space Grotesk';margin-bottom:42px}
+.logo span{color:#80adf1}
+.nav-label{font-size:10px;letter-spacing:2px;color:#7186a5;margin:25px 10px 12px}
+.nav{display:flex;gap:12px;padding:13px 12px;color:#aabbd3;text-decoration:none;border-radius:10px;font-size:14px;margin-bottom:5px}
+.nav.active,.nav:hover{background:#203451;color:white}
+.sidebar-bottom{margin-top:45px;font-size:11px;color:#7286a2;line-height:1.7}
+.main{flex:1;min-width:0;padding:30px 5%;max-width:1200px}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:35px}
+.top h1{font:600 26px 'Space Grotesk'}
+.top p{font-size:13px;color:#8ea2c0;margin-top:5px}
+.avatar{width:42px;height:42px;border-radius:50%;background:#29466e;display:grid;place-items:center;font-weight:700;font-size:19px}
+.welcome{background:linear-gradient(110deg,#172b47,#17233a);border:1px solid #304968;border-radius:17px;padding:23px;margin-bottom:25px}
+.welcome h2{font:600 20px 'Space Grotesk';margin-bottom:7px}
+.welcome p{font-size:13px;color:#a8bbd5;line-height:1.6}
+.columns{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(260px,.8fr);gap:20px}
+.panel{background:#111e30;border:1px solid #263a55;border-radius:15px;padding:22px;margin-bottom:20px}
+.panel h3{font:600 17px 'Space Grotesk';margin-bottom:19px}
+.field{margin-bottom:16px}
+label{display:block;color:#aabbd2;font-size:12px;margin-bottom:7px}
+input,textarea{width:100%;padding:12px 13px;background:#0a1423;border:1px solid #30435e;border-radius:9px;color:white;outline:none}
+input:focus,textarea:focus{border-color:#77a8ef}
+textarea{resize:vertical;min-height:75px}
+.primary,.secondary,.danger{border:0;border-radius:9px;padding:11px 15px;font-size:13px;font-weight:600}
+.primary{background:#76a7ee;color:#071326}
+.secondary{background:#263b59;color:#dce9fb}
+.danger{background:#492936;color:#ffc2ce}
+.link-item{display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid #26374e}
+.link-item:last-child{border:0}
+.link-icon{width:38px;height:38px;border-radius:10px;background:#243d5e;display:grid;place-items:center;color:#a9ccff}
+.link-info{flex:1;min-width:0}
+.link-info strong{font-size:13px;display:block}
+.link-info small{font-size:11px;color:#8ba1bf;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:4px}
+.actions{display:flex;gap:6px}
+.actions button{padding:7px 9px;font-size:11px}
+.preview{background:#0b1525;border:1px solid #2b405e;border-radius:14px;padding:20px;text-align:center}
+.preview-avatar{width:66px;height:66px;border-radius:50%;background:#29466e;display:grid;place-items:center;font-size:27px;font-weight:bold;margin:5px auto 12px}
+.preview h2{font:600 22px 'Space Grotesk'}
+.preview p{font-size:12px;color:#91a9ca;margin:6px 0 17px}
+.preview-link{padding:12px;background:#192b43;border:1px solid #2c4261;border-radius:9px;margin-top:9px;text-align:left;font-size:12px}
+.hint{font-size:11px;color:#8298b7;line-height:1.6;margin-top:14px}
+.empty{color:#8da1bd;font-size:13px;padding:12px 0}
+footer{text-align:center;color:#627894;font-size:10px;margin:35px 0}
+@media(max-width:800px){.sidebar{width:65px;padding:20px 8px}.logo{font-size:0;text-align:center}.logo:first-letter{font-size:23px}.nav{justify-content:center;font-size:0;padding:14px 5px}.nav span{font-size:18px}.nav-label,.sidebar-bottom{display:none}.main{padding:23px 16px}.columns{grid-template-columns:1fr}}
+@media(max-width:430px){.top h1{font-size:21px}.panel{padding:17px}.actions{flex-direction:column}}
+</style>
 </head>
 <body>
-    <h1>VYNKA Dashboard</h1>
-    <p>Selamat datang di dashboard pengguna.</p>
+<div class="layout">
+
+<aside class="sidebar">
+  <div class="logo">VYNKA<span>.</span></div>
+  <div class="nav-label">MENU UTAMA</div>
+  <a class="nav active" href="#dashboard"><span>▦</span> Dashboard</a>
+  <a class="nav" href="#profile"><span>◉</span> Profil saya</a>
+  <a class="nav" href="#links"><span>↗</span> Kelola tautan</a>
+  <a class="nav" href="#preview"><span>◎</span> Preview profil</a>
+  <div class="sidebar-bottom">YOUR SPACE.<br>YOUR STORY.<br><br>VYNKA © 2026</div>
+</aside>
+
+<main class="main" id="dashboard">
+  <div class="top">
+    <div>
+      <h1>Dashboard</h1>
+      <p>Kelola ruang digitalmu di VYNKA.</p>
+    </div>
+    <div class="avatar" id="topAvatar">T</div>
+  </div>
+
+  <section class="welcome">
+    <h2>Selamat datang di VYNKA!</h2>
+    <p>Atur identitas digitalmu, kumpulkan semua tautan penting, dan bagikan satu halaman kepada siapa saja.</p>
+  </section>
+
+  <div class="columns">
+    <div>
+      <section class="panel" id="profile">
+        <h3>◉ Profil saya</h3>
+        <div class="field">
+          <label>Nama profil</label>
+          <input id="name" value="Toobey" maxlength="40">
+        </div>
+        <div class="field">
+          <label>Kategori / pekerjaan</label>
+          <input id="category" value="Gaming · Creator" maxlength="60">
+        </div>
+        <div class="field">
+          <label>Bio singkat</label>
+          <textarea id="bio" maxlength="180">Selamat datang di halaman digital saya!</textarea>
+        </div>
+        <button class="primary" onclick="saveProfile()">Simpan profil</button>
+      </section>
+
+      <section class="panel" id="links">
+        <h3>↗ Kelola tautan</h3>
+        <div id="linkList"></div>
+        <div style="border-top:1px solid #293b53;margin:17px 0"></div>
+        <h3 id="formTitle">+ Tambah tautan</h3>
+        <div class="field">
+          <label>Nama tautan</label>
+          <input id="linkName" placeholder="Contoh: Instagram">
+        </div>
+        <div class="field">
+          <label>Alamat URL</label>
+          <input id="linkUrl" placeholder="https://...">
+        </div>
+        <button class="primary" onclick="addLink()" id="saveLinkBtn">Tambah tautan</button>
+        <button class="secondary" onclick="cancelEdit()" id="cancelBtn" style="display:none">Batal</button>
+        <p class="hint">Gunakan alamat lengkap yang diawali https:// atau http://.</p>
+      </section>
+    </div>
+
+    <div>
+      <section class="panel" id="preview">
+        <h3>◎ Preview profil</h3>
+        <div class="preview">
+          <div class="preview-avatar" id="previewAvatar">T</div>
+          <h2 id="previewName">Toobey</h2>
+          <p id="previewCategory">Gaming · Creator</p>
+          <p id="previewBio">Selamat datang di halaman digital saya!</p>
+          <div id="previewLinks"></div>
+        </div>
+        <p class="hint">Ini hanya preview lokal. Profil publik akan terhubung ke database pada tahap berikutnya.</p>
+      </section>
+    </div>
+  </div>
+
+  <footer>ONE IDENTITY. INFINITE CONNECTIONS. · VYNKA © 2026</footer>
+</main>
+</div>
+
+<script>
+const KEY = "vynka_dashboard_demo_v1";
+let data = JSON.parse(localStorage.getItem(KEY) || "null") || {
+  name:"Toobey",
+  category:"Gaming · Creator",
+  bio:"Selamat datang di halaman digital saya!",
+  links:[
+    {name:"SocialBuzz",url:"https://example.com"},
+    {name:"TikTok",url:"https://tiktok.com"},
+    {name:"Link Download",url:"https://example.com"}
+  ]
+};
+let editIndex = -1;
+
+function persist(){
+  localStorage.setItem(KEY,JSON.stringify(data));
+  render();
+}
+
+function saveProfile(){
+  data.name=document.getElementById("name").value.trim() || "Pengguna";
+  data.category=document.getElementById("category").value.trim();
+  data.bio=document.getElementById("bio").value.trim();
+  persist();
+  alert("Profil berhasil disimpan di browser ini.");
+}
+
+function addLink(){
+  const name=document.getElementById("linkName").value.trim();
+  const url=document.getElementById("linkUrl").value.trim();
+  if(!name || !url){alert("Isi nama dan alamat tautan terlebih dahulu.");return;}
+  if(!/^https?:\/\//i.test(url)){alert("URL harus diawali https:// atau http://");return;}
+  if(editIndex>=0){
+    data.links[editIndex]={name,url};
+  }else{
+    data.links.push({name,url});
+  }
+  cancelEdit();
+  persist();
+}
+
+function editLink(index){
+  editIndex=index;
+  document.getElementById("linkName").value=data.links[index].name;
+  document.getElementById("linkUrl").value=data.links[index].url;
+  document.getElementById("formTitle").textContent="Edit tautan";
+  document.getElementById("saveLinkBtn").textContent="Simpan perubahan";
+  document.getElementById("cancelBtn").style.display="inline-block";
+  document.getElementById("linkName").focus();
+}
+
+function deleteLink(index){
+  if(!confirm("Hapus tautan ini?"))return;
+  data.links.splice(index,1);
+  persist();
+}
+
+function cancelEdit(){
+  editIndex=-1;
+  document.getElementById("linkName").value="";
+  document.getElementById("linkUrl").value="";
+  document.getElementById("formTitle").textContent="+ Tambah tautan";
+  document.getElementById("saveLinkBtn").textContent="Tambah tautan";
+  document.getElementById("cancelBtn").style.display="none";
+}
+
+function render(){
+  document.getElementById("name").value=data.name;
+  document.getElementById("category").value=data.category;
+  document.getElementById("bio").value=data.bio;
+  const initial=(data.name.trim()[0] || "V").toUpperCase();
+  document.getElementById("topAvatar").textContent=initial;
+  document.getElementById("previewAvatar").textContent=initial;
+  document.getElementById("previewName").textContent=data.name;
+  document.getElementById("previewCategory").textContent=data.category;
+  document.getElementById("previewBio").textContent=data.bio;
+
+  document.getElementById("linkList").innerHTML=data.links.length
+    ? data.links.map((link,i)=>`
+      <div class="link-item">
+        <div class="link-icon">↗</div>
+        <div class="link-info">
+          <strong>${escapeHTML(link.name)}</strong>
+          <small>${escapeHTML(link.url)}</small>
+        </div>
+        <div class="actions">
+          <button class="secondary" onclick="editLink(${i})">Edit</button>
+          <button class="danger" onclick="deleteLink(${i})">Hapus</button>
+        </div>
+      </div>`).join("")
+    : '<p class="empty">Belum ada tautan. Silakan tambahkan.</p>';
+
+  document.getElementById("previewLinks").innerHTML=data.links.map(link=>`
+    <div class="preview-link">${escapeHTML(link.name)}　↗</div>
+  `).join("");
+}
+
+function escapeHTML(value){
+  return String(value).replace(/[&<>"']/g,c=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  })[c]);
+}
+
+render();
+</script>
 </body>
 </html>
