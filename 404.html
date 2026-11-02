@@ -1,0 +1,189 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080e1c">
+<title>VYNKA — Digital Identity</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;min-height:100vh;padding:35px 18px;
+  background:radial-gradient(ellipse at top,#152943 0%,#080e1c 65%);
+  color:#fff;font-family:Arial,sans-serif;
+  display:flex;justify-content:center
+}
+.container{width:100%;max-width:460px;text-align:center}
+.brand{font-size:25px;font-weight:800;letter-spacing:3px;color:#65d8ff}
+.brand span{color:#fff}
+.profile{margin-top:42px}
+.avatar{
+  width:108px;height:108px;border-radius:50%;object-fit:cover;
+  border:3px solid #42c8f5;background:#17263c;
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 20px;font-size:38px;font-weight:bold;color:#65d8ff
+}
+.name{font-size:27px;font-weight:750;margin:0}
+.category{color:#65d8ff;font-size:14px;margin-top:9px}
+.bio{color:#aebbd0;font-size:14px;line-height:1.7;
+  margin:17px auto 28px;white-space:pre-wrap;overflow-wrap:anywhere}
+.links{display:flex;flex-direction:column;gap:12px}
+.link{
+  display:block;padding:16px 18px;border:1px solid #34465f;
+  border-radius:11px;background:rgba(20,34,55,.9);
+  color:#fff;text-decoration:none;font-size:15px;font-weight:600;
+  transition:.2s;overflow-wrap:anywhere
+}
+.link:hover{border-color:#65d8ff;background:#192e49;transform:translateY(-2px)}
+.footer{margin-top:55px;color:#71829b;font-size:12px}
+.footer a{color:#65d8ff;text-decoration:none}
+.status{margin-top:50px;color:#aebbd0;font-size:14px;line-height:1.7}
+.hidden{display:none}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="brand">VYNKA<span>.</span></div>
+
+  <div id="loading" class="status">Memuat identitas digital...</div>
+
+  <div id="notFound" class="status hidden">
+    <h2>Profil tidak ditemukan</h2>
+    <p>Username ini belum terdaftar atau profil belum dipublikasikan.</p>
+    <a href="/" style="color:#65d8ff">Kembali ke VYNKA</a>
+  </div>
+
+  <div id="profile" class="profile hidden">
+    <div id="avatar" class="avatar">V</div>
+    <h1 id="name" class="name"></h1>
+    <div id="category" class="category"></div>
+    <div id="bio" class="bio"></div>
+    <div id="links" class="links"></div>
+  </div>
+
+  <div class="footer">
+    Powered by <a href="/">VYNKA</a><br>
+    One Identity. Infinite Connections.
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL = "https://oasivryuvwpzxezrngej.supabase.co";
+const SUPABASE_KEY = "sb_publishable_OyWy9aYFSJolvJxNcucMXA_bWPS2N-a";
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+function showNotFound() {
+  document.getElementById("loading").classList.add("hidden");
+  document.getElementById("notFound").classList.remove("hidden");
+}
+
+function safeUrl(value) {
+  try {
+    const url = new URL(value);
+    if (url.protocol === "https:" || url.protocol === "http:") {
+      return url.href;
+    }
+  } catch {}
+  return null;
+}
+
+async function loadProfile() {
+  const parts = window.location.pathname.split("/").filter(Boolean);
+
+  // Root website is not a user profile.
+  if (parts.length !== 1) {
+    showNotFound();
+    return;
+  }
+
+  const username = decodeURIComponent(parts[0]).toLowerCase();
+
+  if (!/^[a-z0-9-]{3,30}$/.test(username)) {
+    showNotFound();
+    return;
+  }
+
+  const { data: profile, error } = await db
+    .from("profiles")
+    .select("username, display_name, category, bio, avatar_url")
+    .eq("username", username)
+    .eq("is_published", true)
+    .maybeSingle();
+
+  if (error || !profile) {
+    showNotFound();
+    return;
+  }
+
+  document.title = `${profile.display_name || profile.username} | VYNKA`;
+
+  document.getElementById("name").textContent =
+    profile.display_name || profile.username;
+
+  document.getElementById("category").textContent =
+    profile.category || "";
+
+  document.getElementById("bio").textContent =
+    profile.bio || "";
+
+  const avatar = document.getElementById("avatar");
+  const avatarUrl = profile.avatar_url ? safeUrl(profile.avatar_url) : null;
+
+  if (avatarUrl) {
+    const image = document.createElement("img");
+    image.src = avatarUrl;
+    image.alt = "Foto profil";
+    image.className = "avatar";
+    image.onerror = () => {
+      image.replaceWith(createInitial(profile.display_name || profile.username));
+    };
+    avatar.replaceWith(image);
+  } else {
+    avatar.textContent = (profile.display_name || profile.username)
+      .trim().charAt(0).toUpperCase() || "V";
+  }
+
+  const { data: links, error: linkError } = await db
+    .from("links")
+    .select("title, url")
+    .eq("user_id", profile.id)
+    .eq("is_active", true)
+    .order("position", { ascending: true });
+
+  if (linkError) {
+    showNotFound();
+    return;
+  }
+
+  const linkContainer = document.getElementById("links");
+
+  (links || []).forEach(link => {
+    const url = safeUrl(link.url);
+    if (!url) return;
+
+    const anchor = document.createElement("a");
+    anchor.className = "link";
+    anchor.href = url;
+    anchor.target = "_blank";
+    anchor.rel = "noopener noreferrer";
+    anchor.textContent = link.title;
+    linkContainer.appendChild(anchor);
+  });
+
+  document.getElementById("loading").classList.add("hidden");
+  document.getElementById("profile").classList.remove("hidden");
+}
+
+function createInitial(name) {
+  const div = document.createElement("div");
+  div.className = "avatar";
+  div.textContent = name.trim().charAt(0).toUpperCase() || "V";
+  return div;
+}
+
+loadProfile().catch(() => showNotFound());
+</script>
+</body>
+</html>
