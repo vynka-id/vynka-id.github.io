@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard - VYNKA</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#080e1c;color:#fff;font-family:Arial,sans-serif}
@@ -45,7 +46,6 @@ input:focus,textarea:focus,select:focus{outline:1px solid #42c8f5}
 .membership{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}
 .plan-badge{display:inline-block;padding:7px 12px;border-radius:20px;font-size:12px;font-weight:bold;background:#263550;color:#cbd5e1}
 .plan-badge.premium{background:#59451f;color:#ffe2a0}
-.plan-info{margin-top:8px}
 
 /* APPEARANCE */
 .appearance-panel{margin-top:22px}
@@ -55,7 +55,6 @@ input:focus,textarea:focus,select:focus{outline:1px solid #42c8f5}
 .theme-card{border:1px solid #34445e;background:#0b1528;border-radius:13px;padding:9px;text-align:left;color:#fff;cursor:pointer;transition:.2s;min-width:0;position:relative}
 .theme-card:hover{border-color:#65d8ff;transform:translateY(-2px)}
 .theme-card.selected{border:2px solid #42c8f5;padding:8px;box-shadow:0 0 0 3px #42c8f51a}
-.theme-card.locked{opacity:.72}
 .theme-art{height:95px;border-radius:9px;padding:10px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;position:relative}
 .theme-art:after{content:"";position:absolute;width:90px;height:90px;border-radius:50%;right:-24px;top:-28px;background:var(--accent);opacity:.25;filter:blur(8px)}
 .art-brand{font-size:10px;font-weight:900;letter-spacing:2px;color:var(--text)}
@@ -84,11 +83,16 @@ input:focus,textarea:focus,select:focus{outline:1px solid #42c8f5}
 .premium-note{font-size:12px;color:#d8c18f;line-height:1.5}
 .appearance-actions{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:18px}
 #themeStatus{font-size:12px;color:#9eacc2}
+.premium-promo{margin-top:15px;padding:14px;border:1px solid #66512c;border-radius:10px;background:linear-gradient(120deg,#211b2d,#171b29);display:none}
+.premium-promo strong{color:#ffe2a0}
+.premium-promo p{font-size:13px;color:#c8bfd0;line-height:1.5;margin:7px 0 12px}
+.preview-label{display:inline-block;font-size:10px;background:#59451f;color:#ffe2a0;padding:5px 8px;border-radius:20px;margin-bottom:10px}
 @media(max-width:850px){.theme-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:750px){.layout{grid-template-columns:1fr}main{margin-top:25px}.panel{padding:18px}}
 @media(max-width:520px){.theme-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.theme-art{height:85px}.custom-grid{grid-template-columns:1fr}}
 </style>
 </head>
+
 <body>
 <header>
   <div class="logo">VYNKA.</div>
@@ -116,10 +120,11 @@ input:focus,textarea:focus,select:focus{outline:1px solid #42c8f5}
     </div>
   </section>
 
-  <!-- APPEARANCE STUDIO -->
   <section class="panel appearance-panel">
     <h2>Appearance Studio</h2>
-    <p class="muted section-intro">Pilih gaya visual yang menggambarkan identitas digitalmu. Tema Premium hanya dapat digunakan oleh anggota Premium.</p>
+    <p class="muted section-intro">
+      Jelajahi seluruh pilihan tampilan VYNKA. Kamu bisa mencoba preview semua tema, termasuk tema Premium, sebelum memilih.
+    </p>
 
     <div class="theme-group-title">✦ FREE THEMES <span class="muted">· 5 tema</span></div>
     <div class="theme-grid" id="freeThemeGrid"></div>
@@ -139,11 +144,18 @@ input:focus,textarea:focus,select:focus{outline:1px solid #42c8f5}
         <div class="pv-link">Social Media</div>
         <div class="pv-link">Contact Me</div>
       </div>
+
+      <div class="premium-promo" id="premiumPromo">
+        <span class="preview-label">PREMIUM PREVIEW</span>
+        <strong id="promoTitle">Suka dengan tampilan ini?</strong>
+        <p id="promoDescription">Tema ini merupakan bagian dari VYNKA Premium. Upgrade membership untuk menerapkannya pada profil publikmu.</p>
+      </div>
     </div>
 
     <div class="custom-panel" id="customPanel" hidden>
       <h3 style="margin-top:0">Custom Appearance</h3>
       <p class="premium-note">Atur detail tampilan profil sesuai keinginanmu. Fitur ini khusus VYNKA Premium.</p>
+
       <div class="custom-grid">
         <div>
           <label for="accentColor">Warna aksen</label>
@@ -174,6 +186,7 @@ input:focus,textarea:focus,select:focus{outline:1px solid #42c8f5}
           </select>
         </div>
       </div>
+
       <div class="actions">
         <button class="secondary" type="button" id="resetCustomBtn">Reset Custom</button>
       </div>
@@ -244,9 +257,9 @@ input:focus,textarea:focus,select:focus{outline:1px solid #42c8f5}
 </main>
 
 <script>
-const SUPABASE_URL = "https://oasivryuvwpzxezrngej.supabase.co";
-const SUPABASE_KEY = "sb_publishable_OyWy9aYFSJolvJxNcucMXA_bWPS2N-a";
-const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const SUPABASE_URL="https://oasivryuvwpzxezrngej.supabase.co";
+const SUPABASE_KEY="sb_publishable_OyWy9aYFSJolvJxNcucMXA_bWPS2N-a";
+const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
 let currentUser=null;
 let editingLinkId=null;
@@ -255,7 +268,6 @@ let currentAvatarUrl="";
 let isPremium=false;
 let savedTheme="nebula";
 let selectedTheme="nebula";
-let savedAppearance={accent_color:null,button_shape:null,background_style:null,font_style:null};
 
 const $=id=>document.getElementById(id);
 
@@ -285,8 +297,52 @@ function escapeHTML(value){
 }
 
 function validHttpUrl(value){
-  try{const url=new URL(value);return url.protocol==="https:"||url.protocol==="http:"}
-  catch{return false}
+  try{
+    const url=new URL(value);
+    return url.protocol==="https:"||url.protocol==="http:";
+  }catch{return false}
+}
+
+/* MEMBERSHIP */
+function updateMembershipUI(){
+  $("planBadge").textContent=isPremium?"✦ PREMIUM":"FREE";
+  $("planBadge").className="plan-badge"+(isPremium?" premium":"");
+  $("membershipDescription").textContent=isPremium?
+    "Akun kamu memiliki akses ke seluruh tema dan Custom Appearance.":
+    "Kamu menggunakan paket Free. Jelajahi preview Premium dan upgrade untuk membuka seluruh fiturnya.";
+  $("customPanel").hidden=!isPremium;
+}
+
+/* APPEARANCE */
+function renderThemeCard(id){
+  const t=themes[id];
+  const locked=t.tier==="premium"&&!isPremium;
+  const selected=id===selectedTheme;
+
+  return `
+    <button type="button" class="theme-card ${selected?"selected":""}" data-theme="${id}" aria-pressed="${selected}">
+      ${locked?'<span class="lock-label">🔒 PREMIUM</span>':""}
+      <div class="theme-art" style="background:${t.bg};--accent:${t.accent};--text:${t.text};--card:${t.card};--border:${t.border}">
+        <div class="art-brand">VYNKA.</div>
+        <div class="art-avatar"></div>
+        <div class="art-lines"><div class="art-line"></div><div class="art-line"></div><div class="art-line"></div></div>
+      </div>
+      <div class="theme-name">${t.name}</div>
+      <div class="theme-desc">${t.desc}</div>
+      <div class="theme-check">${selected?"✓ Sedang dilihat":locked?"🔒 Premium":"Pilih tema"}</div>
+    </button>`;
+}
+
+function renderThemeCards(){
+  $("freeThemeGrid").innerHTML=Object.keys(themes)
+    .filter(id=>themes[id].tier==="free").map(renderThemeCard).join("");
+
+  $("premiumThemeGrid").innerHTML=Object.keys(themes)
+    .filter(id=>themes[id].tier==="premium").map(renderThemeCard).join("");
+
+  document.querySelectorAll(".theme-card[data-theme]").forEach(card=>{
+    card.addEventListener("click",()=>selectTheme(card.dataset.theme));
+  });
 }
 
 function getCustomValues(){
@@ -300,37 +356,11 @@ function getCustomValues(){
 
 function hasCustomValues(){
   const c=getCustomValues();
-  return c.accent_color!==themes[selectedTheme].accent||
+  const base=themes[selectedTheme];
+  return c.accent_color.toLowerCase()!==base.accent.toLowerCase()||
     c.button_shape!=="rounded"||
     c.background_style!=="solid"||
     c.font_style!=="modern";
-}
-
-function renderThemeCard(id){
-  const t=themes[id];
-  const locked=t.tier==="premium"&&!isPremium;
-  const selected=id===selectedTheme;
-  return `
-    <button type="button" class="theme-card ${selected?"selected":""} ${locked?"locked":""}" data-theme="${id}" aria-pressed="${selected}" ${locked?'aria-label="'+t.name+' Premium, terkunci"':''}>
-      ${locked?'<span class="lock-label">🔒 PREMIUM</span>':""}
-      <div class="theme-art" style="background:${t.bg};--accent:${t.accent};--text:${t.text};--card:${t.card};--border:${t.border}">
-        <div class="art-brand">VYNKA.</div>
-        <div class="art-avatar"></div>
-        <div class="art-lines"><div class="art-line"></div><div class="art-line"></div><div class="art-line"></div></div>
-      </div>
-      <div class="theme-name">${t.name}</div>
-      <div class="theme-desc">${t.desc}</div>
-      <div class="theme-check">${selected?"✓ Dipilih":locked?"Premium":"Pilih tema"}</div>
-    </button>`;
-}
-
-function renderThemeCards(){
-  $("freeThemeGrid").innerHTML=Object.keys(themes).filter(id=>themes[id].tier==="free").map(renderThemeCard).join("");
-  $("premiumThemeGrid").innerHTML=Object.keys(themes).filter(id=>themes[id].tier==="premium").map(renderThemeCard).join("");
-
-  document.querySelectorAll(".theme-card[data-theme]").forEach(card=>{
-    card.addEventListener("click",()=>selectTheme(card.dataset.theme));
-  });
 }
 
 function applyPreviewTheme(id){
@@ -345,11 +375,14 @@ function applyPreviewTheme(id){
     bg=`radial-gradient(circle at top,${t.surface},${t.bg} 72%)`;
   }
 
-  const accent=isPremium?$("accentColor").value:t.accent;
+  const accent=isPremium&&themes[id].tier==="premium"?
+    $("accentColor").value:t.accent;
+
   const shape=isPremium?$("buttonShape").value:"rounded";
   const radius=shape==="square"?"3px":shape==="pill"?"30px":"12px";
   const font=isPremium?$("fontStyle").value:"modern";
-  const fontFamily=font==="elegant"?"Georgia,serif":font==="minimal"?"Arial,sans-serif":"Inter,Arial,sans-serif";
+  const fontFamily=font==="elegant"?"Georgia,serif":
+    font==="minimal"?"Arial,sans-serif":"Inter,Arial,sans-serif";
 
   preview.style.setProperty("--bg",bg);
   preview.style.setProperty("--surface",t.surface);
@@ -365,35 +398,50 @@ function applyPreviewTheme(id){
 
 function selectTheme(id){
   if(!themes[id])return;
-  if(themes[id].tier==="premium"&&!isPremium){
-    showMessage("Tema "+themes[id].name+" hanya tersedia untuk VYNKA Premium.","error");
-    return;
-  }
+
+  // Semua pengguna boleh mencoba preview tema, termasuk Premium.
   selectedTheme=id;
+
+  // Perubahan pilihan tema hanya memengaruhi preview dashboard.
   renderThemeCards();
   applyPreviewTheme(id);
-  $("themeStatus").textContent=id===savedTheme?
-    "Tema tersimpan: "+themes[id].name:
-    "Preview: "+themes[id].name+" · Belum disimpan";
+
+  const isLocked=themes[id].tier==="premium"&&!isPremium;
+  const promo=$("premiumPromo");
+
+  if(isLocked){
+    $("themeStatus").textContent=
+      "Preview Premium: "+themes[id].name+" · Belum diterapkan";
+
+    $("promoTitle").textContent="Suka dengan tampilan "+themes[id].name+"?";
+    $("promoDescription").textContent=
+      "Tema "+themes[id].name+" merupakan bagian dari VYNKA Premium. " +
+      "Upgrade membership untuk menerapkan tampilan ini ke profil publikmu dan membuka Custom Appearance.";
+
+    promo.style.display="block";
+
+    showMessage(
+      "Kamu sedang mencoba preview "+themes[id].name+
+      ". Upgrade ke VYNKA Premium untuk menerapkannya ke profil publik."
+    );
+  }else{
+    promo.style.display="none";
+    $("themeStatus").textContent=id===savedTheme?
+      "Tema tersimpan: "+themes[id].name:
+      "Preview: "+themes[id].name+" · Belum disimpan";
+  }
 }
 
 function updateThemePreviewProfile(){
   $("pvName").textContent=$("displayName").value.trim()||"Nama Kamu";
   $("pvCategory").textContent=$("category").value.trim()||"Digital Creator";
   $("pvBio").textContent=$("bio").value.trim()||"One identity. Infinite connections.";
-  $("pvAvatar").textContent=($("displayName").value.trim()[0]||"V").toUpperCase();
+
   if(currentAvatarUrl){
     $("pvAvatar").innerHTML=`<img src="${escapeHTML(currentAvatarUrl)}" alt="Foto profil">`;
+  }else{
+    $("pvAvatar").textContent=($("displayName").value.trim()[0]||"V").toUpperCase();
   }
-}
-
-function updateMembershipUI(){
-  $("planBadge").textContent=isPremium?"✦ PREMIUM":"FREE";
-  $("planBadge").className="plan-badge"+(isPremium?" premium":"");
-  $("membershipDescription").textContent=isPremium?
-    "Akun kamu memiliki akses ke seluruh tema dan Custom Appearance.":
-    "Kamu menggunakan paket Free. Upgrade untuk membuka 5 tema Premium dan Custom Appearance.";
-  $("customPanel").hidden=!isPremium;
 }
 
 function loadCustomControls(profile){
@@ -405,8 +453,14 @@ function loadCustomControls(profile){
 
 async function saveTheme(){
   if(!currentUser)return;
+
+  // Pengaman: akun Free tidak boleh menyimpan tema Premium.
   if(!isPremium&&themes[selectedTheme].tier==="premium"){
-    showMessage("Tema ini memerlukan VYNKA Premium.","error");
+    showMessage(
+      "Tema "+themes[selectedTheme].name+
+      " hanya dapat diterapkan oleh anggota VYNKA Premium.",
+      "error"
+    );
     return;
   }
 
@@ -415,28 +469,33 @@ async function saveTheme(){
   button.textContent="Menyimpan...";
 
   try{
-    const payload={theme:selectedTheme,updated_at:new Date().toISOString()};
+    const payload={
+      theme:selectedTheme,
+      updated_at:new Date().toISOString()
+    };
 
-    if(isPremium&&hasCustomValues()){
-      Object.assign(payload,getCustomValues());
-    }else{
-      payload.accent_color=null;
-      payload.button_shape=null;
-      payload.background_style=null;
-      payload.font_style=null;
+    if(isPremium){
+      if(hasCustomValues()){
+        Object.assign(payload,getCustomValues());
+      }else{
+        payload.accent_color=null;
+        payload.button_shape=null;
+        payload.background_style=null;
+        payload.font_style=null;
+      }
     }
 
-    const {error}=await db.from("profiles").update(payload).eq("id",currentUser.id);
+    const {error}=await db.from("profiles")
+      .update(payload)
+      .eq("id",currentUser.id);
+
     if(error)throw error;
 
     savedTheme=selectedTheme;
-    savedAppearance={
-      accent_color:payload.accent_color,
-      button_shape:payload.button_shape,
-      background_style:payload.background_style,
-      font_style:payload.font_style
-    };
+
     $("themeStatus").textContent="Tema tersimpan: "+themes[savedTheme].name;
+    $("premiumPromo").style.display="none";
+
     renderThemeCards();
     showMessage("Tampilan "+themes[savedTheme].name+" berhasil disimpan!");
   }catch(error){
@@ -448,14 +507,15 @@ async function saveTheme(){
 }
 
 $("saveThemeBtn").addEventListener("click",saveTheme);
+
 $("resetThemeBtn").addEventListener("click",()=>{
   $("accentColor").value=themes.nebula.accent;
   $("buttonShape").value="rounded";
   $("backgroundStyle").value="solid";
   $("fontStyle").value="modern";
   selectTheme("nebula");
-  applyPreviewTheme("nebula");
 });
+
 $("resetCustomBtn").addEventListener("click",()=>{
   const t=themes[selectedTheme];
   $("accentColor").value=t.accent;
@@ -464,10 +524,12 @@ $("resetCustomBtn").addEventListener("click",()=>{
   $("fontStyle").value="modern";
   applyPreviewTheme(selectedTheme);
 });
+
 ["accentColor","buttonShape","backgroundStyle","fontStyle"].forEach(id=>{
   $(id).addEventListener("input",()=>applyPreviewTheme(selectedTheme));
   $(id).addEventListener("change",()=>applyPreviewTheme(selectedTheme));
 });
+
 ["displayName","category","bio"].forEach(id=>{
   $(id).addEventListener("input",updateThemePreviewProfile);
 });
@@ -475,10 +537,12 @@ $("resetCustomBtn").addEventListener("click",()=>{
 /* LOGIN */
 async function init(){
   const {data,error}=await db.auth.getSession();
+
   if(error||!data.session){
     window.location.replace("/login/");
     return;
   }
+
   currentUser=data.session.user;
   $("accountEmail").textContent=currentUser.email||"";
   await loadDashboard();
@@ -488,7 +552,10 @@ async function init(){
 async function loadDashboard(){
   const [profileResult,membershipResult]=await Promise.all([
     db.from("profiles").select("*").eq("id",currentUser.id).single(),
-    db.from("user_entitlements").select("plan,is_active,expires_at").eq("user_id",currentUser.id).maybeSingle()
+    db.from("user_entitlements")
+      .select("plan,is_active,expires_at")
+      .eq("user_id",currentUser.id)
+      .maybeSingle()
   ]);
 
   if(profileResult.error){
@@ -503,8 +570,12 @@ async function loadDashboard(){
 
   const profile=profileResult.data;
   const membership=membershipResult.data;
-  const validExpiry=!membership?.expires_at||new Date(membership.expires_at)>new Date();
-  isPremium=membership?.plan==="premium"&&membership?.is_active===true&&validExpiry;
+
+  const validExpiry=!membership?.expires_at||
+    new Date(membership.expires_at)>new Date();
+
+  isPremium=membership?.plan==="premium"&&
+    membership?.is_active===true&&validExpiry;
 
   $("displayName").value=profile.display_name||"";
   $("username").value=profile.username||"";
@@ -515,20 +586,20 @@ async function loadDashboard(){
   updateAvatarPreview(currentAvatarUrl);
 
   savedTheme=themes[profile.theme]?profile.theme:"nebula";
-  if(!isPremium&&themes[savedTheme].tier==="premium")savedTheme="nebula";
+
+  // Jika status akun Free tetapi data lama menunjukkan tema Premium,
+  // dashboard tidak akan mengizinkan tema itu diterapkan.
+  if(!isPremium&&themes[savedTheme].tier==="premium"){
+    savedTheme="nebula";
+  }
+
   selectedTheme=savedTheme;
 
   loadCustomControls(profile);
-  savedAppearance={
-    accent_color:profile.accent_color,
-    button_shape:profile.button_shape,
-    background_style:profile.background_style,
-    font_style:profile.font_style
-  };
-
   updateMembershipUI();
   renderThemeCards();
   applyPreviewTheme(selectedTheme);
+
   $("themeStatus").textContent="Tema tersimpan: "+themes[savedTheme].name;
 
   updatePreview();
@@ -536,16 +607,20 @@ async function loadDashboard(){
   await loadLinks();
 }
 
+/* PROFILE */
 function updatePreview(){
   const username=$("username").value.trim();
-  const url=username?`https://vynka-id.github.io/${encodeURIComponent(username)}/`:"";
+  const url=username?
+    `https://vynka-id.github.io/${encodeURIComponent(username)}/`:"";
   $("profilePreview").textContent="URL profil: "+(url||"Belum diisi");
 }
+
 $("username").addEventListener("input",updatePreview);
 
 function updateAvatarPreview(url){
   const box=$("avatarPreview");
   box.replaceChildren();
+
   if(!url){
     const placeholder=document.createElement("div");
     placeholder.className="avatar-placeholder";
@@ -554,9 +629,11 @@ function updateAvatarPreview(url){
     $("avatarStatus").textContent="Belum ada foto profil";
     return;
   }
+
   const img=document.createElement("img");
   img.src=url;
   img.alt="Foto profil";
+
   img.onerror=()=>{
     box.replaceChildren();
     const placeholder=document.createElement("div");
@@ -565,6 +642,7 @@ function updateAvatarPreview(url){
     box.appendChild(placeholder);
     $("avatarStatus").textContent="Foto tidak dapat dimuat";
   };
+
   box.appendChild(img);
   $("avatarStatus").textContent="Foto profil saat ini";
 }
@@ -579,6 +657,7 @@ $("avatarFile").addEventListener("change",async event=>{
     event.target.value="";
     return;
   }
+
   if(file.size>2*1024*1024){
     showMessage("Ukuran foto maksimal 2 MB.","error");
     event.target.value="";
@@ -592,13 +671,25 @@ $("avatarFile").addEventListener("change",async event=>{
   try{
     const extension=file.type==="image/jpeg"?"jpg":file.type.split("/")[1];
     const filePath=`${currentUser.id}/${Date.now()}.${extension}`;
-    const {error:uploadError}=await db.storage.from("avatars").upload(filePath,file,{contentType:file.type,cacheControl:"3600",upsert:false});
+
+    const {error:uploadError}=await db.storage.from("avatars")
+      .upload(filePath,file,{
+        contentType:file.type,
+        cacheControl:"3600",
+        upsert:false
+      });
+
     if(uploadError)throw uploadError;
 
     const {data:publicData}=db.storage.from("avatars").getPublicUrl(filePath);
     const publicUrl=publicData.publicUrl;
 
-    const {error:updateError}=await db.from("profiles").update({avatar_url:publicUrl,updated_at:new Date().toISOString()}).eq("id",currentUser.id);
+    const {error:updateError}=await db.from("profiles")
+      .update({
+        avatar_url:publicUrl,
+        updated_at:new Date().toISOString()
+      }).eq("id",currentUser.id);
+
     if(updateError)throw updateError;
 
     currentAvatarUrl=publicUrl;
@@ -624,7 +715,10 @@ $("profileForm").addEventListener("submit",async event=>{
   const bio=$("bio").value.trim();
 
   if(!/^[a-z0-9-]{3,30}$/.test(username)){
-    showMessage("Username harus 3–30 karakter, hanya huruf kecil, angka, dan tanda hubung.","error");
+    showMessage(
+      "Username harus 3–30 karakter, hanya huruf kecil, angka, dan tanda hubung.",
+      "error"
+    );
     return;
   }
 
@@ -633,7 +727,10 @@ $("profileForm").addEventListener("submit",async event=>{
   button.textContent="Menyimpan...";
 
   const {error}=await db.from("profiles").update({
-    username,display_name:displayName,category,bio,
+    username,
+    display_name:displayName,
+    category,
+    bio,
     updated_at:new Date().toISOString()
   }).eq("id",currentUser.id);
 
@@ -641,7 +738,12 @@ $("profileForm").addEventListener("submit",async event=>{
   button.textContent="Simpan Profil";
 
   if(error){
-    showMessage(error.code==="23505"?"Username tersebut sudah digunakan. Pilih username lain.":"Gagal menyimpan profil: "+error.message,"error");
+    showMessage(
+      error.code==="23505"?
+      "Username tersebut sudah digunakan. Pilih username lain.":
+      "Gagal menyimpan profil: "+error.message,
+      "error"
+    );
     return;
   }
 
@@ -654,6 +756,7 @@ $("profileForm").addEventListener("submit",async event=>{
 /* LINKS */
 function renderLinks(){
   const list=$("linksList");
+
   if(!currentLinks.length){
     list.innerHTML='<div class="empty">Belum ada tautan. Tambahkan tautan pertamamu.</div>';
     return;
@@ -667,14 +770,19 @@ function renderLinks(){
         <button class="secondary" type="button" data-edit="${escapeHTML(link.id)}">Edit</button>
         <button class="danger" type="button" data-delete="${escapeHTML(link.id)}">Hapus</button>
       </div>
-    </div>`).join("");
+    </div>
+  `).join("");
 
-  list.querySelectorAll("[data-edit]").forEach(button=>button.addEventListener("click",()=>editLink(button.dataset.edit)));
-  list.querySelectorAll("[data-delete]").forEach(button=>button.addEventListener("click",()=>deleteLink(button.dataset.delete)));
+  list.querySelectorAll("[data-edit]").forEach(button=>
+    button.addEventListener("click",()=>editLink(button.dataset.edit)));
+
+  list.querySelectorAll("[data-delete]").forEach(button=>
+    button.addEventListener("click",()=>deleteLink(button.dataset.delete)));
 }
 
 $("linkForm").addEventListener("submit",async event=>{
   event.preventDefault();
+
   const title=$("linkTitle").value.trim();
   const url=$("linkUrl").value.trim();
 
@@ -688,10 +796,21 @@ $("linkForm").addEventListener("submit",async event=>{
   button.textContent="Menyimpan...";
 
   let result;
+
   if(editingLinkId){
-    result=await db.from("links").update({title,url,updated_at:new Date().toISOString()}).eq("id",editingLinkId).eq("user_id",currentUser.id);
+    result=await db.from("links").update({
+      title,
+      url,
+      updated_at:new Date().toISOString()
+    }).eq("id",editingLinkId).eq("user_id",currentUser.id);
   }else{
-    result=await db.from("links").insert({user_id:currentUser.id,title,url,position:currentLinks.length,is_active:true});
+    result=await db.from("links").insert({
+      user_id:currentUser.id,
+      title,
+      url,
+      position:currentLinks.length,
+      is_active:true
+    });
   }
 
   button.disabled=false;
@@ -706,6 +825,7 @@ $("linkForm").addEventListener("submit",async event=>{
   editingLinkId=null;
   $("saveLinkBtn").textContent="Tambah Link";
   $("cancelEditBtn").style.display="none";
+
   showMessage("Tautan berhasil disimpan!");
   await loadLinks();
 });
@@ -713,6 +833,7 @@ $("linkForm").addEventListener("submit",async event=>{
 function editLink(id){
   const link=currentLinks.find(item=>item.id===id);
   if(!link)return;
+
   editingLinkId=id;
   $("linkTitle").value=link.title;
   $("linkUrl").value=link.url;
@@ -732,22 +853,29 @@ async function deleteLink(id){
   const link=currentLinks.find(item=>item.id===id);
   if(!link||!confirm(`Hapus tautan "${link.title}"?`))return;
 
-  const {error}=await db.from("links").delete().eq("id",id).eq("user_id",currentUser.id);
+  const {error}=await db.from("links").delete()
+    .eq("id",id).eq("user_id",currentUser.id);
+
   if(error){
     showMessage("Gagal menghapus tautan: "+error.message,"error");
     return;
   }
+
   showMessage("Tautan berhasil dihapus.");
   await loadLinks();
 }
 
 async function loadLinks(){
-  const {data,error}=await db.from("links").select("*").eq("user_id",currentUser.id)
-    .order("position",{ascending:true}).order("created_at",{ascending:true});
+  const {data,error}=await db.from("links").select("*")
+    .eq("user_id",currentUser.id)
+    .order("position",{ascending:true})
+    .order("created_at",{ascending:true});
+
   if(error){
     showMessage("Gagal memuat tautan: "+error.message,"error");
     return;
   }
+
   currentLinks=data||[];
   renderLinks();
 }
@@ -755,27 +883,34 @@ async function loadLinks(){
 /* PUBLIC PROFILE PREVIEW */
 $("previewBtn").addEventListener("click",()=>{
   const username=$("username").value.trim().toLowerCase();
+
   if(!username){
     showMessage("Isi username terlebih dahulu.","error");
     return;
   }
+
   window.open("/"+encodeURIComponent(username)+"/","_blank");
 });
 
 /* LOGOUT */
 $("logoutBtn").addEventListener("click",async()=>{
   $("logoutBtn").disabled=true;
+
   const {error}=await db.auth.signOut();
+
   if(error){
     showMessage("Gagal logout: "+error.message,"error");
     $("logoutBtn").disabled=false;
     return;
   }
+
   window.location.replace("/login/");
 });
 
 db.auth.onAuthStateChange((event,session)=>{
-  if(event==="SIGNED_OUT"||!session)window.location.replace("/login/");
+  if(event==="SIGNED_OUT"||!session){
+    window.location.replace("/login/");
+  }
 });
 
 init();
