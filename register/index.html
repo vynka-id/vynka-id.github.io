@@ -1,0 +1,117 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daftar Akun - VYNKA</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    *{box-sizing:border-box}
+    body{
+      margin:0;min-height:100vh;display:flex;align-items:center;
+      justify-content:center;padding:24px;background:#080e1c;
+      color:#fff;font-family:Arial,sans-serif
+    }
+    .card{width:100%;max-width:420px;background:#111b30;
+      border:1px solid #263550;border-radius:18px;padding:32px}
+    .logo{font-size:27px;font-weight:800;letter-spacing:2px;color:#65d8ff}
+    h2{margin-bottom:8px}
+    p{color:#9eacc2;font-size:14px;line-height:1.5}
+    label{display:block;margin:17px 0 7px;font-size:13px;color:#cbd5e1}
+    input{width:100%;padding:13px;border-radius:9px;
+      border:1px solid #34445e;background:#091426;color:white}
+    button{width:100%;margin-top:23px;padding:14px;border:0;
+      border-radius:9px;background:#42c8f5;color:#07111e;
+      font-weight:bold;cursor:pointer}
+    button:disabled{opacity:.6;cursor:wait}
+    #message{margin-top:16px;font-size:14px;overflow-wrap:anywhere}
+    a{color:#65d8ff;text-decoration:none}
+    .foot{text-align:center;margin-top:20px;font-size:13px}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">VYNKA.</div>
+    <h2>Buat akun baru</h2>
+    <p>Mulai bangun identitas digital dan hubungkan semua aktivitasmu.</p>
+
+    <form id="registerForm">
+      <label>Nama tampilan</label>
+      <input id="displayName" type="text" maxlength="60" required>
+
+      <label>Username</label>
+      <input id="username" type="text" maxlength="30"
+        pattern="[a-zA-Z0-9-]+" placeholder="contoh: toobey" required>
+      <p>Gunakan huruf kecil, angka, atau tanda hubung (-).</p>
+
+      <label>Email</label>
+      <input id="email" type="email" required>
+
+      <label>Password</label>
+      <input id="password" type="password" minlength="8" required>
+
+      <button id="submitBtn" type="submit">DAFTAR SEKARANG</button>
+    </form>
+
+    <div id="message"></div>
+    <div class="foot">Sudah punya akun? <a href="/login/">Login</a></div>
+  </div>
+
+<script>
+const SUPABASE_URL = "https://oasivryuvwpzxezrngej.supabase.co";
+const SUPABASE_KEY = "sb_publishable_OyWy9aYFSJolvJxNcucMXA_bWPS2N-a";
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const form = document.getElementById("registerForm");
+const message = document.getElementById("message");
+const button = document.getElementById("submitBtn");
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const displayName = document.getElementById("displayName").value.trim();
+  const username = document.getElementById("username").value.trim().toLowerCase();
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
+
+  if (!/^[a-z0-9-]{3,30}$/.test(username)) {
+    message.textContent = "Username harus 3–30 karakter, hanya huruf, angka, dan tanda hubung.";
+    return;
+  }
+
+  button.disabled = true;
+  button.textContent = "MEMPROSES...";
+  message.textContent = "";
+
+  try {
+    const { data, error } = await db.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          username,
+          display_name: displayName
+        },
+        emailRedirectTo: "https://vynka-id.github.io/dashboard/"
+      }
+    });
+
+    if (error) throw error;
+
+    if (data.session) {
+      message.textContent = "Pendaftaran berhasil! Mengarahkan ke dashboard...";
+      window.location.href = "/dashboard/";
+    } else {
+      message.textContent = "Pendaftaran berhasil. Silakan cek email untuk verifikasi akun sebelum login.";
+      button.textContent = "PENDAFTARAN SELESAI";
+    }
+  } catch (error) {
+    message.textContent = "Gagal mendaftar: " + error.message;
+    button.disabled = false;
+    button.textContent = "DAFTAR SEKARANG";
+  }
+});
+</script>
+</body>
+</html>
