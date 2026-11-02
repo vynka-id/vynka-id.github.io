@@ -82,7 +82,11 @@ border:1px dashed #34445e;border-radius:9px;font-size:14px}
         <textarea id="bio" maxlength="300" placeholder="Ceritakan sedikit tentang dirimu..."></textarea>
 
         <label>URL foto profil</label>
-        <input id="avatarUrl" type="url" placeholder="https://contoh.com/foto.jpg">
+        <input id="avatarFile" type="file" accept="image/jpeg,image/png,image/webp">
+
+        <div id="avatarPreview" style="margin-top:12px">
+          Belum ada foto profil.
+        </div>
 
         <div class="actions">
           <button id="saveProfileBtn" type="submit">Simpan Profil</button>
@@ -181,8 +185,28 @@ async function loadDashboard() {
   $("category").value = profile.category || "";
   $("bio").value = profile.bio || "";
   $("avatarUrl").value = profile.avatar_url || "";
+  updateAvatarPreview(profile.avatar_url || "");
 
   updatePreview();
+  if (!url) {
+    box.innerHTML = "Belum ada foto profil.";
+    return;
+  }
+
+  box.innerHTML = `
+    <img
+      src="${escapeHTML(url)}"
+      alt="Foto profil"
+      style="
+        width:110px;
+        height:110px;
+        object-fit:cover;
+        border-radius:50%;
+        border:2px solid #42c8f5;
+      "
+    >
+  `;
+}
 
   const { data: links, error: linksError } = await db
     .from("links")
@@ -206,6 +230,28 @@ function updatePreview() {
   $("profilePreview").textContent = "URL profil: " + (url || "Belum diisi");
 }
 
+function updateAvatarPreview(url) {
+  const box = document.getElementById("avatarPreview");
+
+  if (!url) {
+    box.innerHTML = "Belum ada foto profil.";
+    return;
+  }
+
+  box.innerHTML = `
+    <img
+      src="${url}"
+      alt="Foto profil"
+      style="
+        width:110px;
+        height:110px;
+        object-fit:cover;
+        border-radius:50%;
+        border:2px solid #42c8f5;
+      "
+    >
+  `;
+}
 $("username").addEventListener("input", updatePreview);
 
 $("profileForm").addEventListener("submit", async event => {
