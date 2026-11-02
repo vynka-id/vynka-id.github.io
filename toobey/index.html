@@ -1,13 +1,237 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Toobey | VYNKA</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Toobey | VYNKA</title>
+<meta name="description" content="Halaman digital Toobey - Gaming Creator">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  min-height: 100vh;
+  padding: 28px 18px;
+  background:
+    radial-gradient(ellipse at 50% 0%, #1c3458 0%, transparent 50%),
+    #080e1a;
+  color: #f3f6fc;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.container {
+  width: 100%;
+  max-width: 480px;
+  margin: auto;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 65px;
+}
+
+.logo {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 23px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.logo span { color: #79aaff; }
+
+.header-label {
+  font-size: 10px;
+  color: #91a9cb;
+  letter-spacing: 2px;
+}
+
+.profile {
+  text-align: center;
+  margin-bottom: 35px;
+}
+
+.avatar {
+  width: 104px;
+  height: 104px;
+  margin: auto auto 20px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(145deg, #345b91, #172943);
+  border: 3px solid #496b9a;
+  box-shadow: 0 0 35px #4777b533;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 45px;
+  font-weight: 700;
+}
+
+.profile h1 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 32px;
+  margin-bottom: 7px;
+}
+
+.category {
+  color: #8eadd8;
+  font-size: 13px;
+  margin-bottom: 17px;
+}
+
+.bio {
+  color: #b9c6d9;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.links {
+  display: grid;
+  gap: 13px;
+}
+
+.link-card {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 17px;
+  color: #f3f6fc;
+  text-decoration: none;
+  background: linear-gradient(110deg, #17253a, #111d30);
+  border: 1px solid #263a57;
+  border-radius: 15px;
+  transition: .25s;
+}
+
+.link-card:hover {
+  transform: translateY(-3px);
+  border-color: #6c9de2;
+  background: #1b2e49;
+}
+
+.link-icon {
+  width: 43px;
+  height: 43px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: #263e60;
+  color: #a9caff;
+  font-size: 19px;
+}
+
+.link-info { flex: 1; }
+
+.link-info strong {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.link-info small {
+  color: #91a5c1;
+  font-size: 11px;
+}
+
+.arrow {
+  color: #83aee9;
+  font-size: 19px;
+}
+
+.footer {
+  text-align: center;
+  margin-top: 55px;
+}
+
+.footer p {
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: #7389a8;
+}
+
+.footer a {
+  display: inline-block;
+  margin-top: 17px;
+  color: #8eb6ef;
+  text-decoration: none;
+  font-size: 11px;
+}
+
+.copyright {
+  margin-top: 35px;
+  text-align: center;
+  color: #53647d;
+  font-size: 10px;
+}
+
+@media (max-width: 380px) {
+  header { margin-bottom: 48px; }
+  .profile h1 { font-size: 28px; }
+}
+</style>
 </head>
+
 <body>
+<div class="container">
+
+<header>
+  <div class="logo">VYNKA<span>.</span></div>
+  <div class="header-label">DIGITAL PROFILE</div>
+</header>
+
+<main>
+  <section class="profile">
+    <div class="avatar">T</div>
     <h1>Toobey</h1>
-    <p>Gaming · Creator</p>
-    <p>Selamat datang di halaman digital saya!</p>
+    <div class="category">Gaming · Creator</div>
+    <p class="bio">Selamat datang di halaman digital saya!</p>
+  </section>
+
+  <section class="links">
+
+    <a class="link-card" href="#" target="_blank">
+      <div class="link-icon">✦</div>
+      <div class="link-info">
+        <strong>SocialBuzz</strong>
+        <small>Dukung host di sini</small>
+      </div>
+      <span class="arrow">↗</span>
+    </a>
+
+    <a class="link-card" href="#" target="_blank">
+      <div class="link-icon">♫</div>
+      <div class="link-info">
+        <strong>TikTok</strong>
+        <small>Follow akun saya</small>
+      </div>
+      <span class="arrow">↗</span>
+    </a>
+
+    <a class="link-card" href="#" target="_blank">
+      <div class="link-icon">↓</div>
+      <div class="link-info">
+        <strong>Link Download</strong>
+        <small>SMB Remastered</small>
+      </div>
+      <span class="arrow">↗</span>
+    </a>
+
+  </section>
+</main>
+
+<footer class="footer">
+  <p>YOUR SPACE. YOUR STORY.</p>
+  <a href="https://vynka-id.github.io/">Powered by VYNKA ↗</a>
+</footer>
+
+<div class="copyright">
+  © 2026 VYNKA. All rights reserved.
+</div>
+
+</div>
 </body>
 </html>
