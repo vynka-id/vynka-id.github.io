@@ -1,0 +1,93 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - VYNKA</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    *{box-sizing:border-box}
+    body{
+      margin:0;min-height:100vh;display:flex;align-items:center;
+      justify-content:center;padding:24px;background:#080e1c;
+      color:#fff;font-family:Arial,sans-serif
+    }
+    .card{width:100%;max-width:420px;background:#111b30;
+      border:1px solid #263550;border-radius:18px;padding:32px}
+    .logo{font-size:27px;font-weight:800;letter-spacing:2px;color:#65d8ff}
+    h2{margin-bottom:8px}
+    p{color:#9eacc2;font-size:14px;line-height:1.5}
+    label{display:block;margin:18px 0 7px;font-size:13px;color:#cbd5e1}
+    input{width:100%;padding:13px;border-radius:9px;
+      border:1px solid #34445e;background:#091426;color:white}
+    button{width:100%;margin-top:24px;padding:14px;border:0;
+      border-radius:9px;background:#42c8f5;color:#07111e;
+      font-weight:bold;cursor:pointer}
+    button:disabled{opacity:.6;cursor:wait}
+    #message{margin-top:16px;font-size:14px;overflow-wrap:anywhere}
+    a{color:#65d8ff;text-decoration:none}
+    .foot{text-align:center;margin-top:20px;font-size:13px}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">VYNKA.</div>
+    <h2>Selamat datang kembali</h2>
+    <p>Login untuk mengelola identitas digitalmu.</p>
+
+    <form id="loginForm">
+      <label>Email</label>
+      <input id="email" type="email" required>
+
+      <label>Password</label>
+      <input id="password" type="password" required>
+
+      <button id="submitBtn" type="submit">LOGIN</button>
+    </form>
+
+    <div id="message"></div>
+    <div class="foot">
+      Belum punya akun? <a href="/register/">Daftar sekarang</a>
+    </div>
+  </div>
+
+<script>
+const SUPABASE_URL = "https://oasivryuvwpzxezrngej.supabase.co";
+const SUPABASE_KEY = "sb_publishable_OyWy9aYFSJolvJxNcucMXA_bWPS2N-a";
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const form = document.getElementById("loginForm");
+const message = document.getElementById("message");
+const button = document.getElementById("submitBtn");
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  button.disabled = true;
+  button.textContent = "MEMERIKSA...";
+  message.textContent = "";
+
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
+
+  try {
+    const { data, error } = await db.auth.signInWithPassword({
+      email,
+      password
+    });
+
+    if (error) throw error;
+
+    message.textContent = "Login berhasil. Membuka dashboard...";
+    window.location.href = "/dashboard/";
+
+  } catch (error) {
+    message.textContent = "Login gagal: " + error.message;
+    button.disabled = false;
+    button.textContent = "LOGIN";
+  }
+});
+</script>
+</body>
+</html>
