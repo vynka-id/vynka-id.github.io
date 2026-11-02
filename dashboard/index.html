@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard - VYNKA</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#080e1c;color:#fff;font-family:Arial,sans-serif}
@@ -14,19 +13,21 @@ header{height:70px;border-bottom:1px solid #263550;display:flex;align-items:cent
 button{border:0;border-radius:8px;padding:11px 16px;cursor:pointer;font-weight:bold;background:#42c8f5;color:#07111e}
 button.secondary{background:#263550;color:#fff}
 button.danger{background:#512b38;color:#ffb8c5}
-button:disabled{opacity:.5;cursor:wait}
+button:disabled{opacity:.5;cursor:not-allowed}
 main{max-width:1100px;margin:35px auto;padding:0 20px}
 .top{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}
 h1{font-size:27px;margin:0 0 8px}
 h2{font-size:18px;margin:0 0 20px}
+h3{font-size:15px;margin:22px 0 12px}
 .muted{color:#9eacc2;font-size:14px;line-height:1.5}
 .layout{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:25px}
 .panel{background:#111b30;border:1px solid #263550;border-radius:14px;padding:23px;min-width:0}
 label{display:block;font-size:13px;color:#cbd5e1;margin:16px 0 7px}
-input,textarea{width:100%;padding:12px;border-radius:8px;border:1px solid #34445e;background:#091426;color:#fff;font:inherit}
+input,textarea,select{width:100%;padding:12px;border-radius:8px;border:1px solid #34445e;background:#091426;color:#fff;font:inherit}
+input[type=color]{height:45px;padding:5px}
 input[type=file]{padding:10px}
 textarea{min-height:95px;resize:vertical}
-input:focus,textarea:focus{outline:1px solid #42c8f5}
+input:focus,textarea:focus,select:focus{outline:1px solid #42c8f5}
 .actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:20px}
 #message{margin:18px 0;padding:12px;border-radius:8px;font-size:14px;display:none;overflow-wrap:anywhere}
 .link-item{border:1px solid #34445e;background:#0b1528;border-radius:9px;padding:13px;margin-top:10px}
@@ -40,45 +41,52 @@ input:focus,textarea:focus{outline:1px solid #42c8f5}
 .avatar-placeholder{display:flex;align-items:center;justify-content:center;background:#263550;color:#65d8ff;font-size:30px;font-weight:bold}
 .preview{margin-top:20px;overflow-wrap:anywhere}
 
-/* APPEARANCE STUDIO */
+/* MEMBERSHIP */
+.membership{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}
+.plan-badge{display:inline-block;padding:7px 12px;border-radius:20px;font-size:12px;font-weight:bold;background:#263550;color:#cbd5e1}
+.plan-badge.premium{background:#59451f;color:#ffe2a0}
+.plan-info{margin-top:8px}
+
+/* APPEARANCE */
 .appearance-panel{margin-top:22px}
 .section-intro{margin:-10px 0 20px}
-.theme-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px}
-.theme-card{border:1px solid #34445e;background:#0b1528;border-radius:13px;padding:9px;text-align:left;color:#fff;cursor:pointer;transition:.2s;min-width:0}
+.theme-group-title{display:flex;align-items:center;gap:8px;margin:22px 0 12px;font-size:14px;font-weight:bold}
+.theme-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+.theme-card{border:1px solid #34445e;background:#0b1528;border-radius:13px;padding:9px;text-align:left;color:#fff;cursor:pointer;transition:.2s;min-width:0;position:relative}
 .theme-card:hover{border-color:#65d8ff;transform:translateY(-2px)}
 .theme-card.selected{border:2px solid #42c8f5;padding:8px;box-shadow:0 0 0 3px #42c8f51a}
-.theme-art{height:105px;border-radius:9px;padding:12px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;position:relative}
-.theme-art:after{content:"";position:absolute;width:90px;height:90px;border-radius:50%;right:-24px;top:-28px;background:var(--accent);opacity:.22;filter:blur(8px)}
+.theme-card.locked{opacity:.72}
+.theme-art{height:95px;border-radius:9px;padding:10px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;position:relative}
+.theme-art:after{content:"";position:absolute;width:90px;height:90px;border-radius:50%;right:-24px;top:-28px;background:var(--accent);opacity:.25;filter:blur(8px)}
 .art-brand{font-size:10px;font-weight:900;letter-spacing:2px;color:var(--text)}
-.art-avatar{width:24px;height:24px;border-radius:50%;background:var(--accent);border:2px solid var(--text)}
+.art-avatar{width:22px;height:22px;border-radius:50%;background:var(--accent);border:2px solid var(--text)}
 .art-lines{display:grid;gap:5px}
-.art-line{height:13px;border-radius:5px;background:var(--card);border:1px solid var(--border)}
+.art-line{height:11px;border-radius:5px;background:var(--card);border:1px solid var(--border)}
 .art-line:nth-child(2){width:82%}
 .art-line:nth-child(3){width:65%}
-.theme-name{font-size:13px;font-weight:800;margin-top:10px}
-.theme-desc{font-size:11px;color:#9eacc2;margin-top:4px;line-height:1.4}
-.theme-check{font-size:11px;color:#65d8ff;margin-top:7px;min-height:14px}
+.theme-name{font-size:12px;font-weight:800;margin-top:9px}
+.theme-desc{font-size:10px;color:#9eacc2;margin-top:4px;line-height:1.4;min-height:28px}
+.theme-check{font-size:10px;color:#65d8ff;margin-top:6px;min-height:13px}
+.lock-label{position:absolute;top:14px;right:14px;background:#111b30;color:#ffe2a0;border-radius:20px;padding:5px 7px;font-size:10px;z-index:1}
 .theme-preview-wrap{margin-top:22px;border:1px solid #34445e;border-radius:13px;padding:15px;background:#091426}
 .theme-preview-label{font-size:12px;color:#9eacc2;margin-bottom:12px}
 .theme-preview{--bg:#080e1c;--surface:#142237;--card:#172943;--text:#fff;--muted:#aebbd0;--accent:#42c8f5;--border:#34465f;--glow:transparent;background:var(--bg);color:var(--text);border-radius:12px;padding:24px 18px;max-width:350px;margin:auto;text-align:center;min-height:330px;transition:.25s;box-shadow:0 10px 35px var(--glow)}
 .theme-preview .pv-brand{font-size:20px;font-weight:900;letter-spacing:3px;color:var(--accent)}
-.theme-preview .pv-avatar{width:70px;height:70px;border-radius:50%;margin:25px auto 12px;background:var(--surface);border:2px solid var(--accent);display:grid;place-items:center;font-size:24px;font-weight:bold}
+.theme-preview .pv-avatar{width:70px;height:70px;border-radius:50%;margin:25px auto 12px;background:var(--surface);border:2px solid var(--accent);display:grid;place-items:center;font-size:24px;font-weight:bold;overflow:hidden}
+.theme-preview .pv-avatar img{width:100%;height:100%;object-fit:cover}
 .theme-preview .pv-name{font-size:19px;font-weight:800}
 .theme-preview .pv-category{font-size:12px;color:var(--accent);margin-top:6px}
 .theme-preview .pv-bio{font-size:12px;color:var(--muted);margin:13px auto 18px;max-width:260px;line-height:1.5}
 .theme-preview .pv-link{padding:12px;margin-top:9px;border:1px solid var(--border);border-radius:var(--button-radius,10px);background:var(--card);font-size:12px;font-weight:bold}
-.theme-preview[data-theme="noir"]{--button-radius:3px}
-.theme-preview[data-theme="aurora"]{--button-radius:16px}
-.theme-preview[data-theme="bloom"]{--button-radius:22px}
-.theme-preview[data-theme="cyber"]{--button-radius:5px}
-.theme-preview[data-theme="santorini"]{--button-radius:13px}
-.theme-preview[data-theme="emerald"]{--button-radius:10px}
-.theme-preview[data-theme="ocean"]{--button-radius:15px}
+.custom-panel{margin-top:22px;border:1px solid #66512c;background:#171b29;border-radius:12px;padding:18px}
+.custom-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.custom-grid>div{min-width:0}
+.premium-note{font-size:12px;color:#d8c18f;line-height:1.5}
 .appearance-actions{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:18px}
 #themeStatus{font-size:12px;color:#9eacc2}
 @media(max-width:850px){.theme-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:750px){.layout{grid-template-columns:1fr}main{margin-top:25px}.panel{padding:18px}}
-@media(max-width:520px){.theme-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.theme-art{height:90px}}
+@media(max-width:520px){.theme-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.theme-art{height:85px}.custom-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -98,12 +106,26 @@ input:focus,textarea:focus{outline:1px solid #42c8f5}
 
   <div id="message" role="status"></div>
 
+  <section class="panel">
+    <div class="membership">
+      <div>
+        <h2 style="margin-bottom:5px">Membership VYNKA</h2>
+        <div class="muted" id="membershipDescription">Memeriksa status akun...</div>
+      </div>
+      <span class="plan-badge" id="planBadge">MEMERIKSA</span>
+    </div>
+  </section>
+
   <!-- APPEARANCE STUDIO -->
   <section class="panel appearance-panel">
     <h2>Appearance Studio</h2>
-    <p class="muted section-intro">Pilih gaya visual yang paling menggambarkan identitas digitalmu. Klik tema untuk mencoba preview.</p>
+    <p class="muted section-intro">Pilih gaya visual yang menggambarkan identitas digitalmu. Tema Premium hanya dapat digunakan oleh anggota Premium.</p>
 
-    <div class="theme-grid" id="themeGrid"></div>
+    <div class="theme-group-title">✦ FREE THEMES <span class="muted">· 5 tema</span></div>
+    <div class="theme-grid" id="freeThemeGrid"></div>
+
+    <div class="theme-group-title">✧ PREMIUM THEMES <span class="muted">· 5 tema</span></div>
+    <div class="theme-grid" id="premiumThemeGrid"></div>
 
     <div class="theme-preview-wrap">
       <div class="theme-preview-label">LIVE PREVIEW · Tampilan halaman profil</div>
@@ -119,6 +141,44 @@ input:focus,textarea:focus{outline:1px solid #42c8f5}
       </div>
     </div>
 
+    <div class="custom-panel" id="customPanel" hidden>
+      <h3 style="margin-top:0">Custom Appearance</h3>
+      <p class="premium-note">Atur detail tampilan profil sesuai keinginanmu. Fitur ini khusus VYNKA Premium.</p>
+      <div class="custom-grid">
+        <div>
+          <label for="accentColor">Warna aksen</label>
+          <input type="color" id="accentColor" value="#D6B56D">
+        </div>
+        <div>
+          <label for="buttonShape">Bentuk tombol</label>
+          <select id="buttonShape">
+            <option value="square">Square</option>
+            <option value="rounded">Rounded</option>
+            <option value="pill">Pill</option>
+          </select>
+        </div>
+        <div>
+          <label for="backgroundStyle">Gaya latar belakang</label>
+          <select id="backgroundStyle">
+            <option value="solid">Solid</option>
+            <option value="gradient">Gradient</option>
+            <option value="glow">Glow</option>
+          </select>
+        </div>
+        <div>
+          <label for="fontStyle">Gaya font</label>
+          <select id="fontStyle">
+            <option value="modern">Modern</option>
+            <option value="elegant">Elegant</option>
+            <option value="minimal">Minimal</option>
+          </select>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="secondary" type="button" id="resetCustomBtn">Reset Custom</button>
+      </div>
+    </div>
+
     <div class="appearance-actions">
       <div id="themeStatus">Tema tersimpan: NEBULA</div>
       <div class="actions" style="margin:0">
@@ -129,7 +189,6 @@ input:focus,textarea:focus{outline:1px solid #42c8f5}
   </section>
 
   <div class="layout">
-    <!-- PROFIL -->
     <section class="panel">
       <h2>Profil Saya</h2>
       <form id="profileForm">
@@ -163,7 +222,6 @@ input:focus,textarea:focus{outline:1px solid #42c8f5}
       <div class="preview muted" id="profilePreview"></div>
     </section>
 
-    <!-- LINK -->
     <section class="panel">
       <h2>My Links</h2>
       <form id="linkForm">
@@ -190,48 +248,28 @@ const SUPABASE_URL = "https://oasivryuvwpzxezrngej.supabase.co";
 const SUPABASE_KEY = "sb_publishable_OyWy9aYFSJolvJxNcucMXA_bWPS2N-a";
 const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-let currentUser = null;
-let editingLinkId = null;
-let currentLinks = [];
-let currentAvatarUrl = "";
-let savedTheme = "nebula";
-let selectedTheme = "nebula";
+let currentUser=null;
+let editingLinkId=null;
+let currentLinks=[];
+let currentAvatarUrl="";
+let isPremium=false;
+let savedTheme="nebula";
+let selectedTheme="nebula";
+let savedAppearance={accent_color:null,button_shape:null,background_style:null,font_style:null};
 
-const $ = id => document.getElementById(id);
+const $=id=>document.getElementById(id);
 
-const themes = {
-  nebula: {
-    name:"NEBULA",desc:"Futuristic · Cyan glow",
-    bg:"#080D1C",surface:"#14243D",card:"#172943",text:"#F4FAFF",muted:"#A9BCD1",accent:"#00E5FF",border:"#31506C",glow:"rgba(0,229,255,.15)"
-  },
-  noir: {
-    name:"NOIR",desc:"Luxury · Black & gold",
-    bg:"#101010",surface:"#1C1C1C",card:"#242424",text:"#F8F3E9",muted:"#B7AD9C",accent:"#D6B56D",border:"#594B31",glow:"rgba(214,181,109,.12)"
-  },
-  aurora: {
-    name:"AURORA",desc:"Creative · Purple gradient",
-    bg:"#17102D",surface:"#271B46",card:"#30204F",text:"#FFFFFF",muted:"#C8B9E5",accent:"#C084FC",border:"#694A91",glow:"rgba(192,132,252,.2)"
-  },
-  santorini: {
-    name:"SANTORINI",desc:"Minimal · Warm clean",
-    bg:"#F7F5F0",surface:"#FFFFFF",card:"#FFFFFF",text:"#202B3C",muted:"#687487",accent:"#477B9E",border:"#DCE2E7",glow:"rgba(50,70,90,.07)"
-  },
-  cyber: {
-    name:"CYBER",desc:"Bold · Electric green",
-    bg:"#080B08",surface:"#141B13",card:"#182219",text:"#F1FFE9",muted:"#A7B69E",accent:"#B6FF00",border:"#45602C",glow:"rgba(182,255,0,.13)"
-  },
-  bloom: {
-    name:"BLOOM",desc:"Soft · Pastel aesthetic",
-    bg:"#FFF4F8",surface:"#FFFFFF",card:"#FFFFFF",text:"#442D42",muted:"#92788F",accent:"#D96AA5",border:"#F0D4E3",glow:"rgba(217,106,165,.12)"
-  },
-  emerald: {
-    name:"EMERALD",desc:"Business · Deep green",
-    bg:"#071C18",surface:"#102B24",card:"#16372D",text:"#F0FFF7",muted:"#A9C9BA",accent:"#36D399",border:"#315D4D",glow:"rgba(54,211,153,.13)"
-  },
-  ocean: {
-    name:"OCEAN",desc:"Fresh · Blue atmosphere",
-    bg:"#071B33",surface:"#102B49",card:"#153859",text:"#F2FAFF",muted:"#A8C6DE",accent:"#48CAE4",border:"#326181",glow:"rgba(72,202,228,.16)"
-  }
+const themes={
+  nebula:{name:"NEBULA",desc:"Futuristic · Cyan glow",tier:"free",bg:"#080D1C",surface:"#14243D",card:"#172943",text:"#F4FAFF",muted:"#A9BCD1",accent:"#00E5FF",border:"#31506C",glow:"rgba(0,229,255,.15)"},
+  santorini:{name:"SANTORINI",desc:"Warm · Clean minimal",tier:"free",bg:"#F7F5F0",surface:"#FFFFFF",card:"#FFFFFF",text:"#202B3C",muted:"#687487",accent:"#477B9E",border:"#DCE2E7",glow:"rgba(50,70,90,.07)"},
+  ocean:{name:"OCEAN",desc:"Fresh · Blue atmosphere",tier:"free",bg:"#071B33",surface:"#102B49",card:"#153859",text:"#F2FAFF",muted:"#A8C6DE",accent:"#48CAE4",border:"#326181",glow:"rgba(72,202,228,.16)"},
+  bloom:{name:"BLOOM",desc:"Soft · Pastel aesthetic",tier:"free",bg:"#FFF4F8",surface:"#FFFFFF",card:"#FFFFFF",text:"#442D42",muted:"#92788F",accent:"#D96AA5",border:"#F0D4E3",glow:"rgba(217,106,165,.12)"},
+  minimal:{name:"MINIMAL",desc:"Simple · Monochrome",tier:"free",bg:"#F1F2F4",surface:"#FFFFFF",card:"#FFFFFF",text:"#17191D",muted:"#737982",accent:"#303640",border:"#D8DBE0",glow:"rgba(0,0,0,.06)"},
+  noir:{name:"NOIR",desc:"Luxury · Black & gold",tier:"premium",bg:"#101010",surface:"#1C1C1C",card:"#242424",text:"#F8F3E9",muted:"#B7AD9C",accent:"#D6B56D",border:"#594B31",glow:"rgba(214,181,109,.18)"},
+  aurora:{name:"AURORA",desc:"Creative · Gradient glow",tier:"premium",bg:"#17102D",surface:"#271B46",card:"#30204F",text:"#FFFFFF",muted:"#C8B9E5",accent:"#C084FC",border:"#694A91",glow:"rgba(192,132,252,.25)"},
+  cyber:{name:"CYBER",desc:"Bold · Electric green",tier:"premium",bg:"#080B08",surface:"#141B13",card:"#182219",text:"#F1FFE9",muted:"#A7B69E",accent:"#B6FF00",border:"#45602C",glow:"rgba(182,255,0,.2)"},
+  emerald:{name:"EMERALD",desc:"Executive · Deep green",tier:"premium",bg:"#071C18",surface:"#102B24",card:"#16372D",text:"#F0FFF7",muted:"#A9C9BA",accent:"#36D399",border:"#315D4D",glow:"rgba(54,211,153,.2)"},
+  royal:{name:"ROYAL",desc:"Prestige · Purple & gold",tier:"premium",bg:"#160F25",surface:"#241735",card:"#302044",text:"#FFF8EA",muted:"#C8B9D8",accent:"#E5BD69",border:"#665078",glow:"rgba(229,189,105,.22)"}
 };
 
 function showMessage(message,type="success"){
@@ -243,37 +281,54 @@ function showMessage(message,type="success"){
 }
 
 function escapeHTML(value){
-  return String(value??"").replace(/[&<>"']/g,char=>({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-  })[char]);
+  return String(value??"").replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]));
 }
 
 function validHttpUrl(value){
-  try{
-    const url=new URL(value);
-    return url.protocol==="https:"||url.protocol==="http:";
-  }catch{return false;}
+  try{const url=new URL(value);return url.protocol==="https:"||url.protocol==="http:"}
+  catch{return false}
 }
 
-/* APPEARANCE STUDIO */
-function renderThemeCards(){
-  const grid=$("themeGrid");
-  grid.innerHTML=Object.entries(themes).map(([id,t])=>`
-    <button type="button" class="theme-card ${id===selectedTheme?"selected":""}" data-theme="${id}" aria-pressed="${id===selectedTheme}">
+function getCustomValues(){
+  return {
+    accent_color:$("accentColor").value,
+    button_shape:$("buttonShape").value,
+    background_style:$("backgroundStyle").value,
+    font_style:$("fontStyle").value
+  };
+}
+
+function hasCustomValues(){
+  const c=getCustomValues();
+  return c.accent_color!==themes[selectedTheme].accent||
+    c.button_shape!=="rounded"||
+    c.background_style!=="solid"||
+    c.font_style!=="modern";
+}
+
+function renderThemeCard(id){
+  const t=themes[id];
+  const locked=t.tier==="premium"&&!isPremium;
+  const selected=id===selectedTheme;
+  return `
+    <button type="button" class="theme-card ${selected?"selected":""} ${locked?"locked":""}" data-theme="${id}" aria-pressed="${selected}" ${locked?'aria-label="'+t.name+' Premium, terkunci"':''}>
+      ${locked?'<span class="lock-label">🔒 PREMIUM</span>':""}
       <div class="theme-art" style="background:${t.bg};--accent:${t.accent};--text:${t.text};--card:${t.card};--border:${t.border}">
         <div class="art-brand">VYNKA.</div>
         <div class="art-avatar"></div>
-        <div class="art-lines">
-          <div class="art-line"></div><div class="art-line"></div><div class="art-line"></div>
-        </div>
+        <div class="art-lines"><div class="art-line"></div><div class="art-line"></div><div class="art-line"></div></div>
       </div>
       <div class="theme-name">${t.name}</div>
       <div class="theme-desc">${t.desc}</div>
-      <div class="theme-check">${id===selectedTheme?"✓ Dipilih":""}</div>
-    </button>
-  `).join("");
+      <div class="theme-check">${selected?"✓ Dipilih":locked?"Premium":"Pilih tema"}</div>
+    </button>`;
+}
 
-  grid.querySelectorAll("[data-theme]").forEach(card=>{
+function renderThemeCards(){
+  $("freeThemeGrid").innerHTML=Object.keys(themes).filter(id=>themes[id].tier==="free").map(renderThemeCard).join("");
+  $("premiumThemeGrid").innerHTML=Object.keys(themes).filter(id=>themes[id].tier==="premium").map(renderThemeCard).join("");
+
+  document.querySelectorAll(".theme-card[data-theme]").forEach(card=>{
     card.addEventListener("click",()=>selectTheme(card.dataset.theme));
   });
 }
@@ -282,20 +337,43 @@ function applyPreviewTheme(id){
   const t=themes[id]||themes.nebula;
   const preview=$("themePreview");
   preview.dataset.theme=id;
-  Object.entries({
-    "--bg":t.bg,"--surface":t.surface,"--card":t.card,
-    "--text":t.text,"--muted":t.muted,"--accent":t.accent,
-    "--border":t.border,"--glow":t.glow
-  }).forEach(([key,value])=>preview.style.setProperty(key,value));
+
+  let bg=t.bg;
+  if(isPremium&&$("backgroundStyle").value==="gradient"){
+    bg=`linear-gradient(145deg,${t.bg},${t.surface},${t.card})`;
+  }else if(isPremium&&$("backgroundStyle").value==="glow"){
+    bg=`radial-gradient(circle at top,${t.surface},${t.bg} 72%)`;
+  }
+
+  const accent=isPremium?$("accentColor").value:t.accent;
+  const shape=isPremium?$("buttonShape").value:"rounded";
+  const radius=shape==="square"?"3px":shape==="pill"?"30px":"12px";
+  const font=isPremium?$("fontStyle").value:"modern";
+  const fontFamily=font==="elegant"?"Georgia,serif":font==="minimal"?"Arial,sans-serif":"Inter,Arial,sans-serif";
+
+  preview.style.setProperty("--bg",bg);
+  preview.style.setProperty("--surface",t.surface);
+  preview.style.setProperty("--card",t.card);
+  preview.style.setProperty("--text",t.text);
+  preview.style.setProperty("--muted",t.muted);
+  preview.style.setProperty("--accent",accent);
+  preview.style.setProperty("--border",t.border);
+  preview.style.setProperty("--glow",t.glow);
+  preview.style.setProperty("--button-radius",radius);
+  preview.style.fontFamily=fontFamily;
 }
 
 function selectTheme(id){
   if(!themes[id])return;
+  if(themes[id].tier==="premium"&&!isPremium){
+    showMessage("Tema "+themes[id].name+" hanya tersedia untuk VYNKA Premium.","error");
+    return;
+  }
   selectedTheme=id;
   renderThemeCards();
   applyPreviewTheme(id);
-  $("themeStatus").textContent=
-    id===savedTheme?"Tema tersimpan: "+themes[id].name:
+  $("themeStatus").textContent=id===savedTheme?
+    "Tema tersimpan: "+themes[id].name:
     "Preview: "+themes[id].name+" · Belum disimpan";
 }
 
@@ -304,26 +382,65 @@ function updateThemePreviewProfile(){
   $("pvCategory").textContent=$("category").value.trim()||"Digital Creator";
   $("pvBio").textContent=$("bio").value.trim()||"One identity. Infinite connections.";
   $("pvAvatar").textContent=($("displayName").value.trim()[0]||"V").toUpperCase();
+  if(currentAvatarUrl){
+    $("pvAvatar").innerHTML=`<img src="${escapeHTML(currentAvatarUrl)}" alt="Foto profil">`;
+  }
+}
+
+function updateMembershipUI(){
+  $("planBadge").textContent=isPremium?"✦ PREMIUM":"FREE";
+  $("planBadge").className="plan-badge"+(isPremium?" premium":"");
+  $("membershipDescription").textContent=isPremium?
+    "Akun kamu memiliki akses ke seluruh tema dan Custom Appearance.":
+    "Kamu menggunakan paket Free. Upgrade untuk membuka 5 tema Premium dan Custom Appearance.";
+  $("customPanel").hidden=!isPremium;
+}
+
+function loadCustomControls(profile){
+  $("accentColor").value=profile.accent_color||themes[profile.theme]?.accent||themes.nebula.accent;
+  $("buttonShape").value=profile.button_shape||"rounded";
+  $("backgroundStyle").value=profile.background_style||"solid";
+  $("fontStyle").value=profile.font_style||"modern";
 }
 
 async function saveTheme(){
+  if(!currentUser)return;
+  if(!isPremium&&themes[selectedTheme].tier==="premium"){
+    showMessage("Tema ini memerlukan VYNKA Premium.","error");
+    return;
+  }
+
   const button=$("saveThemeBtn");
   button.disabled=true;
   button.textContent="Menyimpan...";
 
   try{
-    const {error}=await db.from("profiles")
-      .update({theme:selectedTheme,updated_at:new Date().toISOString()})
-      .eq("id",currentUser.id);
+    const payload={theme:selectedTheme,updated_at:new Date().toISOString()};
 
+    if(isPremium&&hasCustomValues()){
+      Object.assign(payload,getCustomValues());
+    }else{
+      payload.accent_color=null;
+      payload.button_shape=null;
+      payload.background_style=null;
+      payload.font_style=null;
+    }
+
+    const {error}=await db.from("profiles").update(payload).eq("id",currentUser.id);
     if(error)throw error;
 
     savedTheme=selectedTheme;
+    savedAppearance={
+      accent_color:payload.accent_color,
+      button_shape:payload.button_shape,
+      background_style:payload.background_style,
+      font_style:payload.font_style
+    };
     $("themeStatus").textContent="Tema tersimpan: "+themes[savedTheme].name;
     renderThemeCards();
     showMessage("Tampilan "+themes[savedTheme].name+" berhasil disimpan!");
   }catch(error){
-    showMessage("Gagal menyimpan tema: "+error.message,"error");
+    showMessage("Gagal menyimpan tampilan: "+error.message,"error");
   }finally{
     button.disabled=false;
     button.textContent="Simpan Tampilan";
@@ -331,8 +448,26 @@ async function saveTheme(){
 }
 
 $("saveThemeBtn").addEventListener("click",saveTheme);
-$("resetThemeBtn").addEventListener("click",()=>selectTheme("nebula"));
-
+$("resetThemeBtn").addEventListener("click",()=>{
+  $("accentColor").value=themes.nebula.accent;
+  $("buttonShape").value="rounded";
+  $("backgroundStyle").value="solid";
+  $("fontStyle").value="modern";
+  selectTheme("nebula");
+  applyPreviewTheme("nebula");
+});
+$("resetCustomBtn").addEventListener("click",()=>{
+  const t=themes[selectedTheme];
+  $("accentColor").value=t.accent;
+  $("buttonShape").value="rounded";
+  $("backgroundStyle").value="solid";
+  $("fontStyle").value="modern";
+  applyPreviewTheme(selectedTheme);
+});
+["accentColor","buttonShape","backgroundStyle","fontStyle"].forEach(id=>{
+  $(id).addEventListener("input",()=>applyPreviewTheme(selectedTheme));
+  $(id).addEventListener("change",()=>applyPreviewTheme(selectedTheme));
+});
 ["displayName","category","bio"].forEach(id=>{
   $(id).addEventListener("input",updateThemePreviewProfile);
 });
@@ -349,15 +484,27 @@ async function init(){
   await loadDashboard();
 }
 
-/* LOAD PROFILE */
+/* LOAD PROFILE + MEMBERSHIP */
 async function loadDashboard(){
-  const {data:profile,error}=await db.from("profiles")
-    .select("*").eq("id",currentUser.id).single();
+  const [profileResult,membershipResult]=await Promise.all([
+    db.from("profiles").select("*").eq("id",currentUser.id).single(),
+    db.from("user_entitlements").select("plan,is_active,expires_at").eq("user_id",currentUser.id).maybeSingle()
+  ]);
 
-  if(error){
-    showMessage("Gagal memuat profil: "+error.message,"error");
+  if(profileResult.error){
+    showMessage("Gagal memuat profil: "+profileResult.error.message,"error");
     return;
   }
+
+  if(membershipResult.error){
+    showMessage("Gagal memeriksa membership: "+membershipResult.error.message,"error");
+    return;
+  }
+
+  const profile=profileResult.data;
+  const membership=membershipResult.data;
+  const validExpiry=!membership?.expires_at||new Date(membership.expires_at)>new Date();
+  isPremium=membership?.plan==="premium"&&membership?.is_active===true&&validExpiry;
 
   $("displayName").value=profile.display_name||"";
   $("username").value=profile.username||"";
@@ -368,7 +515,18 @@ async function loadDashboard(){
   updateAvatarPreview(currentAvatarUrl);
 
   savedTheme=themes[profile.theme]?profile.theme:"nebula";
+  if(!isPremium&&themes[savedTheme].tier==="premium")savedTheme="nebula";
   selectedTheme=savedTheme;
+
+  loadCustomControls(profile);
+  savedAppearance={
+    accent_color:profile.accent_color,
+    button_shape:profile.button_shape,
+    background_style:profile.background_style,
+    font_style:profile.font_style
+  };
+
+  updateMembershipUI();
   renderThemeCards();
   applyPreviewTheme(selectedTheme);
   $("themeStatus").textContent="Tema tersimpan: "+themes[savedTheme].name;
@@ -380,17 +538,14 @@ async function loadDashboard(){
 
 function updatePreview(){
   const username=$("username").value.trim();
-  const url=username?
-    `https://vynka-id.github.io/${encodeURIComponent(username)}/`:"";
+  const url=username?`https://vynka-id.github.io/${encodeURIComponent(username)}/`:"";
   $("profilePreview").textContent="URL profil: "+(url||"Belum diisi");
 }
-
 $("username").addEventListener("input",updatePreview);
 
 function updateAvatarPreview(url){
   const box=$("avatarPreview");
   box.replaceChildren();
-
   if(!url){
     const placeholder=document.createElement("div");
     placeholder.className="avatar-placeholder";
@@ -399,7 +554,6 @@ function updateAvatarPreview(url){
     $("avatarStatus").textContent="Belum ada foto profil";
     return;
   }
-
   const img=document.createElement("img");
   img.src=url;
   img.alt="Foto profil";
@@ -438,21 +592,18 @@ $("avatarFile").addEventListener("change",async event=>{
   try{
     const extension=file.type==="image/jpeg"?"jpg":file.type.split("/")[1];
     const filePath=`${currentUser.id}/${Date.now()}.${extension}`;
-
-    const {error:uploadError}=await db.storage.from("avatars")
-      .upload(filePath,file,{contentType:file.type,cacheControl:"3600",upsert:false});
+    const {error:uploadError}=await db.storage.from("avatars").upload(filePath,file,{contentType:file.type,cacheControl:"3600",upsert:false});
     if(uploadError)throw uploadError;
 
     const {data:publicData}=db.storage.from("avatars").getPublicUrl(filePath);
     const publicUrl=publicData.publicUrl;
 
-    const {error:updateError}=await db.from("profiles")
-      .update({avatar_url:publicUrl,updated_at:new Date().toISOString()})
-      .eq("id",currentUser.id);
+    const {error:updateError}=await db.from("profiles").update({avatar_url:publicUrl,updated_at:new Date().toISOString()}).eq("id",currentUser.id);
     if(updateError)throw updateError;
 
     currentAvatarUrl=publicUrl;
     updateAvatarPreview(publicUrl);
+    updateThemePreviewProfile();
     showMessage("Foto profil berhasil diunggah dan disimpan!");
   }catch(error){
     showMessage("Gagal mengunggah foto: "+error.message,"error");
@@ -490,9 +641,7 @@ $("profileForm").addEventListener("submit",async event=>{
   button.textContent="Simpan Profil";
 
   if(error){
-    showMessage(error.code==="23505"?
-      "Username tersebut sudah digunakan. Pilih username lain.":
-      "Gagal menyimpan profil: "+error.message,"error");
+    showMessage(error.code==="23505"?"Username tersebut sudah digunakan. Pilih username lain.":"Gagal menyimpan profil: "+error.message,"error");
     return;
   }
 
@@ -518,13 +667,10 @@ function renderLinks(){
         <button class="secondary" type="button" data-edit="${escapeHTML(link.id)}">Edit</button>
         <button class="danger" type="button" data-delete="${escapeHTML(link.id)}">Hapus</button>
       </div>
-    </div>
-  `).join("");
+    </div>`).join("");
 
-  list.querySelectorAll("[data-edit]").forEach(button=>
-    button.addEventListener("click",()=>editLink(button.dataset.edit)));
-  list.querySelectorAll("[data-delete]").forEach(button=>
-    button.addEventListener("click",()=>deleteLink(button.dataset.delete)));
+  list.querySelectorAll("[data-edit]").forEach(button=>button.addEventListener("click",()=>editLink(button.dataset.edit)));
+  list.querySelectorAll("[data-delete]").forEach(button=>button.addEventListener("click",()=>deleteLink(button.dataset.delete)));
 }
 
 $("linkForm").addEventListener("submit",async event=>{
@@ -543,14 +689,9 @@ $("linkForm").addEventListener("submit",async event=>{
 
   let result;
   if(editingLinkId){
-    result=await db.from("links").update({
-      title,url,updated_at:new Date().toISOString()
-    }).eq("id",editingLinkId).eq("user_id",currentUser.id);
+    result=await db.from("links").update({title,url,updated_at:new Date().toISOString()}).eq("id",editingLinkId).eq("user_id",currentUser.id);
   }else{
-    result=await db.from("links").insert({
-      user_id:currentUser.id,title,url,
-      position:currentLinks.length,is_active:true
-    });
+    result=await db.from("links").insert({user_id:currentUser.id,title,url,position:currentLinks.length,is_active:true});
   }
 
   button.disabled=false;
@@ -591,9 +732,7 @@ async function deleteLink(id){
   const link=currentLinks.find(item=>item.id===id);
   if(!link||!confirm(`Hapus tautan "${link.title}"?`))return;
 
-  const {error}=await db.from("links").delete()
-    .eq("id",id).eq("user_id",currentUser.id);
-
+  const {error}=await db.from("links").delete().eq("id",id).eq("user_id",currentUser.id);
   if(error){
     showMessage("Gagal menghapus tautan: "+error.message,"error");
     return;
@@ -603,11 +742,8 @@ async function deleteLink(id){
 }
 
 async function loadLinks(){
-  const {data,error}=await db.from("links").select("*")
-    .eq("user_id",currentUser.id)
-    .order("position",{ascending:true})
-    .order("created_at",{ascending:true});
-
+  const {data,error}=await db.from("links").select("*").eq("user_id",currentUser.id)
+    .order("position",{ascending:true}).order("created_at",{ascending:true});
   if(error){
     showMessage("Gagal memuat tautan: "+error.message,"error");
     return;
