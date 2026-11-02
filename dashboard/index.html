@@ -85,13 +85,47 @@ main.workspace{max-width:1600px;padding:24px 26px 60px;grid-template-columns:174
 @media(max-width:600px){.theme-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.theme-art{height:58px}.theme-card{padding:6px}.theme-card.selected{padding:6px}.theme-desc{min-height:22px}}
 @media(max-width:420px){.theme-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
+
+/* ===== FINAL VYNKA UI POLISH — Cryptowall reference ===== */
+:root{--bg:#f3f6fb;--surface:#ffffff;--line:#e9eef6;--muted:#8996aa;--text:#24334b;--blue:#3978f6;--blue-deep:#2868ef;--sky:#8ccfff}
+body{background:#f3f6fb;color:#24334b}
+header{background:rgba(255,255,255,.92);backdrop-filter:blur(16px);border-bottom:1px solid #e9eef6;box-shadow:0 3px 18px rgba(35,64,108,.035)}
+main.workspace{max-width:1660px;grid-template-columns:164px minmax(440px,1fr) 292px;gap:20px;padding:25px 24px 64px}
+.sidebar{padding:18px 10px;border-radius:22px;box-shadow:0 10px 28px rgba(35,64,108,.045)}
+.side-link{display:flex;align-items:center;gap:11px;min-height:42px;padding:10px 13px;margin:3px 0;border-radius:14px;color:#74839a;font-size:12px;font-weight:650;transition:background .2s,color .2s,transform .2s;box-shadow:none!important}
+.side-link span{display:inline-grid;place-items:center;width:20px;height:20px;flex:0 0 20px;font-size:16px;color:#8da0bb}
+.side-link:hover{background:#f3f7ff;color:#376fe1;transform:translateX(2px)}
+.side-link.active{color:#fff;background:linear-gradient(110deg,#4f91ff 0%,#579df7 52%,#83c8ff 100%);box-shadow:0 7px 17px rgba(66,132,241,.19)!important;border:1px solid rgba(255,255,255,.6)}
+.side-link.active span{color:#fff}
+.sidebar-plan{border-radius:15px;background:linear-gradient(135deg,#f0f6ff,#f8fbff);border-color:#e6efff;padding:11px 9px}
+.plan-icon{border-radius:10px;background:linear-gradient(135deg,#dceaff,#edf7ff);color:#3678ef}
+.workspace-heading{margin:2px 0 18px}.workspace-heading h1{font-size:27px;font-weight:800;letter-spacing:-.9px}.dashboard-search{border-radius:22px;height:39px;background:#fff;border-color:#e7edf6}.view-profile{border-radius:22px;background:linear-gradient(110deg,#edf4ff,#f5faff);border:1px solid #e5edfc;color:#3974e9}
+.welcome-banner{min-height:194px;border-radius:27px;padding:28px 31px;background:linear-gradient(112deg,#3478f5 0%,#5597f8 58%,#9bd8ff 100%);box-shadow:0 15px 30px rgba(55,119,236,.14)}
+.welcome-cta{border-radius:22px;padding:10px 16px;background:linear-gradient(110deg,#fff,#eaf5ff);box-shadow:0 5px 14px rgba(18,65,150,.12)}
+.welcome-art{right:26px;width:230px}.art-phone{border-radius:23px;transform:rotate(7deg);box-shadow:0 18px 32px rgba(18,54,140,.25)}
+.summary-card{border-radius:19px;padding:16px 15px;box-shadow:0 7px 20px rgba(35,64,108,.045)}.summary-icon{border-radius:13px}
+.workspace .panel,.right-user-card,.quick-actions-card,.live-sticky{border-radius:21px;box-shadow:0 8px 24px rgba(35,64,108,.045)}
+.workspace .panel{border-color:#e9eef6}.section-heading h2{font-size:17px}.section-number{border-radius:20px;background:#f6f8fc}
+.right-user-card{background:linear-gradient(145deg,#e8f2ff 0%,#dcecff 58%,#d5e9ff 100%);border:1px solid #d9e8ff;padding:18px;border-radius:23px}
+.right-user-avatar{width:43px;height:43px;border:3px solid rgba(255,255,255,.85);box-shadow:0 4px 12px rgba(56,105,180,.12)}
+.right-user-meta strong{font-size:12px;color:#253957}.right-user-meta span{color:#7890b0}
+.right-profile-label{color:#7790b4}.right-profile-url{color:#416aab}.right-open-profile{border-radius:22px;background:linear-gradient(110deg,#fff,#f2f7ff);box-shadow:0 4px 12px rgba(50,99,174,.06)}
+.quick-actions-card{padding:17px}.quick-action{padding:11px 0;font-size:11px}.quick-action-icon{width:31px;height:31px;border-radius:11px;background:linear-gradient(145deg,#e5efff,#f1f7ff);color:#3978ed}
+.live-sticky{padding:17px;background:#fff}.device-frame{max-width:226px;border-radius:31px;background:linear-gradient(145deg,#e7f1ff,#cdddf4);border:1px solid #d4e1f2;box-shadow:0 14px 28px rgba(50,83,132,.13)}.device-screen{border-radius:23px;background:#f6f8fc}.device-screen .theme-preview{border-radius:16px}
+.theme-grid{grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}.theme-card{border-radius:13px;background:#fbfcff;padding:6px}.theme-card.selected{padding:6px;border:1.5px solid #3978f6;box-shadow:0 0 0 3px rgba(57,120,246,.08)}.theme-art{height:57px;border-radius:9px}.theme-name{font-size:9px}.theme-desc{font-size:8px;min-height:20px}.lock-label{border-radius:15px}
+button{border-radius:22px;background:linear-gradient(115deg,#4b8df8,#74baff);box-shadow:0 6px 15px rgba(57,120,246,.13)}button.secondary{border-radius:22px;background:linear-gradient(110deg,#f1f6ff,#eaf2ff);color:#4775bf;border-color:#e2ebfa;box-shadow:none}
+@media(max-width:1250px){main.workspace{grid-template-columns:155px minmax(350px,1fr) 270px;gap:15px;padding-left:16px;padding-right:16px}.theme-grid{grid-template-columns:repeat(5,minmax(0,1fr))}}
+@media(max-width:1050px){main.workspace{grid-template-columns:150px minmax(0,1fr)}.live-column{grid-column:2}.right-user-card,.quick-actions-card{width:calc(50% - 8px)}.live-sticky{width:calc(50% - 8px)}}
+@media(max-width:760px){main.workspace{display:block;padding:14px 12px 40px}.sidebar{border-radius:17px}.side-link{border-radius:13px}.side-link.active{background:linear-gradient(110deg,#4f91ff,#83c8ff);box-shadow:0 5px 13px rgba(66,132,241,.16)!important}.welcome-banner{border-radius:23px}.right-user-card{background:linear-gradient(145deg,#e8f2ff,#dcecff)}.theme-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:420px){.theme-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.welcome-banner{padding:20px;border-radius:20px}}
+
 </style></head>
 <body>
 <header><div class="logo">VYNKA<span class="logo-dot">.</span></div><div class="header-right"><span class="header-caption">CREATOR WORKSPACE</span><div class="header-account" id="accountEmail"></div><button class="secondary" id="logoutBtn" type="button">Logout</button></div></header>
 <main class="workspace">
   <aside class="sidebar">
     <div class="side-label">WORKSPACE</div>
-    <a class="side-link active" href="#overview"><span>⌂</span> Overview</a>
+    <a class="side-link active" href="#overview"><span>⌂</span> Dashboard</a>
     <a class="side-link" href="#profileSection"><span>◉</span> Profile</a>
     <a class="side-link" href="#linksSection"><span>↗</span> My Links</a>
     <a class="side-link" href="#appearanceSection"><span>✦</span> Appearance</a>
