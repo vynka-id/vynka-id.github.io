@@ -115,7 +115,517 @@ body{background:linear-gradient(135deg,#e6eefb,#f1f6fe 50%,#e3ecfa)}
 #recent .ri b{position:absolute;left:80px;top:1px;font-size:15px;line-height:18px;white-space:nowrap}
 #recent .ri small{position:absolute;left:80px;top:23px;font-size:13px;color:#5a6688;white-space:nowrap}
 #recent .none{position:absolute;left:18px;right:18px;top:70px;font-size:13px;line-height:1.5;color:#71809d;text-align:center}
-@media(max-width:700px){#app.shell{display:grid;grid-template-columns:246px 964px 279px;max-width:none}.login{margin:8vh auto}}
+
+/* =====================================
+   VYNKA MOBILE RESPONSIVE
+   Desktop tidak diubah
+===================================== */
+@media (max-width:700px){
+
+  html,body{
+    width:100%;
+    min-height:100%;
+    overflow-x:hidden;
+  }
+
+  body{padding:0}
+
+  #app.shell{
+    position:relative!important;
+    left:auto!important;
+    top:auto!important;
+    transform:none!important;
+    transform-origin:initial!important;
+    width:100%!important;
+    max-width:100%!important;
+    height:auto!important;
+    min-height:100vh!important;
+    margin:0!important;
+    padding:12px!important;
+    display:flex!important;
+    flex-direction:column!important;
+    gap:12px!important;
+    border-radius:0!important;
+    overflow:visible!important;
+  }
+
+  /* SIDEBAR */
+  #app .side{
+    position:relative!important;
+    width:100%!important;
+    height:auto!important;
+    min-height:0!important;
+    padding:12px!important;
+    border-radius:22px!important;
+  }
+
+  #app .logo{
+    position:relative!important;
+    left:auto!important;
+    top:auto!important;
+    padding:0 5px 12px!important;
+    font-size:23px!important;
+  }
+
+  #app .nav{
+    position:relative!important;
+    left:auto!important;
+    top:auto!important;
+    width:100%!important;
+    height:auto!important;
+    display:flex!important;
+    gap:7px!important;
+    overflow-x:auto!important;
+    padding:3px!important;
+    scrollbar-width:thin;
+  }
+
+  #app .nav button,
+  #app .nav button.active,
+  #app .nav button.active:hover{
+    position:relative!important;
+    left:auto!important;
+    top:auto!important;
+    flex:0 0 auto!important;
+    width:auto!important;
+    height:44px!important;
+    padding:0 13px!important;
+    border-radius:13px!important;
+    font-size:13px!important;
+    gap:7px!important;
+    white-space:nowrap!important;
+  }
+
+  #app .nav button svg{
+    width:19px!important;
+    height:19px!important;
+  }
+
+  #app .upgrade{display:none!important}
+
+  /* MAIN */
+  #app .main{
+    position:relative!important;
+    width:100%!important;
+    height:auto!important;
+    min-width:0!important;
+    margin:0!important;
+    padding:0!important;
+    overflow:visible!important;
+  }
+
+  #app .top{
+    position:relative!important;
+    left:auto!important;
+    top:auto!important;
+    width:100%!important;
+    height:auto!important;
+    min-height:58px!important;
+    margin:5px 0 16px!important;
+    display:flex!important;
+    align-items:center!important;
+    gap:10px!important;
+  }
+
+  #app #leftAvatar{
+    position:relative!important;
+    left:auto!important;
+    top:auto!important;
+    width:48px!important;
+    height:48px!important;
+    flex:none!important;
+  }
+
+  #app .welcome{
+    position:relative!important;
+    left:auto!important;
+    top:auto!important;
+    min-width:0!important;
+    flex:1!important;
+  }
+
+  #app .welcome h2,
+  #app .welcome p{
+    position:relative!important;
+    left:auto!important;
+    top:auto!important;
+    white-space:normal!important;
+  }
+
+  #app .welcome h2{font-size:12px!important}
+  #app .welcome p{
+    font-size:17px!important;
+    line-height:22px!important;
+    overflow-wrap:anywhere;
+  }
+
+  #app .searchbox,
+  #app .bell{display:none!important}
+
+  #app .upill{
+    position:relative!important;
+    left:auto!important;
+    top:auto!important;
+    width:48px!important;
+    height:48px!important;
+    flex:none!important;
+  }
+
+  #app #topAvatar{
+    left:3px!important;
+    top:3px!important;
+    width:42px!important;
+    height:42px!important;
+  }
+
+  #app .upill svg{display:none!important}
+
+  /* CONTENT VIEWS */
+  #app .view{
+    position:relative!important;
+    left:auto!important;
+    top:auto!important;
+    width:100%!important;
+    height:auto!important;
+    min-height:0!important;
+    padding:0!important;
+    overflow:visible!important;
+  }
+
+  #app .view:not(.active){display:none!important}
+  #app .view.active{display:block!important}
+
+  /* HERO */
+  #app .hero{
+    width:100%!important;
+    height:auto!important;
+    min-height:225px!important;
+    margin:0 0 14px!important;
+    padding:25px 20px!important;
+    border-radius:25px!important;
+  }
+
+  #app .hero > .a{display:none!important}
+
+  #app .hero h1,
+  #app .hero p,
+  #app .hero button.cta{
+    position:relative!important;
+    left:auto!important;
+    top:auto!important;
+    white-space:normal!important;
+  }
+
+  #app .hero h1{
+    font-size:clamp(23px,7vw,32px)!important;
+    line-height:1.2!important;
+    margin:0 0 12px!important;
+  }
+
+  #app .hero p{
+    font-size:13px!important;
+    line-height:1.5!important;
+    margin:0 0 18px!important;
+  }
+
+  #app .hero button.cta{
+    width:auto!important;
+    height:42px!important;
+    padding:0 17px!important;
+    font-size:14px!important;
+  }
+
+  /* STATISTICS */
+  #app .stats{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:9px!important;
+    margin:0 0 14px!important;
+  }
+
+  #app .stat{
+    position:relative!important;
+    width:auto!important;
+    height:92px!important;
+    min-width:0!important;
+    padding:12px!important;
+    border-radius:18px!important;
+  }
+
+  #app .stat .ci{
+    position:relative!important;
+    left:auto!important;
+    top:auto!important;
+    width:29px!important;
+    height:29px!important;
+    margin-bottom:5px!important;
+  }
+
+  #app .stat .ci svg{
+    width:19px!important;
+    height:19px!important;
+  }
+
+  #app .stat small,
+  #app .stat strong,
+  #app .stat span{
+    position:relative!important;
+    left:auto!important;
+    top:auto!important;
+    display:block!important;
+    white-space:normal!important;
+  }
+
+  #app .stat small{font-size:10px!important}
+  #app .stat strong{
+    font-size:19px!important;
+    line-height:23px!important;
+    margin:1px 0!important;
+  }
+
+  #app .stat span{font-size:9px!important}
+  #app .stat .chev{display:none!important}
+
+  /* DASHBOARD PANELS */
+  #app .content-grid{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr)!important;
+    gap:12px!important;
+    margin:0!important;
+  }
+
+  #app .content-grid .panel{
+    width:100%!important;
+    height:auto!important;
+    min-height:220px!important;
+    padding:17px!important;
+    border-radius:22px!important;
+    overflow:hidden!important;
+  }
+
+  #app .ph,
+  #app .ps,
+  #app .vall{
+    position:relative!important;
+    left:auto!important;
+    top:auto!important;
+  }
+
+  #app .ph{font-size:18px!important;line-height:24px!important}
+  #app .ps{font-size:12px!important;margin-top:4px!important}
+
+  #app .vall{
+    float:right!important;
+    width:auto!important;
+    height:34px!important;
+    padding:0 12px!important;
+    font-size:12px!important;
+    margin-top:-27px!important;
+  }
+
+  #dashLinks{
+    position:relative!important;
+    left:auto!important;
+    top:auto!important;
+    width:100%!important;
+    margin-top:18px!important;
+  }
+
+  #app .dl{
+    width:100%!important;
+    height:65px!important;
+    margin-bottom:6px!important;
+    border-radius:14px!important;
+  }
+
+  #app .dl .gr{display:none!important}
+
+  #app .dl .th{
+    left:10px!important;
+    top:10px!important;
+    width:43px!important;
+    height:43px!important;
+  }
+
+  #app .dl .bd{
+    display:none!important;
+  }
+
+  #app .dl b{
+    left:64px!important;
+    top:13px!important;
+    width:calc(100% - 145px)!important;
+    font-size:12px!important;
+  }
+
+  #app .dl small{
+    left:64px!important;
+    top:34px!important;
+    width:calc(100% - 145px)!important;
+    font-size:10px!important;
+  }
+
+  #app .tg{
+    left:auto!important;
+    right:35px!important;
+    top:20px!important;
+    transform:scale(.8);
+  }
+
+  #app .dm{
+    left:auto!important;
+    right:10px!important;
+    top:29px!important;
+  }
+
+  #dashAnalytics{
+    position:relative!important;
+    left:auto!important;
+    top:auto!important;
+    width:100%!important;
+    height:220px!important;
+  }
+
+  #dashAnalytics .big,
+  #dashAnalytics .lbl{
+    position:relative!important;
+    left:auto!important;
+    top:auto!important;
+  }
+
+  #dashAnalytics .big{font-size:27px!important}
+  #dashAnalytics .lbl{font-size:12px!important}
+
+  #dashAnalytics svg{
+    position:relative!important;
+    left:auto!important;
+    top:auto!important;
+    width:100%!important;
+    max-width:100%!important;
+    height:auto!important;
+  }
+
+  #dashAnalytics .dlock{
+    position:relative!important;
+    left:auto!important;
+    right:auto!important;
+    top:20px!important;
+  }
+
+  #app .range{display:none!important}
+
+  /* OTHER PANELS */
+  #app .panel{
+    width:100%!important;
+    height:auto!important;
+    min-width:0!important;
+    padding:17px!important;
+    margin-bottom:12px!important;
+    border-radius:20px!important;
+    overflow:visible!important;
+  }
+
+  #app .panel-head{
+    flex-wrap:wrap!important;
+  }
+
+  #app .form-grid{
+    grid-template-columns:minmax(0,1fr)!important;
+    gap:5px!important;
+  }
+
+  #app .field{min-width:0!important}
+  #app .field input,
+  #app .field textarea,
+  #app .field select{min-width:0!important}
+
+  #app #allLinks .link-row{
+    grid-template-columns:38px minmax(0,1fr)!important;
+    gap:8px!important;
+  }
+
+  #app #allLinks .actions{
+    grid-column:1/-1!important;
+    flex-wrap:wrap!important;
+    padding:5px 0!important;
+  }
+
+  #app .chart{
+    overflow-x:auto!important;
+    min-width:0!important;
+  }
+
+  #app .table{
+    display:block!important;
+    overflow-x:auto!important;
+    white-space:nowrap!important;
+  }
+
+  #app #themeGrid{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+
+  /* RIGHT COLUMN: dipindahkan ke bawah dashboard */
+  #app .right{
+    display:block!important;
+    position:relative!important;
+    width:100%!important;
+    height:auto!important;
+    max-height:none!important;
+    margin:0!important;
+    padding:0!important;
+    overflow:visible!important;
+  }
+
+  #app .profile-card{
+    width:100%!important;
+    height:360px!important;
+    margin-bottom:12px!important;
+    border-radius:25px!important;
+  }
+
+  #app .profile-card #sideAvatar{
+    left:50%!important;
+    transform:translateX(-50%)!important;
+  }
+
+  #app .qa,
+  #app .ra{
+    width:100%!important;
+    margin:0 0 12px!important;
+    border-radius:22px!important;
+  }
+
+  #app .qa .act{
+    width:calc(100% - 36px)!important;
+  }
+
+  #recent .ri{width:100%!important}
+
+  #app .foot{display:none!important}
+
+  .toast{
+    left:12px!important;
+    right:12px!important;
+    bottom:12px!important;
+    text-align:center;
+  }
+
+  .login{
+    width:calc(100% - 28px)!important;
+    margin:35px auto!important;
+    padding:22px!important;
+  }
+}
+
+@media(max-width:380px){
+  #app .nav button{
+    padding:0 10px!important;
+    font-size:12px!important;
+  }
+
+  #app .stat{padding:9px!important}
+  #app .stat strong{font-size:17px!important}
+}
 
 </style></head>
 <body>
@@ -219,6 +729,35 @@ box.innerHTML=`<div class="big">${total.toLocaleString('id-ID')}</div><div class
 function openPublicProfile(){if(!profile.username){showToast('Atur username terlebih dahulu.');return;}window.open('https://vynka-id.github.io/'+encodeURIComponent(profile.username)+'/','_blank','noopener');}function copyProfile(){if(!profile.username)return; navigator.clipboard.writeText('https://vynka-id.github.io/'+profile.username+'/').then(()=>showToast('URL profil disalin.')).catch(()=>showToast('Tidak dapat menyalin URL.'));}
 async function logout(){await db.auth.signOut();location.reload();}
 $('searchLinks').addEventListener('input',e=>{const term=e.target.value.toLowerCase();document.querySelectorAll('#allLinks .link-row').forEach(row=>row.style.display=row.innerText.toLowerCase().includes(term)?'grid':'none')});
-function fitVynkaStage(){const app=document.getElementById('app');if(!app||app.classList.contains('hidden'))return;const scale=Math.min((innerWidth-20)/1500,(innerHeight-20)/966);app.style.position='absolute';app.style.left='50%';app.style.top='50%';app.style.margin='0';app.style.transformOrigin='center center';app.style.transform=`translate(-50%,-50%) scale(${scale})`;}addEventListener('resize',fitVynkaStage);const vynkaObserver=new MutationObserver(fitVynkaStage);vynkaObserver.observe(document.getElementById('app'),{attributes:true,attributeFilter:['class']});
+
+function fitVynkaStage(){
+  const app = document.getElementById('app');
+  if (!app || app.classList.contains('hidden')) return;
+
+  if (window.innerWidth <= 700) {
+    // Mobile: gunakan layout responsif
+    app.style.position = 'relative';
+    app.style.left = 'auto';
+    app.style.top = 'auto';
+    app.style.margin = '0';
+    app.style.transform = 'none';
+    app.style.transformOrigin = 'initial';
+    return;
+  }
+
+  // Desktop: pertahankan ukuran dan scaling sebelumnya
+  const scale = Math.min(
+    (window.innerWidth - 20) / 1500,
+    (window.innerHeight - 20) / 966
+  );
+
+  app.style.position = 'absolute';
+  app.style.left = '50%';
+  app.style.top = '50%';
+  app.style.margin = '0';
+  app.style.transformOrigin = 'center center';
+  app.style.transform = `translate(-50%,-50%) scale(${scale})`;
+}
+addEventListener('resize',fitVynkaStage);const vynkaObserver=new MutationObserver(fitVynkaStage);vynkaObserver.observe(document.getElementById('app'),{attributes:true,attributeFilter:['class']});
 db.auth.onAuthStateChange((event)=>{if(event==='SIGNED_OUT'){location.reload();}});init().then(()=>setTimeout(fitVynkaStage,80));
 </script></body></html>
