@@ -819,7 +819,92 @@ body{background:linear-gradient(135deg,#e6eefb,#f1f6fe 50%,#e3ecfa)}
   }
 }
 
-@media(max-width:380px){
+@media(max-width:380px)
+/* =====================================
+   VYNKA TABLET PORTRAIT FIX
+   ===================================== */
+
+@media screen and (min-width:701px) and (max-width:1024px) {
+
+  #app.shell {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    min-height: 100vh !important;
+    margin: 0 !important;
+    padding: 14px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    position: relative !important;
+    transform: none !important;
+    box-sizing: border-box !important;
+    gap: 14px !important;
+  }
+
+  #app .side,
+  #app .main,
+  #app .right {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    position: relative !important;
+    box-sizing: border-box !important;
+  }
+
+  #app .stats {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 12px !important;
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  #app .stat {
+    min-width: 0 !important;
+    height: auto !important;
+    box-sizing: border-box !important;
+  }
+
+  #app .content-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 12px !important;
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  #app .content-grid .panel {
+    width: 100% !important;
+    height: auto !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  #app .hero {
+    width: 100% !important;
+    height: auto !important;
+    box-sizing: border-box !important;
+  }
+
+  #app .view {
+    width: 100% !important;
+    height: auto !important;
+    position: relative !important;
+    overflow: visible !important;
+  }
+
+  #app .form-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+/* Tablet lebih sempit */
+@media screen and (min-width:701px) and (max-width:850px) {
+  #app .content-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+}
+{
   #app .nav button{
     padding:0 10px!important;
     font-size:12px!important;
