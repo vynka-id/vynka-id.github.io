@@ -914,6 +914,323 @@ body{background:linear-gradient(135deg,#e6eefb,#f1f6fe 50%,#e3ecfa)}
   #app .stat strong{font-size:17px!important}
 }
 
+/* =====================================
+   VYNKA DRAWER - MOBILE & TABLET
+   Desktop > 1024px tidak diubah
+===================================== */
+
+.drawer-menu {
+  display: none;
+}
+
+@media screen and (max-width: 1024px) {
+
+  #app.shell {
+    display: block !important;
+    position: relative !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    min-height: 100vh !important;
+    margin: 0 !important;
+    padding: 12px !important;
+    transform: none !important;
+    border-radius: 0 !important;
+    overflow: visible !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Konten utama */
+  #app .main {
+    display: block !important;
+    position: relative !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 100vh !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+
+  #app .top {
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 65px !important;
+    display: flex !important;
+    align-items: center !important;
+    flex-wrap: wrap !important;
+    gap: 10px !important;
+  }
+
+  .drawer-menu {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    flex: 0 0 42px;
+    border: 0;
+    border-radius: 12px;
+    background: #e8f0fe;
+    color: #245fc9;
+    font-size: 23px;
+    cursor: pointer;
+  }
+
+  #app .welcome {
+    flex: 1;
+    min-width: 100px;
+  }
+
+  #app .searchbox,
+  #app .search {
+    display: none !important;
+  }
+
+  /* Konten halaman */
+  #app .view {
+    display: none !important;
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 12px 0 !important;
+    overflow: visible !important;
+    box-sizing: border-box !important;
+  }
+
+  #app .view.active {
+    display: block !important;
+  }
+
+  #app .hero {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 260px !important;
+    box-sizing: border-box !important;
+  }
+
+  #app .stats {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    width: 100% !important;
+    height: auto !important;
+    gap: 10px !important;
+  }
+
+  #app .stat {
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  #app .content-grid {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    width: 100% !important;
+    height: auto !important;
+    gap: 12px !important;
+  }
+
+  #app .panel {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: auto !important;
+    box-sizing: border-box !important;
+  }
+
+  #app .form-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  #app input,
+  #app select,
+  #app textarea {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Sidebar kiri */
+  #app .side {
+    display: block !important;
+    position: fixed !important;
+    left: 0 !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    width: min(280px, 85vw) !important;
+    height: 100vh !important;
+    min-height: 100vh !important;
+    margin: 0 !important;
+    padding: 20px 12px !important;
+    border-radius: 0 24px 24px 0 !important;
+    overflow-y: auto !important;
+    z-index: 1002 !important;
+    background: #f5f8fe !important;
+    box-shadow: 8px 0 35px rgba(20,45,100,.18) !important;
+    transform: translateX(-110%) !important;
+    transition: transform .28s ease !important;
+    box-sizing: border-box !important;
+  }
+
+  #app .logo {
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    padding: 10px !important;
+  }
+
+  #app .nav {
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    width: 100% !important;
+    height: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 6px !important;
+    margin-top: 20px !important;
+  }
+
+  #app .nav button {
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    width: 100% !important;
+    height: 52px !important;
+    flex: none !important;
+    justify-content: flex-start !important;
+    padding: 0 15px !important;
+    border-radius: 14px !important;
+    font-size: 16px !important;
+  }
+
+  #app .nav button.active {
+    top: auto !important;
+    height: 52px !important;
+  }
+
+  #app .upgrade {
+    display: none !important;
+  }
+
+  /* Panel kanan */
+  #app .right {
+    display: block !important;
+    position: fixed !important;
+    right: 0 !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    width: min(310px, 88vw) !important;
+    height: 100vh !important;
+    max-height: 100vh !important;
+    margin: 0 !important;
+    padding: 20px 14px !important;
+    overflow-y: auto !important;
+    z-index: 1002 !important;
+    background: #f5f8fe !important;
+    border-radius: 24px 0 0 24px !important;
+    box-shadow: -8px 0 35px rgba(20,45,100,.18) !important;
+    transform: translateX(110%) !important;
+    transition: transform .28s ease !important;
+    box-sizing: border-box !important;
+  }
+
+  #app .profile-card,
+  #app .qa,
+  #app .ra {
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin: 0 0 16px !important;
+    box-sizing: border-box !important;
+  }
+
+  #app .profile-card {
+    padding-bottom: 15px !important;
+  }
+
+  #app .qa,
+  #app .ra {
+    padding: 15px !important;
+  }
+
+  #app .act {
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    width: 100% !important;
+    margin: 8px 0 !important;
+  }
+
+  /* Overlay */
+  .drawer-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 1001;
+    background: rgba(12,25,55,.38);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity .25s ease, visibility .25s ease;
+  }
+
+  #app.left-open .side {
+    transform: translateX(0) !important;
+  }
+
+  #app.right-open .right {
+    transform: translateX(0) !important;
+  }
+
+  #app.left-open .drawer-overlay,
+  #app.right-open .drawer-overlay {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  #app .foot {
+    position: relative !important;
+    margin-top: 20px !important;
+  }
+
+  #app img,
+  #app svg {
+    max-width: 100%;
+  }
+
+  #app * {
+    min-width: 0;
+  }
+
+  body {
+    overflow-x: hidden !important;
+  }
+}
+
+@media screen and (max-width: 380px) {
+  #app.shell {
+    padding: 8px !important;
+  }
+
+  #app .hero {
+    padding: 17px !important;
+  }
+
+  #app .stat {
+    padding: 10px !important;
+  }
+}
+
 </style></head>
 <body>
 <svg width="0" height="0" style="position:absolute"><defs><symbol id="i-link" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></g></symbol>
@@ -981,8 +1298,49 @@ const THEMES=[['nebula','NEBULA','Free'],['santorini','SANTORINI','Free'],['ocea
 const FALLBACK_AVATAR='data:image/svg+xml;utf8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#c9d6ea"/><path d="M8 100c4-22 20-30 42-30s38 8 42 30z" fill="#1c2236"/><ellipse cx="50" cy="48" rx="22" ry="27" fill="#f1c9a5"/><path d="M26 44c-2-24 10-32 26-32 18 0 26 10 22 32-3-9-8-14-14-15-8 5-20 6-34 15z" fill="#14161f"/><circle cx="41" cy="50" r="2" fill="#222"/><circle cx="59" cy="50" r="2" fill="#222"/><path d="M42 63q8 6 16 0" stroke="#a86b50" stroke-width="2" fill="none"/></svg>');
 const $=id=>document.getElementById(id);const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function showToast(msg){$('toast').textContent=msg;$('toast').style.display='block';setTimeout(()=>$('toast').style.display='none',3000)}
-function showView(name){document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id==='view-'+name));document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.view===name));if(name==='analytics')loadAnalytics();if(name==='links')renderLinks();}
-document.querySelectorAll('.nav button').forEach(b=>b.addEventListener('click',()=>showView(b.dataset.view)));
+function showView(name)
+function openLeftDrawer() {
+  const app = document.getElementById('app');
+  app.classList.remove('right-open');
+  app.classList.add('left-open');
+}
+
+function openRightDrawer() {
+  const app = document.getElementById('app');
+  app.classList.remove('left-open');
+  app.classList.add('right-open');
+}
+
+function closeDrawers() {
+  const app = document.getElementById('app');
+  app.classList.remove('left-open', 'right-open');
+}
+
+function showView(name) {
+  document.querySelectorAll('.view').forEach(v => {
+    v.classList.toggle('active', v.id === 'view-' + name);
+  });
+
+  document.querySelectorAll('.nav button').forEach(b => {
+    b.classList.toggle('active', b.dataset.view === name);
+  });
+
+  closeDrawers();
+
+  if (name === 'analytics') loadAnalytics();
+  if (name === 'links') renderLinks();
+}
+
+document.querySelectorAll('.nav button').forEach(b => {
+  b.addEventListener('click', () => showView(b.dataset.view));
+});
+
+window.addEventListener('resize', () => {
+  if (window.innerWidth > 1024) {
+    closeDrawers();
+  }
+});
+
 async function init(){const {data:{session}}=await db.auth.getSession();if(!session){$('loginBox').classList.remove('hidden');return;}user=session.user;await loadApp();}
 $('loginBtn').onclick=async()=>{const {error}=await db.auth.signInWithPassword({email:$('email').value.trim(),password:$('password').value});$('loginMsg').textContent=error?error.message:'Login berhasil…';if(!error){user=(await db.auth.getUser()).data.user;await loadApp();}};
 async function loadApp(){ $('loginBox').classList.add('hidden');$('app').classList.remove('hidden');let p=await db.from('profiles').select('*').eq('id',user.id).maybeSingle();if(p.error){showToast('Gagal membaca profile: '+p.error.message);return;}profile=p.data;if(!profile){showToast('Data profile belum tersedia. Periksa trigger pembuatan profile.');return;}const e=await db.from('user_entitlements').select('plan,is_active,expires_at').eq('user_id',user.id).maybeSingle();entitlement=e.data;premium=!!(entitlement&&entitlement.plan==='premium'&&entitlement.is_active&&(!entitlement.expires_at||new Date(entitlement.expires_at)>new Date()));const l=await db.from('links').select('*').eq('user_id',user.id).order('position',{ascending:true});if(l.error)showToast('Gagal membaca links: '+l.error.message);links=l.data||[];fillProfile();renderLinks();renderThemes();updateMembership();}
