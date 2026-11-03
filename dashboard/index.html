@@ -1551,24 +1551,63 @@ function renderLivePreview(){
   const username=$('username')?.value?.trim() || profile?.username || 'username';
   const bio=$('bio')?.value?.trim() || profile?.bio || 'Your bio will appear here.';
   const avatarInput=$('avatarFile');
-  const avatarUrl=avatarInput?.dataset?.previewUrl || (profile?.avatar_url || FALLBACK_AVATAR);
-  $('previewAvatar').src=avatarUrl;
+  const avatarUrl=avatarInput?.dataset?.previewUrl || profile?.avatar_url || FALLBACK_AVATAR;
+  const avatar=$('previewAvatar');
+  if(avatar) avatar.src=avatarUrl;
   $('previewName').textContent=name;
   $('previewUsername').textContent='@'+username.replace(/^@/,'');
   $('previewBio').textContent=bio;
+
   const theme=previewThemeDraft || profile?.theme || 'nebula';
-  host.dataset.theme=theme;
   const accent=$('accent')?.value || profile?.accent_color || '#2878f0';
   const shape=$('buttonShape')?.value || profile?.button_shape || 'rounded';
   const bg=$('backgroundStyle')?.value || profile?.background_style || 'gradient';
   const font=$('fontStyle')?.value || profile?.font_style || 'modern';
+
+  // Palette is applied directly to the preview so every theme card is reflected,
+  // including themes whose visual treatment is not defined by the public page CSS.
+  const palettes={
+    nebula:{page:'#f2f5ff',art:'linear-gradient(135deg,#dbeafe,#8db8f5 55%,#c4b5fd)',text:'#17264c',muted:'#74829c',link:'#2878f0'},
+    santorini:{page:'#f4f9ff',art:'linear-gradient(135deg,#e0f2fe,#60a5fa 52%,#1d4ed8)',text:'#12305c',muted:'#55749d',link:'#2563eb'},
+    ocean:{page:'#effaff',art:'linear-gradient(135deg,#cffafe,#0891b2 55%,#164e63)',text:'#123744',muted:'#547985',link:'#0e7490'},
+    bloom:{page:'#fff4fa',art:'radial-gradient(circle at 20% 20%,#fbcfe8,transparent 42%),linear-gradient(135deg,#f9a8d4,#c084fc)',text:'#542044',muted:'#94627f',link:'#db4b9b'},
+    minimal:{page:'#fafafa',art:'linear-gradient(135deg,#e5e7eb,#f8fafc 55%,#cbd5e1)',text:'#202938',muted:'#64748b',link:'#475569'},
+    noir:{page:'#171923',art:'linear-gradient(135deg,#111827,#374151,#111827)',text:'#fff',muted:'#cbd5e1',link:'#2c3444'},
+    aurora:{page:'#082f49',art:'linear-gradient(120deg,#082f49,#164e63,#312e81,#6d28d9)',text:'#fff',muted:'#c4b5fd',link:'#155e75'},
+    cyber:{page:'#090b24',art:'radial-gradient(circle at 20% 20%,#22d3ee88,transparent 32%),linear-gradient(135deg,#090b24,#21104b 55%,#071d34)',text:'#ecfeff',muted:'#a5f3fc',link:'#164e63'},
+    emerald:{page:'#022c22',art:'radial-gradient(circle at 75% 15%,#a7f3d055,transparent 30%),linear-gradient(135deg,#064e3b,#047857,#022c22)',text:'#ecfdf5',muted:'#a7f3d0',link:'#047857'},
+    royal:{page:'#1e1b4b',art:'radial-gradient(circle at 50% 0%,#f5d88a88,transparent 38%),linear-gradient(135deg,#312e81,#581c87,#1e1b4b)',text:'#fff7ed',muted:'#ddd6fe',link:'#6d28d9'},
+    galaxy:{page:'#090b2a',art:'radial-gradient(circle at 25% 35%,#c4b5fd99 0 1px,transparent 2px),radial-gradient(circle at 70% 20%,#fff 0 1px,transparent 2px),radial-gradient(circle at 55% 75%,#f0abfc 0 1px,transparent 2px),linear-gradient(135deg,#090b2a,#312e81,#581c87)',text:'#fff',muted:'#ddd6fe',link:'#4338ca'},
+    liquid:{page:'#164e63',art:'radial-gradient(ellipse at 20% 20%,#67e8f9 0 12%,transparent 42%),radial-gradient(ellipse at 80% 70%,#818cf8 0 18%,transparent 48%),linear-gradient(135deg,#164e63,#1e40af)',text:'#fff',muted:'#cffafe',link:'#1d4ed8'},
+    abstract:{page:'#1e293b',art:'radial-gradient(circle at 20% 25%,#fb7185 0 16%,transparent 17%),radial-gradient(circle at 78% 35%,#fbbf24 0 19%,transparent 20%),radial-gradient(circle at 55% 100%,#8b5cf6 0 30%,transparent 31%),#1e293b',text:'#fff',muted:'#e2e8f0',link:'#7c3aed'},
+    nature:{page:'#14532d',art:'radial-gradient(ellipse at 10% 80%,#86efac 0 18%,transparent 19%),radial-gradient(ellipse at 85% 15%,#bbf7d0 0 20%,transparent 21%),linear-gradient(135deg,#14532d,#166534,#365314)',text:'#f0fdf4',muted:'#bbf7d0',link:'#166534'}
+  };
+  const palette=palettes[theme]||palettes.nebula;
+  const art=$('previewArt');
+  host.dataset.theme=theme; host.dataset.shape=shape; host.dataset.background=bg; host.dataset.font=font;
+  host.style.background=bg==='solid'?palette.page:bg==='glow'?`radial-gradient(circle at 50% 0%, ${accent}66, ${palette.page} 75%)`:`linear-gradient(145deg, ${accent}35, ${palette.page} 70%)`;
+  if(art){art.style.background=palette.art;art.style.backgroundSize=theme==='galaxy'?'70px 70px,90px 90px,60px 60px,auto':'cover';}
   host.style.setProperty('--preview-accent',accent);
-  host.dataset.shape=shape;host.dataset.background=bg;host.dataset.font=font;
-  host.style.setProperty('--preview-bg',bg==='solid'?'#ffffff':bg==='glow'?`radial-gradient(circle at 50% 0%, ${accent}35, #ffffff 72%)`:`linear-gradient(145deg, ${accent}18, #ffffff 58%, ${accent}12)`);
+  host.style.setProperty('--preview-radius',shape==='pill'?'999px':shape==='square'?'3px':'11px');
+  host.style.setProperty('--preview-link-bg',palette.link);
+  host.style.setProperty('--preview-text',palette.text);
+  host.style.setProperty('--preview-muted',palette.muted);
+  const previewName=$('previewName'), previewUsername=$('previewUsername'), previewBio=$('previewBio');
+  if(previewName)previewName.style.color=palette.text;
+  if(previewUsername)previewUsername.style.color=palette.muted;
+  if(previewBio)previewBio.style.color=palette.muted;
+  const family=font==='elegant'?'Georgia,serif':font==='minimal'?'Arial,sans-serif':'Inter,system-ui,sans-serif';
+  [previewName,previewUsername,previewBio].forEach(el=>{if(el)el.style.fontFamily=family;});
   const visibleLinks=(links||[]).filter(l=>l.is_active).slice(0,5);
   $('previewLinks').innerHTML=visibleLinks.length
     ? visibleLinks.map(l=>`<div class="preview-link">${esc(l.title||'Untitled link')}</div>`).join('')
     : '<div class="preview-link">Your links will appear here</div>';
+  $('previewLinks').querySelectorAll('.preview-link').forEach(el=>{
+    el.style.background=palette.link;
+    el.style.color='#fff';
+    el.style.borderRadius=shape==='pill'?'999px':shape==='square'?'3px':'11px';
+    el.style.fontFamily=family;
+  });
 }
 function setupUploadDrop(){
   document.querySelectorAll('.upload-drop').forEach(zone=>{
