@@ -13,8 +13,8 @@
    Desktop tidak diubah
 ===================================== */
 
-@media screen and (max-width: 700px) {
-
+@media screen and (max-width: 1024px) {
+   
   html,
   body {
     width: 100%;
@@ -936,7 +936,7 @@ function fitVynkaStage(){
   const app = document.getElementById('app');
   if (!app || app.classList.contains('hidden')) return;
 
-  if (window.innerWidth <= 700) {
+  if (window.innerWidth <= 1024) {
     // Mobile: gunakan layout responsif
     app.style.position = 'relative';
     app.style.left = 'auto';
