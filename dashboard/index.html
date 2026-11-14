@@ -78,7 +78,7 @@ async function dash(user){
       let r=await sb.from("profiles").update({display_name:prof.display_name,bio:prof.bio,theme:prof.theme}).eq("id",user.id); if(r.error) throw r.error;
       if(deleted.length){ r=await sb.from("links").delete().in("id",deleted); if(r.error) throw r.error; deleted=[]; }
       const lama=links.map((l,i)=>({l,i})).filter(x=>x.l.id);
-      if(lama.length){ r=await sb.from("links").upsert(lama.map(x=>({id:x.l.id,user_id:user.id,title:x.l.title.trim(),url:x.l.url.trim(),position:x.i}))); if(r.error) throw r.error; }
+      if(lama.length){ const hs=await Promise.all(lama.map(x=>sb.from("links").update({title:x.l.title.trim(),url:x.l.url.trim(),position:x.i}).eq("id",x.l.id))); const bad=hs.find(h=>h.error); if(bad) throw bad.error; }
       const baru=links.map((l,i)=>({l,i})).filter(x=>!x.l.id);
       if(baru.length){ r=await sb.from("links").insert(baru.map(x=>({user_id:user.id,title:x.l.title.trim(),url:x.l.url.trim(),position:x.i}))).select(); if(r.error) throw r.error; r.data.forEach((row,k)=>{ baru[k].l.id=row.id; }); }
       dirty=false; status.textContent="Tersimpan ✓ Perubahan sudah tampil di halaman publik.";
