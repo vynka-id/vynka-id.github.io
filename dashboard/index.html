@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Dashboard · Vynka</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="wrap" id="app"><p class="m c">Memuat…</p></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="/config.js"></script>
+<script src="/vynka.js"></script>
+<script>
+function buatProfil(user){
+  const un=el("input",{placeholder:"username (huruf kecil, angka, _)",maxLength:30});
+  const err=el("div",{className:"err"});
+  const btn=el("button",{className:"b",textContent:"Buat halaman"});
+  btn.onclick=async()=>{
+    const u=un.value.trim().toLowerCase();
+    if(!/^[a-z0-9_]{3,30}$/.test(u)){ err.textContent="Username 3–30 karakter: huruf kecil, angka, atau _."; return; }
+    if(RESERVED.includes(u)){ err.textContent="Username ini dicadangkan. Pilih yang lain."; return; }
+    const {error}=await sb.from("profiles").insert({id:user.id,username:u,display_name:u});
+    if(error){ err.textContent=error.code==="23505"?"Username sudah dipakai.":error.message; return; }
+    dash(user);
+  };
+  app.replaceChildren(el("h1",{textContent:"Pilih username"}), el("p",{className:"m",textContent:"Ini akan jadi alamat halaman kamu: "+location.host+"/username"}), el("div",{className:"box"},un,err,btn));
+}
+
+async function dash(user){
+  const {data:p}=await sb.from("profiles").select("*").eq("id",user.id).maybeSingle();
+  if(!p) return buatProfil(user);
+  setTheme(p.theme);
+  const {data:ls}=await sb.from("links").select("*").eq("user_id",user.id).order("position");
+  const links=ls||[];
+  const url=location.origin+"/"+p.username;
+
+  const out=el("button",{className:"g",textContent:"Keluar"}); out.onclick=async()=>{await sb.auth.signOut();location.replace("/");};
+  const nm=el("input",{value:p.display_name||"",placeholder:"Nama",maxLength:40});
+  const bi=el("input",{value:p.bio||"",placeholder:"Bio singkat",maxLength:120});
+  const sv=f=>sb.from("profiles").update(f).eq("id",user.id);
+  nm.onchange=()=>sv({display_name:nm.value}); bi.onchange=()=>sv({bio:bi.value});
+  const sw=el("div",{className:"sw"}, ...Object.keys(WARNA).map(k=>{const b=el("button",{title:k});b.style.background=WARNA[k];b.onclick=async()=>{await sv({theme:k});dash(user)};return b;}));
+
+  const rows=links.map((l,i)=>{
+    const t=el("input",{value:l.title,placeholder:"Judul"}), u=el("input",{value:l.url,placeholder:"URL"});
+    t.onchange=()=>sb.from("links").update({title:t.value}).eq("id",l.id);
+    u.onchange=()=>sb.from("links").update({url:u.value}).eq("id",l.id);
+    const swap=async j=>{ const o=links[j]; await Promise.all([sb.from("links").update({position:o.position}).eq("id",l.id),sb.from("links").update({position:l.position}).eq("id",o.id)]); dash(user); };
+    const up=el("button",{className:"g",textContent:"↑",title:"Naik"}), dn=el("button",{className:"g",textContent:"↓",title:"Turun"}), del=el("button",{className:"g",textContent:"✕",title:"Hapus"});
+    up.onclick=()=>i>0&&swap(i-1); dn.onclick=()=>i<links.length-1&&swap(i+1);
+    del.onclick=async()=>{ await sb.from("links").delete().eq("id",l.id); dash(user); };
+    return el("div",{className:"box"}, el("div",{className:"row"}, el("div",{className:"f"},t,u), up,dn,del), el("span",{className:"m",textContent:l.clicks+" klik"}));
+  });
+
+  const add=el("button",{className:"b",textContent:"Tambah link"});
+  add.onclick=async()=>{ const pos=links.length?Math.max(...links.map(x=>x.position))+1:0; await sb.from("links").insert({user_id:user.id,title:"Link baru",url:"https://",position:pos}); dash(user); };
+
+  app.replaceChildren(
+    el("div",{className:"top"}, el("h1",{textContent:"Dashboard"}), out),
+    el("p",{className:"m"}, "Halaman publik kamu: ", el("a",{className:"pub",href:url,target:"_blank",textContent:url})),
+    el("h2",{textContent:"Profil"}), el("div",{className:"box"},nm,bi,el("span",{className:"m",textContent:"Warna tema"}),sw),
+    el("h2",{textContent:"Link"}), ...rows, el("div",{style:"margin-top:12px"},add)
+  );
+}
+
+(async()=>{
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session){ location.replace("/"); return; }
+  dash(session.user);
+})();
+</script>
+</body>
+</html>

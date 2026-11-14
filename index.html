@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Vynka: satu link untuk semua link kamu</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="wrap c" id="app"><p class="m">Memuat…</p></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="/config.js"></script>
+<script src="/vynka.js"></script>
+<script>
+(async()=>{
+  const {data:{session}} = await sb.auth.getSession();
+  if(session){ location.replace("/dashboard/"); return; }
+  let daftar=false;
+  const em=el("input",{type:"email",placeholder:"Email",autocomplete:"email"});
+  const pw=el("input",{type:"password",placeholder:"Kata sandi (min. 6 karakter)",autocomplete:"current-password"});
+  const err=el("div",{className:"err"});
+  const btn=el("button",{className:"b",textContent:"Masuk"});
+  const sw=el("button",{className:"g",textContent:"Belum punya akun? Daftar"});
+  sw.onclick=()=>{ daftar=!daftar; btn.textContent=daftar?"Daftar":"Masuk"; sw.textContent=daftar?"Sudah punya akun? Masuk":"Belum punya akun? Daftar"; err.textContent=""; };
+  btn.onclick=async()=>{
+    err.textContent=""; btn.disabled=true;
+    const r = daftar ? await sb.auth.signUp({email:em.value,password:pw.value}) : await sb.auth.signInWithPassword({email:em.value,password:pw.value});
+    btn.disabled=false;
+    if(r.error){ err.textContent=r.error.message; return; }
+    if(daftar && !r.data.session){ err.textContent="Cek email kamu untuk konfirmasi, lalu masuk."; return; }
+    location.replace("/dashboard/");
+  };
+  const box=el("div",{className:"box",style:"text-align:left"},em,pw,err,btn,sw);
+  app.replaceChildren(
+    el("div",{className:"brand",textContent:"Vynka"}),
+    el("p",{className:"bio",textContent:"Satu link untuk semua link kamu."}),
+    el("span",{className:"demo",textContent:location.host+"/namakamu"}),
+    box
+  );
+})();
+</script>
+</body>
+</html>

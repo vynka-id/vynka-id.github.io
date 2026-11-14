@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Vynka</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="wrap" id="app"><p class="m c">Memuat…</p></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="/config.js"></script>
+<script src="/vynka.js"></script>
+<script>
+// GitHub Pages menyajikan file ini untuk setiap path yang tidak ada, misalnya /budi
+(async()=>{
+  const tidakAda=()=>app.replaceChildren(el("p",{className:"m c",textContent:"Halaman tidak ditemukan."}), el("p",{className:"c"}, el("a",{className:"back",href:"/",textContent:"Buat halaman Vynka kamu"})));
+  let u=""; try{ u=decodeURIComponent(location.pathname.split("/").filter(Boolean)[0]||"").toLowerCase(); }catch(e){}
+  if(!/^[a-z0-9_]{3,30}$/.test(u)) return tidakAda();
+  const {data:p}=await sb.from("profiles").select("*").eq("username",u).maybeSingle();
+  if(!p) return tidakAda();
+  setTheme(p.theme); document.title=(p.display_name||p.username)+" · Vynka";
+  const {data:ls}=await sb.from("links").select("*").eq("user_id",p.id).order("position");
+  app.replaceChildren(head(p), ...(ls||[]).map(l=>{
+    const a=el("a",{className:"lk",textContent:l.title,href:fixUrl(l.url),target:"_blank",rel:"noopener noreferrer"});
+    a.addEventListener("click",()=>{ sb.rpc("increment_click",{link_id:l.id}); });
+    return a;
+  }));
+})();
+</script>
+</body>
+</html>
