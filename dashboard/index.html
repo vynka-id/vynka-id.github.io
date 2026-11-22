@@ -52,16 +52,22 @@ input{border-radius:12px}
 .b{background:linear-gradient(135deg,var(--accent),color-mix(in srgb,var(--accent) 55%,#ec4899));border-radius:999px;padding:11px 22px;box-shadow:0 8px 18px -10px var(--accent)}
 .g{border-radius:12px}
 .opt{border-radius:999px}
-.edit{display:grid;grid-template-columns:1fr 300px;gap:26px;align-items:start}
+.edit{display:grid;grid-template-columns:1fr 320px;gap:26px;align-items:start}
 .prev{position:sticky;top:20px;border:8px solid #1e1b4b;border-radius:44px;padding:30px 16px 26px;background:linear-gradient(180deg,color-mix(in srgb,var(--accent) 16%,var(--card)),var(--card));box-shadow:0 24px 50px -20px rgba(30,27,75,.5)}
-.prev .lk{padding:11px;font-size:14px;margin-top:9px}
-.prev .av{width:64px;height:64px;font-size:26px}.prev h1{font-size:18px}.prev .bio{font-size:13px}
 .sbar{position:sticky;bottom:var(--navh);background:var(--card);border:1px solid var(--line);border-radius:20px;padding:12px 14px;margin-top:16px;display:flex;flex-direction:column;gap:8px;box-shadow:0 12px 30px -14px rgba(0,0,0,.35)}
-.prev{padding:0!important;overflow-y:auto;max-height:calc(100vh - 40px);scrollbar-width:none}
+.prev{padding:0!important;overflow-y:auto;width:320px;height:min(680px,calc(100vh - 40px));max-height:none!important;border-radius:46px;scrollbar-width:none}
+.prev::before{content:"";position:sticky;top:9px;display:block;width:86px;height:22px;margin:9px auto -31px;background:#1e1b4b;border-radius:14px;z-index:6}
 .prev::-webkit-scrollbar{display:none}
-.prev .pg{--pp:14px}
-.prev .pg[data-l=cover] .nm{font-size:26px;margin-top:-46px}
+.prev .pg{--pp:18px;min-height:100%}
 .prev[data-tema]{background:var(--pbg)}
+.fpw{position:relative;flex:none}
+.fp{display:grid;place-items:center;border:2px dashed var(--line);border-radius:18px;background:color-mix(in srgb,var(--accent) 8%,var(--card));cursor:pointer;overflow:hidden;position:relative;font-weight:800;color:var(--accent);transition:.15s}
+.fp.round{border-radius:50%}.fp:hover,.fp.drag{border-color:var(--accent);transform:scale(1.04)}.fp.ada{border-style:solid}
+.fpi{display:grid;place-items:center;width:100%;height:100%;font-size:26px}.fpi img{width:100%;height:100%;object-fit:cover}
+.fpc{position:absolute;left:0;right:0;bottom:0;background:rgba(0,0,0,.55);color:#fff;font-size:12px;padding:3px 0;text-align:center;opacity:0;transition:.15s}
+.fp:hover .fpc,.fp.load .fpc{opacity:1}.fp.load{opacity:.6}
+.fpx{position:absolute;top:-6px;right:-6px;width:22px;height:22px;border-radius:50%;border:0;background:#ef4444;color:#fff;font-size:11px;display:none;padding:0}
+.fpx.on{display:block}
 .tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:10px}
 .tt{border:3px solid var(--line);border-radius:16px;padding:10px 10px 12px;background:var(--pbg);color:var(--ptext);text-align:left;display:flex;flex-direction:column;gap:6px;min-height:92px}
 .tt.on{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 30%,transparent)}
@@ -162,7 +168,7 @@ async function simpan(save,status){
     if(lama.length){ const hs=await Promise.all(lama.map(x=>sb.from("links").update({title:x.l.title.trim(),url:x.l.url.trim(),image_url:(x.l.image_url||"").trim()||null,position:x.i}).eq("id",x.l.id))); const bad=hs.find(h=>h.error); if(bad) throw bad.error; }
     const baru=L.map((l,i)=>({l,i})).filter(x=>!x.l.id);
     if(baru.length){ r=await sb.from("links").insert(baru.map(x=>({user_id:S.user.id,title:x.l.title.trim(),url:x.l.url.trim(),image_url:(x.l.image_url||"").trim()||null,position:x.i}))).select(); if(r.error) throw r.error; r.data.forEach((row,k)=>{ baru[k].l.id=row.id; }); }
-    if(S.oldFotos.length){ const cur=f.avatar_url||""; const hp=S.oldFotos.filter(x=>!cur.includes(x)); if(hp.length) sb.storage.from("avatars").remove(hp); S.oldFotos=[]; }
+    if(S.oldFotos.length){ const cur=[f.avatar_url,...L.map(l=>l.image_url)].join(" "); const hp=S.oldFotos.filter(x=>!cur.includes(x)); if(hp.length) sb.storage.from("avatars").remove(hp); S.oldFotos=[]; }
       S.dirty=false; S.p={...S.p,...f}; status.textContent="Tersimpan ✓ Perubahan sudah tampil di halaman publik.";
   }catch(e){ status.textContent="Gagal menyimpan: "+(e.message||e); }
   save.disabled=false;
@@ -183,13 +189,14 @@ function vLink(){
   editor("Link","Tambah, ubah, dan atur urutan link kamu.",mark=>{
     const box=el("div");
     const gambar=()=>box.replaceChildren(...S.links.map((l,i)=>{
-      const t=el("input",{value:l.title,placeholder:"Judul, contoh: Instagram"}), u=el("input",{value:l.url,placeholder:"https://..."}), im=el("input",{value:l.image_url||"",placeholder:"Gambar kecil (opsional) https://..."});
-      t.oninput=()=>{ l.title=t.value; mark(); }; u.oninput=()=>{ l.url=u.value; mark(); }; im.oninput=()=>{ l.image_url=im.value; mark(); };
+      const t=el("input",{value:l.title,placeholder:"Judul, contoh: Instagram"}), u=el("input",{value:l.url,placeholder:"https://..."});
+      const pk=fotoPicker({url:l.image_url,huruf:"＋",ukuran:58,bulat:false,maks:300,pre:"link",onChange:v=>{ catatFoto(l.image_url); l.image_url=v; mark(); }});
+      t.oninput=()=>{ l.title=t.value; mark(); }; u.oninput=()=>{ l.url=u.value; mark(); };
       const up=el("button",{className:"g",textContent:"↑",title:"Naik"}), dn=el("button",{className:"g",textContent:"↓",title:"Turun"}), del=el("button",{className:"g",textContent:"✕",title:"Hapus"});
       up.onclick=()=>{ if(i>0){ [S.links[i-1],S.links[i]]=[S.links[i],S.links[i-1]]; mark(); gambar(); } };
       dn.onclick=()=>{ if(i<S.links.length-1){ [S.links[i+1],S.links[i]]=[S.links[i],S.links[i+1]]; mark(); gambar(); } };
-      del.onclick=()=>{ if(l.id) S.deleted.push(l.id); S.links.splice(i,1); mark(); gambar(); };
-      return el("div",{className:"box"},el("div",{className:"row"},el("div",{className:"f"},t,u,im),up,dn,del),T(l.clicks+" klik"));
+      del.onclick=()=>{ catatFoto(l.image_url); if(l.id) S.deleted.push(l.id); S.links.splice(i,1); mark(); gambar(); };
+      return el("div",{className:"box"},el("div",{className:"row"},pk.el,el("div",{className:"f"},t,u),up,dn,del),T(l.clicks+" klik"));
     }));
     gambar();
     const add=el("button",{className:"g",textContent:"+ Tambah link"});
@@ -207,31 +214,44 @@ function kecil(file,maks=900){
   });
 }
 
+function catatFoto(u){ const m=(u||"").match(/\/avatars\/([^?]+)/); if(m&&m[1].startsWith(S.user.id+"/")) S.oldFotos.push(decodeURIComponent(m[1])); }
+// Kotak foto modern: klik atau seret gambar, langsung terunggah
+function fotoPicker({url,huruf,ukuran,bulat,maks,pre,onChange}){
+  const lab=el("label",{className:"fp"+(bulat?" round":""),title:"Klik atau seret foto ke sini"});
+  lab.style.width=lab.style.height=ukuran+"px";
+  const file=el("input",{type:"file",accept:"image/*",style:"display:none"});
+  const isi=el("span",{className:"fpi"}), cam=el("span",{className:"fpc",textContent:"📷"});
+  const x=el("button",{className:"fpx",textContent:"✕",title:"Hapus foto",type:"button"});
+  let cur=url||"";
+  const tampil=()=>{ lab.classList.toggle("ada",!!cur); x.classList.toggle("on",!!cur); isi.replaceChildren(cur?el("img",{src:cur,alt:""}):el("span",{textContent:huruf})); };
+  const kirim=async fl=>{
+    if(!fl) return;
+    if(!fl.type.startsWith("image/")) return alert("File harus berupa gambar.");
+    if(fl.size>10*1024*1024) return alert("File terlalu besar (maks 10 MB).");
+    lab.classList.add("load");
+    try{
+      const blob=await kecil(fl,maks), path=S.user.id+"/"+pre+"-"+Date.now()+Math.floor(Math.random()*1000)+".jpg";
+      const r=await sb.storage.from("avatars").upload(path,blob,{contentType:"image/jpeg",cacheControl:"31536000"}); if(r.error) throw r.error;
+      cur=sb.storage.from("avatars").getPublicUrl(path).data.publicUrl; onChange(cur); tampil();
+    }catch(e){ alert("Gagal mengunggah: "+(e.message||e)); }
+    lab.classList.remove("load"); file.value="";
+  };
+  file.onchange=()=>kirim(file.files[0]);
+  ["dragenter","dragover"].forEach(ev=>lab.addEventListener(ev,e=>{ e.preventDefault(); lab.classList.add("drag"); }));
+  ["dragleave","drop"].forEach(ev=>lab.addEventListener(ev,e=>{ e.preventDefault(); lab.classList.remove("drag"); }));
+  lab.addEventListener("drop",e=>kirim(e.dataTransfer.files[0]));
+  x.onclick=()=>{ cur=""; onChange(""); tampil(); };
+  lab.append(file,isi,cam); tampil();
+  return {el:el("div",{className:"fpw"},lab,x)};
+}
+
 function vProfil(){
   editor("Profil","Nama, bio, foto, dan ikon sosial yang tampil di halaman kamu.",mark=>{
     const f=S.prof, inp=(k,ph,max)=>{ const i=el("input",{value:f[k]||"",placeholder:ph,maxLength:max}); i.oninput=()=>{ f[k]=i.value; mark(); }; return i; };
     const soc=Object.keys(SOSIAL).map(k=>{ const i=el("input",{value:f.socials[k]||"",placeholder:k==="email"?"nama@email.com":k==="whatsapp"?"628123456789":"Link "+SOSIAL[k]}); i.oninput=()=>{ if(i.value.trim()) f.socials[k]=i.value; else delete f.socials[k]; mark(); }; return el("div",{className:"row"},el("span",{className:"m",style:"width:88px",textContent:SOSIAL[k]}),i); });
-    const fv=el("div",{className:"av",style:"margin:0;width:64px;height:64px;font-size:26px;flex:none"});
-    const tampilFoto=()=>{ const u=f.avatar_url||""; if(/^https:\/\//.test(u)) fv.replaceChildren(el("img",{src:u,alt:""})); else fv.textContent=(f.display_name||S.p.username||"?").charAt(0).toUpperCase(); };
-    const fs=T("JPG, PNG, atau WebP. Otomatis dikecilkan."), file=el("input",{type:"file",accept:"image/*",style:"display:none"});
-    const up=el("button",{className:"g",textContent:"Unggah foto"}), del=el("button",{className:"g",textContent:"Hapus foto"});
-    const catatLama=()=>{ const m=(f.avatar_url||"").match(/\/avatars\/([^?]+)/); if(m&&m[1].startsWith(S.user.id+"/")) S.oldFotos.push(decodeURIComponent(m[1])); };
-    up.onclick=()=>file.click();
-    file.onchange=async()=>{
-      const fl=file.files[0]; if(!fl) return;
-      if(fl.size>10*1024*1024){ fs.textContent="File terlalu besar (maks 10 MB)."; return; }
-      up.disabled=true; fs.textContent="Mengunggah…";
-      try{
-        const blob=await kecil(fl), path=S.user.id+"/avatar-"+Date.now()+".jpg";
-        const r=await sb.storage.from("avatars").upload(path,blob,{contentType:"image/jpeg",cacheControl:"31536000"}); if(r.error) throw r.error;
-        catatLama(); f.avatar_url=sb.storage.from("avatars").getPublicUrl(path).data.publicUrl; mark(); tampilFoto();
-        fs.textContent="Foto terunggah. Klik Simpan perubahan agar tampil di halaman publik.";
-      }catch(e){ fs.textContent="Gagal mengunggah: "+(e.message||e); }
-      up.disabled=false; file.value="";
-    };
-    del.onclick=()=>{ catatLama(); f.avatar_url=""; mark(); tampilFoto(); fs.textContent="Foto dihapus. Klik Simpan perubahan."; };
-    tampilFoto();
-    return {cols:[el("div",{className:"box"},T("Nama"),inp("display_name","Nama",40),T("Bio"),inp("bio","Bio singkat",120),T("Foto profil"),el("div",{className:"row"},fv,up,del),fs,file),el("h2",{className:"sec",textContent:"Ikon sosial"}),el("div",{className:"box"},...soc)]};
+    const pk=fotoPicker({url:f.avatar_url,huruf:(f.display_name||S.p.username||"?").charAt(0).toUpperCase(),ukuran:96,bulat:true,maks:900,pre:"avatar",onChange:v=>{ catatFoto(f.avatar_url); f.avatar_url=v; mark(); }});
+    const fs=T("Klik atau seret foto ke lingkaran. JPG, PNG, atau WebP; otomatis dikecilkan. Klik Simpan perubahan agar tampil di halaman publik.");
+    return {cols:[el("div",{className:"box"},T("Nama"),inp("display_name","Nama",40),T("Bio"),inp("bio","Bio singkat",120),T("Foto profil"),el("div",{className:"row",style:"gap:14px;align-items:center"},pk.el,fs)),el("h2",{className:"sec",textContent:"Ikon sosial"}),el("div",{className:"box"},...soc)]};
   });
 }
 
@@ -278,7 +298,7 @@ function vPengaturan(){
 function render(){ ({beranda:vBeranda,link:vLink,profil:vProfil,tampilan:vTampilan,statistik:vStat,qr:vQR,pengaturan:vPengaturan}[S.view]||vBeranda)(); }
 
 function buatProfil(){
-  const un=el("input",{placeholder:"username (huruf kecil, angka, _)",maxLength:30}), err=el("div",{className:"err"}), btn=el("button",{className:"b",textContent:"Buat halaman"});
+  const un=el("input",{placeholder:"username (huruf kecil, angka, _)",maxLength:30,value:sessionStorage.getItem("vynka_un")||""}), err=el("div",{className:"err"}), btn=el("button",{className:"b",textContent:"Buat halaman"});
   btn.onclick=async()=>{
     const u=un.value.trim().toLowerCase();
     if(!/^[a-z0-9_]{3,30}$/.test(u)){ err.textContent="Username 3–30 karakter: huruf kecil, angka, atau _."; return; }
