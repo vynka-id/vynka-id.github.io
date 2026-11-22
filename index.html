@@ -4,39 +4,138 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Vynka: satu link untuk semua link kamu</title>
+<meta name="description" content="Buat halaman link-in-bio yang cantik dan gratis. Kumpulkan semua link, tema modern, statistik, dan kode QR.">
 <link rel="stylesheet" href="/style.css">
+<style>
+html{scroll-behavior:smooth}
+body{background:radial-gradient(900px 520px at 5% -5%,#e9d5ff,transparent 60%),radial-gradient(700px 500px at 100% 5%,#fde68a88,transparent 55%),radial-gradient(800px 600px at 50% 40%,#a7f3d055,transparent 60%),var(--bg);background-attachment:fixed}
+@media (prefers-color-scheme:dark){body{background:radial-gradient(900px 520px at 5% -5%,#4c1d9566,transparent 60%),radial-gradient(700px 500px at 100% 5%,#be185d33,transparent 55%),radial-gradient(800px 600px at 50% 40%,#0f766e33,transparent 60%),var(--bg)}}
+h1,h2,h3,.logo{font-family:Outfit,'Plus Jakarta Sans',sans-serif}
+.w{max-width:1080px;margin:0 auto;padding:0 20px}
+.nv{display:flex;justify-content:space-between;align-items:center;padding:18px 0}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:24px;letter-spacing:-.8px;text-decoration:none;color:var(--text)}
+.logo i{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,#7c3aed,#ec4899);color:#fff;display:grid;place-items:center;font-style:normal;transform:rotate(-6deg)}
+.nl{display:flex;gap:6px;align-items:center}.nl a.t{color:var(--muted);text-decoration:none;font-weight:600;padding:8px 12px}
+.bt{display:inline-block;text-decoration:none;border:0;border-radius:999px;padding:11px 22px;font-weight:700;background:linear-gradient(135deg,#7c3aed,#ec4899);color:#fff;box-shadow:0 10px 24px -12px #7c3aed}
+.bt.o{background:var(--card);color:var(--text);box-shadow:none;border:1px solid var(--line)}
+.hr{display:grid;grid-template-columns:1.05fr 1fr;gap:30px;align-items:center;padding:34px 0 50px}
+.chip{display:inline-block;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-weight:700;font-size:13px}
+.hr h1{font-size:clamp(40px,6vw,66px);line-height:1.03;letter-spacing:-2.5px;margin:16px 0}
+.grad{background:linear-gradient(90deg,#7c3aed,#ec4899,#f59e0b);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{font-size:18px;color:var(--muted);max-width:480px;margin:0 0 22px}
+.claim{display:flex;align-items:center;background:var(--card);border:2px solid var(--line);border-radius:999px;padding:6px 6px 6px 18px;max-width:480px;gap:4px}
+.claim span{color:var(--muted);font-weight:600;white-space:nowrap}
+.claim input{border:0;background:none;padding:8px 4px;font-weight:700;outline:0;min-width:0}
+.claim .bt{padding:11px 18px;white-space:nowrap}
+.phs{display:flex;justify-content:center;gap:16px;align-items:flex-start}
+.ph{width:236px;height:470px;border:7px solid #1e1b4b;border-radius:38px;overflow:hidden;background:var(--pbg);flex:none;box-shadow:0 30px 60px -28px rgba(30,27,75,.6)}
+.ph:nth-child(1){transform:rotate(-5deg) translateY(18px)}.ph:nth-child(2){transform:translateY(-14px)}.ph:nth-child(3){transform:rotate(5deg) translateY(22px)}
+.ph .pg{--pp:14px;min-height:100%}
+.sec{padding:46px 0}.sec h2{font-size:clamp(28px,4vw,40px);letter-spacing:-1.5px;margin:0 0 8px;text-align:center}
+.sec>.w>p{text-align:center;color:var(--muted);margin:0 0 30px}
+.fg{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.f{border-radius:24px;padding:22px;color:#1f2937}
+.f b{display:block;font:700 19px Outfit,sans-serif;margin:8px 0 4px}.f span{font-size:30px}.f p{margin:0;font-size:14px;opacity:.78}
+.f:nth-child(1){background:#ede9fe}.f:nth-child(2){background:#fce7f3}.f:nth-child(3){background:#d1fae5}.f:nth-child(4){background:#dbeafe}.f:nth-child(5){background:#fef3c7}.f:nth-child(6){background:#ffedd5}
+@media (prefers-color-scheme:dark){.f{color:#f1f5f9}.f:nth-child(1){background:#4c1d9566}.f:nth-child(2){background:#83184366}.f:nth-child(3){background:#06503f77}.f:nth-child(4){background:#1e3a8a66}.f:nth-child(5){background:#78350f66}.f:nth-child(6){background:#7c2d1266}}
+.tg{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px}
+.tt{border:3px solid var(--line);border-radius:18px;padding:12px;background:var(--pbg);color:var(--ptext);display:flex;flex-direction:column;gap:7px;min-height:110px;font-weight:700;font-size:14px}
+.tt i{display:block;height:13px;background:var(--pcard);border:var(--pborder);border-radius:var(--pr);box-shadow:var(--pshadow)}
+.st{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.s{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:24px}
+.s em{display:grid;place-items:center;width:44px;height:44px;border-radius:14px;background:linear-gradient(135deg,#7c3aed,#ec4899);color:#fff;font:800 20px Outfit,sans-serif;font-style:normal}
+.s b{display:block;margin:12px 0 4px;font:700 19px Outfit,sans-serif}.s p{margin:0;color:var(--muted);font-size:14px}
+.cta{max-width:440px;margin:0 auto}
+.card{background:var(--card);border:1px solid var(--line);border-radius:28px;padding:26px;box-shadow:0 24px 50px -28px rgba(76,29,149,.4);display:flex;flex-direction:column;gap:10px}
+.card h2{margin:0;text-align:left!important;font-size:26px!important}
+.ft{text-align:center;color:var(--muted);font-size:14px;padding:30px 0 40px}
+@media (max-width:820px){.hr{grid-template-columns:1fr;text-align:center}.sub,.claim{margin-left:auto;margin-right:auto}.ph:nth-child(n+2){display:none}.ph{transform:none!important}.nl a.t{display:none}}
+</style>
 </head>
 <body>
-<div class="wrap c" id="app"><p class="m">Memuat…</p></div>
+<div class="w">
+  <header class="nv">
+    <a class="logo" href="/"><i>V</i>Vynka</a>
+    <nav class="nl"><a class="t" href="#fitur">Fitur</a><a class="t" href="#tema">Tema</a><a class="t" href="#cara">Cara kerja</a><a class="bt o" href="#mulai" id="nMasuk">Masuk</a><a class="bt" href="#mulai" id="nDaftar">Daftar gratis</a></nav>
+  </header>
+
+  <section class="hr">
+    <div>
+      <span class="chip">✨ Gratis, tanpa kartu kredit</span>
+      <h1>Satu link untuk <span class="grad">semua</span> link kamu.</h1>
+      <p class="sub">Kumpulkan Instagram, WhatsApp, toko, dan semua yang penting dalam satu halaman cantik. Pilih tema, unggah foto, bagikan.</p>
+      <div class="claim"><span id="host"></span><input id="un" placeholder="namakamu" maxlength="30" autocomplete="off"><button class="bt" id="klaim">Klaim link</button></div>
+    </div>
+    <div class="phs" id="phs"></div>
+  </section>
+</div>
+
+<section class="sec" id="fitur"><div class="w"><h2>Semua yang kamu butuhkan</h2><p>Lengkap, ringan, dan mudah dipakai dari HP.</p>
+  <div class="fg">
+    <div class="f"><span>🎨</span><b>15 tema modern</b><p>Dari Aurora sampai Noir. Ganti tampilan dalam sekali klik.</p></div>
+    <div class="f"><span>🖼️</span><b>Foto cover &amp; avatar link</b><p>Unggah langsung, tampil seperti halaman profesional.</p></div>
+    <div class="f"><span>📊</span><b>Statistik</b><p>Pantau pengunjung dan klik di setiap link.</p></div>
+    <div class="f"><span>📱</span><b>Kode QR</b><p>Unduh PNG untuk kartu nama, stiker, atau poster.</p></div>
+    <div class="f"><span>🔗</span><b>Ikon sosial</b><p>Instagram, TikTok, YouTube, WhatsApp, dan lainnya.</p></div>
+    <div class="f"><span>💸</span><b>Gratis</b><p>Mulai tanpa biaya. Cukup email dan kata sandi.</p></div>
+  </div></div></section>
+
+<section class="sec" id="tema"><div class="w"><h2>Pilih gayamu</h2><p>Setiap tema bisa dipadukan dengan warna, font, dan bentuk tombol sendiri.</p><div class="tg" id="tg"></div></div></section>
+
+<section class="sec" id="cara"><div class="w"><h2>Tiga langkah saja</h2><p>Dari nol sampai halaman siap dibagikan.</p>
+  <div class="st">
+    <div class="s"><em>1</em><b>Daftar</b><p>Buat akun gratis dengan email dan kata sandi.</p></div>
+    <div class="s"><em>2</em><b>Atur halaman</b><p>Pilih username, unggah foto, tambah link, dan pilih tema.</p></div>
+    <div class="s"><em>3</em><b>Bagikan</b><p>Taruh link Vynka di bio Instagram, TikTok, atau kartu nama.</p></div>
+  </div></div></section>
+
+<section class="sec" id="mulai"><div class="w"><div class="cta"><div class="card">
+  <h2 id="jd">Masuk</h2>
+  <p class="m" id="sj">Selamat datang kembali.</p>
+  <input id="em" type="email" placeholder="Email" autocomplete="email">
+  <input id="pw" type="password" placeholder="Kata sandi (min. 6 karakter)" autocomplete="current-password">
+  <div class="err" id="er"></div>
+  <button class="b" id="go" style="background:linear-gradient(135deg,#7c3aed,#ec4899);border-radius:999px;padding:12px;color:#fff;border:0;font-weight:700">Masuk</button>
+  <button class="g" id="sw" style="border-radius:999px">Belum punya akun? Daftar</button>
+</div></div></div></section>
+
+<div class="w"><div class="ft">© Vynka · Dibuat untuk kreator dan usaha kecil</div></div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script src="/config.js"></script>
 <script src="/vynka.js"></script>
 <script>
 (async()=>{
-  const {data:{session}} = await sb.auth.getSession();
+  const {data:{session}}=await sb.auth.getSession();
   if(session){ location.replace("/dashboard/"); return; }
+  const $=i=>document.getElementById(i);
+  $("host").textContent=location.host+"/";
+
+  // contoh halaman di ponsel
+  const demo=[
+    {p:{username:"raka",display_name:"Raka",bio:"Streamer & content creator",tema:"noir",layout:"cover",theme:"#d08f78",font:"grotesk",socials:{tiktok:"x",instagram:"x",youtube:"x"}},l:["Dukung di SociaBuzz","Jadwal live minggu ini","Panduan instalasi lengkap"]},
+    {p:{username:"sinta",display_name:"Sinta Studio",bio:"Desainer grafis & ilustrator",tema:"aurora",layout:"standar",theme:"#ec4899",font:"outfit",socials:{instagram:"x",whatsapp:"x"}},l:["Lihat portofolio","Pesan jasa desain","Template gratis"]},
+    {p:{username:"mawar",display_name:"Toko Mawar",bio:"Bunga segar tiap hari",tema:"sakura",layout:"standar",theme:"#db2777",font:"lora",socials:{whatsapp:"x",instagram:"x"}},l:["Pesan via WhatsApp","Katalog bunga","Lokasi toko"]}
+  ];
+  $("phs").replaceChildren(...demo.map(d=>{ const f=el("div",{className:"ph"}), box=el("div"); f.dataset.tema=d.p.tema; f.append(box); renderPublik(box,d.p,d.l.map(t=>({title:t})),{preview:true,home:false}); return f; }));
+
+  // galeri tema
+  $("tg").replaceChildren(...Object.entries(TEMA).map(([k,t])=>{ const b=el("div",{className:"tt"},el("span",{textContent:t.n}),el("i"),el("i")); b.dataset.tema=k; return b; }));
+
+  // auth
   let daftar=false;
-  const em=el("input",{type:"email",placeholder:"Email",autocomplete:"email"});
-  const pw=el("input",{type:"password",placeholder:"Kata sandi (min. 6 karakter)",autocomplete:"current-password"});
-  const err=el("div",{className:"err"});
-  const btn=el("button",{className:"b",textContent:"Masuk"});
-  const sw=el("button",{className:"g",textContent:"Belum punya akun? Daftar"});
-  sw.onclick=()=>{ daftar=!daftar; btn.textContent=daftar?"Daftar":"Masuk"; sw.textContent=daftar?"Sudah punya akun? Masuk":"Belum punya akun? Daftar"; err.textContent=""; };
-  btn.onclick=async()=>{
-    err.textContent=""; btn.disabled=true;
-    const r = daftar ? await sb.auth.signUp({email:em.value,password:pw.value}) : await sb.auth.signInWithPassword({email:em.value,password:pw.value});
-    btn.disabled=false;
-    if(r.error){ err.textContent=r.error.message; return; }
-    if(daftar && !r.data.session){ err.textContent="Cek email kamu untuk konfirmasi, lalu masuk."; return; }
+  const mode=d=>{ daftar=d; $("jd").textContent=d?"Daftar gratis":"Masuk"; $("sj").textContent=d?"Buat akun dalam hitungan detik.":"Selamat datang kembali."; $("go").textContent=d?"Daftar":"Masuk"; $("sw").textContent=d?"Sudah punya akun? Masuk":"Belum punya akun? Daftar"; $("er").textContent=""; };
+  $("sw").onclick=()=>mode(!daftar);
+  $("nMasuk").onclick=()=>mode(false); $("nDaftar").onclick=()=>mode(true);
+  $("klaim").onclick=()=>{ const v=$("un").value.trim().toLowerCase(); if(v) sessionStorage.setItem("vynka_un",v); mode(true); $("mulai").scrollIntoView({behavior:"smooth"}); setTimeout(()=>$("em").focus(),500); };
+  $("go").onclick=async()=>{
+    $("er").textContent=""; $("go").disabled=true;
+    const r=daftar?await sb.auth.signUp({email:$("em").value,password:$("pw").value}):await sb.auth.signInWithPassword({email:$("em").value,password:$("pw").value});
+    $("go").disabled=false;
+    if(r.error){ $("er").textContent=r.error.message; return; }
+    if(daftar&&!r.data.session){ $("er").textContent="Cek email kamu untuk konfirmasi, lalu masuk."; return; }
     location.replace("/dashboard/");
   };
-  const box=el("div",{className:"box",style:"text-align:left"},em,pw,err,btn,sw);
-  app.replaceChildren(
-    el("div",{className:"brand",textContent:"Vynka"}),
-    el("p",{className:"bio",textContent:"Satu link untuk semua link kamu."}),
-    el("span",{className:"demo",textContent:location.host+"/namakamu"}),
-    box
-  );
 })();
 </script>
 </body>
