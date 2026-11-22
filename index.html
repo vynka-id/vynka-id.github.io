@@ -107,7 +107,9 @@ h1,h2,h3,.logo{font-family:Outfit,'Plus Jakarta Sans',sans-serif}
 <script>
 (async()=>{
   const {data:{session}}=await sb.auth.getSession();
-  if(session){ location.replace("/dashboard/"); return; }
+  // Tautan konfirmasi email langsung ke dashboard; selain itu pengguna yang sudah masuk tetap boleh melihat landing page
+  if(session && /access_token|type=/.test(location.hash)){ location.replace("/dashboard/"); return; }
+  const masuk=!!session;
   const $=i=>document.getElementById(i);
   $("host").textContent=location.host+"/";
 
@@ -126,8 +128,8 @@ h1,h2,h3,.logo{font-family:Outfit,'Plus Jakarta Sans',sans-serif}
   let daftar=false;
   const mode=d=>{ daftar=d; $("jd").textContent=d?"Daftar gratis":"Masuk"; $("sj").textContent=d?"Buat akun dalam hitungan detik.":"Selamat datang kembali."; $("go").textContent=d?"Daftar":"Masuk"; $("sw").textContent=d?"Sudah punya akun? Masuk":"Belum punya akun? Daftar"; $("er").textContent=""; };
   $("sw").onclick=()=>mode(!daftar);
-  $("nMasuk").onclick=()=>mode(false); $("nDaftar").onclick=()=>mode(true);
-  $("klaim").onclick=()=>{ const v=$("un").value.trim().toLowerCase(); if(v) sessionStorage.setItem("vynka_un",v); mode(true); $("mulai").scrollIntoView({behavior:"smooth"}); setTimeout(()=>$("em").focus(),500); };
+  if(!masuk){ $("nMasuk").onclick=()=>mode(false); $("nDaftar").onclick=()=>mode(true); }
+  $("klaim").onclick=()=>{ if(masuk){ location.href="/dashboard/"; return; } const v=$("un").value.trim().toLowerCase(); if(v) sessionStorage.setItem("vynka_un",v); mode(true); $("mulai").scrollIntoView({behavior:"smooth"}); setTimeout(()=>$("em").focus(),500); };
   $("go").onclick=async()=>{
     $("er").textContent=""; $("go").disabled=true;
     const r=daftar?await sb.auth.signUp({email:$("em").value,password:$("pw").value}):await sb.auth.signInWithPassword({email:$("em").value,password:$("pw").value});
@@ -136,6 +138,11 @@ h1,h2,h3,.logo{font-family:Outfit,'Plus Jakarta Sans',sans-serif}
     if(daftar&&!r.data.session){ $("er").textContent="Cek email kamu untuk konfirmasi, lalu masuk."; return; }
     location.replace("/dashboard/");
   };
+  if(masuk){
+    $("nMasuk").textContent="Buka dashboard"; $("nMasuk").href="/dashboard/"; $("nDaftar").style.display="none";
+    $("klaim").textContent="Ke dashboard";
+    document.querySelector("#mulai .card").replaceChildren(el("h2",{textContent:"Kamu sudah masuk"}),el("p",{className:"m",textContent:session.user.email}),el("a",{className:"bt",href:"/dashboard/",textContent:"Buka dashboard",style:"text-align:center"}));
+  }
 })();
 </script>
 </body>
