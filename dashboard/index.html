@@ -89,7 +89,7 @@ input{border-radius:12px}
 <script src="/config.js"></script>
 <script src="/vynka.js"></script>
 <script>
-const S={view:"beranda",p:null,prof:null,links:[],deleted:[],dirty:false,user:null};
+const S={view:"beranda",p:null,prof:null,links:[],deleted:[],oldFotos:[],dirty:false,user:null};
 const MENU=[["Utama",[["beranda","🏠 Beranda"],["link","🔗 Link"],["profil","🙂 Profil"],["tampilan","🎨 Tampilan"]]],["Bertumbuh",[["statistik","📊 Statistik"],["qr","📱 Kode QR"]]],["Akun",[["pengaturan","⚙️ Pengaturan"]]]];
 window.onbeforeunload=e=>{ if(S.dirty){ e.preventDefault(); e.returnValue=""; } };
 const sapa=()=>{const h=new Date().getHours();return h<11?"pagi":h<15?"siang":h<18?"sore":"malam";};
@@ -162,7 +162,8 @@ async function simpan(save,status){
     if(lama.length){ const hs=await Promise.all(lama.map(x=>sb.from("links").update({title:x.l.title.trim(),url:x.l.url.trim(),image_url:(x.l.image_url||"").trim()||null,position:x.i}).eq("id",x.l.id))); const bad=hs.find(h=>h.error); if(bad) throw bad.error; }
     const baru=L.map((l,i)=>({l,i})).filter(x=>!x.l.id);
     if(baru.length){ r=await sb.from("links").insert(baru.map(x=>({user_id:S.user.id,title:x.l.title.trim(),url:x.l.url.trim(),image_url:(x.l.image_url||"").trim()||null,position:x.i}))).select(); if(r.error) throw r.error; r.data.forEach((row,k)=>{ baru[k].l.id=row.id; }); }
-    S.dirty=false; S.p={...S.p,...f}; status.textContent="Tersimpan ✓ Perubahan sudah tampil di halaman publik.";
+    if(S.oldFotos.length){ const cur=f.avatar_url||""; const hp=S.oldFotos.filter(x=>!cur.includes(x)); if(hp.length) sb.storage.from("avatars").remove(hp); S.oldFotos=[]; }
+      S.dirty=false; S.p={...S.p,...f}; status.textContent="Tersimpan ✓ Perubahan sudah tampil di halaman publik.";
   }catch(e){ status.textContent="Gagal menyimpan: "+(e.message||e); }
   save.disabled=false;
 }
@@ -197,11 +198,40 @@ function vLink(){
   });
 }
 
+// Kecilkan gambar di browser sebelum diunggah (maks 900px, JPEG)
+function kecil(file,maks=900){
+  return new Promise((ok,gagal)=>{
+    const img=new Image(), u=URL.createObjectURL(file);
+    img.onload=()=>{ const r=Math.min(1,maks/Math.max(img.width,img.height)), c=document.createElement("canvas"); c.width=Math.round(img.width*r); c.height=Math.round(img.height*r); c.getContext("2d").drawImage(img,0,0,c.width,c.height); URL.revokeObjectURL(u); c.toBlob(b=>b?ok(b):gagal(new Error("Gagal memproses gambar")),"image/jpeg",0.85); };
+    img.onerror=()=>gagal(new Error("File bukan gambar yang valid")); img.src=u;
+  });
+}
+
 function vProfil(){
   editor("Profil","Nama, bio, foto, dan ikon sosial yang tampil di halaman kamu.",mark=>{
     const f=S.prof, inp=(k,ph,max)=>{ const i=el("input",{value:f[k]||"",placeholder:ph,maxLength:max}); i.oninput=()=>{ f[k]=i.value; mark(); }; return i; };
     const soc=Object.keys(SOSIAL).map(k=>{ const i=el("input",{value:f.socials[k]||"",placeholder:k==="email"?"nama@email.com":k==="whatsapp"?"628123456789":"Link "+SOSIAL[k]}); i.oninput=()=>{ if(i.value.trim()) f.socials[k]=i.value; else delete f.socials[k]; mark(); }; return el("div",{className:"row"},el("span",{className:"m",style:"width:88px",textContent:SOSIAL[k]}),i); });
-    return {cols:[el("div",{className:"box"},T("Nama"),inp("display_name","Nama",40),T("Bio"),inp("bio","Bio singkat",120),T("Foto profil (link gambar https://...)"),inp("avatar_url","https://contoh.com/foto.jpg",300)),el("h2",{className:"sec",textContent:"Ikon sosial"}),el("div",{className:"box"},...soc)]};
+    const fv=el("div",{className:"av",style:"margin:0;width:64px;height:64px;font-size:26px;flex:none"});
+    const tampilFoto=()=>{ const u=f.avatar_url||""; if(/^https:\/\//.test(u)) fv.replaceChildren(el("img",{src:u,alt:""})); else fv.textContent=(f.display_name||S.p.username||"?").charAt(0).toUpperCase(); };
+    const fs=T("JPG, PNG, atau WebP. Otomatis dikecilkan."), file=el("input",{type:"file",accept:"image/*",style:"display:none"});
+    const up=el("button",{className:"g",textContent:"Unggah foto"}), del=el("button",{className:"g",textContent:"Hapus foto"});
+    const catatLama=()=>{ const m=(f.avatar_url||"").match(/\/avatars\/([^?]+)/); if(m&&m[1].startsWith(S.user.id+"/")) S.oldFotos.push(decodeURIComponent(m[1])); };
+    up.onclick=()=>file.click();
+    file.onchange=async()=>{
+      const fl=file.files[0]; if(!fl) return;
+      if(fl.size>10*1024*1024){ fs.textContent="File terlalu besar (maks 10 MB)."; return; }
+      up.disabled=true; fs.textContent="Mengunggah…";
+      try{
+        const blob=await kecil(fl), path=S.user.id+"/avatar-"+Date.now()+".jpg";
+        const r=await sb.storage.from("avatars").upload(path,blob,{contentType:"image/jpeg",cacheControl:"31536000"}); if(r.error) throw r.error;
+        catatLama(); f.avatar_url=sb.storage.from("avatars").getPublicUrl(path).data.publicUrl; mark(); tampilFoto();
+        fs.textContent="Foto terunggah. Klik Simpan perubahan agar tampil di halaman publik.";
+      }catch(e){ fs.textContent="Gagal mengunggah: "+(e.message||e); }
+      up.disabled=false; file.value="";
+    };
+    del.onclick=()=>{ catatLama(); f.avatar_url=""; mark(); tampilFoto(); fs.textContent="Foto dihapus. Klik Simpan perubahan."; };
+    tampilFoto();
+    return {cols:[el("div",{className:"box"},T("Nama"),inp("display_name","Nama",40),T("Bio"),inp("bio","Bio singkat",120),T("Foto profil"),el("div",{className:"row"},fv,up,del),fs,file),el("h2",{className:"sec",textContent:"Ikon sosial"}),el("div",{className:"box"},...soc)]};
   });
 }
 
