@@ -78,3 +78,8 @@ body[data-tema]{background:var(--pbg);background-attachment:fixed;color:var(--pt
 .vlogo i{width:24px;height:24px;border-radius:8px;background:linear-gradient(135deg,var(--accent),#ec4899);display:grid;place-items:center;font-style:normal;color:#fff;font-size:13px}
 .pg[data-l=standar] .ctop{position:static;margin-bottom:16px}
 .pg[data-l=standar] .cb,.pg[data-l=standar] .vlogo{background:var(--pcard);color:var(--pbtext);border:var(--pborder);backdrop-filter:none}
+
+.mini svg,.vlogo i svg,.logo i svg{width:74%;height:74%;display:block}
+.sp{transform-box:fill-box;transform-origin:center}
+@keyframes vsp{50%{transform:rotate(90deg) scale(1.5)}100%{transform:rotate(180deg) scale(1)}}
+.logo:hover .sp,.me:hover .sp,.vlogo:hover .sp{animation:vsp .7s ease}
