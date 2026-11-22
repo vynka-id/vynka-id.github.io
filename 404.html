@@ -19,7 +19,7 @@
   if(!/^[a-z0-9_]{3,30}$/.test(u)) return tidakAda();
   const {data:p}=await sb.from("profiles").select("*").eq("username",u).maybeSingle();
   if(!p) return tidakAda();
-  document.title=(p.display_name||p.username)+" · Vynka";
+  document.title=(p.display_name||p.username)+" · Vynka"; document.body.dataset.tema=TEMA[p.tema]?p.tema:"klasik";
   sb.auth.getSession().then(({data:{session}})=>{ if(!session||session.user.id!==p.id) sb.rpc("increment_view",{uname:u}); });
   const {data:ls}=await sb.from("links").select("*").eq("user_id",p.id).order("position");
   const box=el("div"); app.replaceChildren(box);
