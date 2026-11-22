@@ -3,6 +3,7 @@ const app = document.getElementById("app");
 const WARNA = {hijau:"#0f766e", ungu:"#6d28d9", oranye:"#c2410c", biru:"#1d4ed8"};
 const FONTS = {jakarta:"'Plus Jakarta Sans'", outfit:"'Outfit'", lora:"'Lora'", grotesk:"'Space Grotesk'"};
 const FONT_NAMA = {jakarta:"Jakarta", outfit:"Outfit", lora:"Lora", grotesk:"Grotesk"};
+const TEMA = {klasik:{n:"Klasik",font:"jakarta"}, midnight:{n:"Midnight",font:"grotesk"}, aurora:{n:"Aurora",font:"outfit"}, sunset:{n:"Sunset",font:"outfit"}, mint:{n:"Mint",font:"jakarta"}, brutal:{n:"Neo Brutal",font:"grotesk"}, mono:{n:"Mono",font:"grotesk"}, ocean:{n:"Ocean",font:"jakarta"}, sakura:{n:"Sakura",font:"outfit"}, forest:{n:"Forest",font:"lora"}};
 const SOSIAL = {instagram:"Instagram", tiktok:"TikTok", youtube:"YouTube", whatsapp:"WhatsApp", x:"X", facebook:"Facebook", github:"GitHub", email:"Email"};
 // Harus sama dengan daftar di tambahan.sql
 const RESERVED = ["dashboard","login","register","daftar","masuk","admin","api","assets","static","config","style","vynka","index","404","www","app","settings","about","help","support","privacy","terms"];
@@ -15,7 +16,7 @@ function el(t, p={}, ...c){ const e=document.createElement(t); Object.assign(e,p
 // Dipakai halaman publik (404.html) dan pratinjau di dashboard
 function renderPublik(c, p, links, o={}){
   const acc=hexOf(p.theme), nama=p.display_name||p.username||"?";
-  c.className="pg"; c.dataset.b=p.btn_style||"bulat";
+  c.className="pg"; c.dataset.b=p.btn_style||"bulat"; c.dataset.tema=TEMA[p.tema]?p.tema:"klasik";
   c.style.setProperty("--accent",acc); c.style.setProperty("--on",onOf(acc));
   c.style.fontFamily=(FONTS[p.font]||FONTS.jakarta)+",system-ui,sans-serif";
   const av=el("div",{className:"av"}); const huruf=nama.charAt(0).toUpperCase();
