@@ -57,6 +57,10 @@ input{border-radius:12px}
 .prev .lk{padding:11px;font-size:14px;margin-top:9px}
 .prev .av{width:64px;height:64px;font-size:26px}.prev h1{font-size:18px}.prev .bio{font-size:13px}
 .sbar{position:sticky;bottom:var(--navh);background:var(--card);border:1px solid var(--line);border-radius:20px;padding:12px 14px;margin-top:16px;display:flex;flex-direction:column;gap:8px;box-shadow:0 12px 30px -14px rgba(0,0,0,.35)}
+.prev{padding:0!important;overflow-y:auto;max-height:calc(100vh - 40px);scrollbar-width:none}
+.prev::-webkit-scrollbar{display:none}
+.prev .pg{--pp:14px}
+.prev .pg[data-l=cover] .nm{font-size:26px;margin-top:-46px}
 .prev[data-tema]{background:var(--pbg)}
 .tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:10px}
 .tt{border:3px solid var(--line);border-radius:16px;padding:10px 10px 12px;background:var(--pbg);color:var(--ptext);text-align:left;display:flex;flex-direction:column;gap:6px;min-height:92px}
@@ -152,12 +156,12 @@ async function simpan(save,status){
   if(L.some(l=>!l.title.trim()||!l.url.trim()||l.url.trim()==="https://")){ status.textContent="Isi judul dan URL semua link, atau hapus yang kosong."; return; }
   save.disabled=true; status.textContent="Menyimpan…";
   try{
-    const f=S.prof; let r=await sb.from("profiles").update({display_name:f.display_name,bio:f.bio,theme:f.theme,font:f.font,btn_style:f.btn_style,tema:f.tema,avatar_url:f.avatar_url||null,socials:f.socials}).eq("id",S.user.id); if(r.error) throw r.error;
+    const f=S.prof; let r=await sb.from("profiles").update({display_name:f.display_name,bio:f.bio,theme:f.theme,font:f.font,btn_style:f.btn_style,tema:f.tema,layout:f.layout,avatar_url:f.avatar_url||null,socials:f.socials}).eq("id",S.user.id); if(r.error) throw r.error;
     if(S.deleted.length){ r=await sb.from("links").delete().in("id",S.deleted); if(r.error) throw r.error; S.deleted=[]; }
     const lama=L.map((l,i)=>({l,i})).filter(x=>x.l.id);
-    if(lama.length){ const hs=await Promise.all(lama.map(x=>sb.from("links").update({title:x.l.title.trim(),url:x.l.url.trim(),position:x.i}).eq("id",x.l.id))); const bad=hs.find(h=>h.error); if(bad) throw bad.error; }
+    if(lama.length){ const hs=await Promise.all(lama.map(x=>sb.from("links").update({title:x.l.title.trim(),url:x.l.url.trim(),image_url:(x.l.image_url||"").trim()||null,position:x.i}).eq("id",x.l.id))); const bad=hs.find(h=>h.error); if(bad) throw bad.error; }
     const baru=L.map((l,i)=>({l,i})).filter(x=>!x.l.id);
-    if(baru.length){ r=await sb.from("links").insert(baru.map(x=>({user_id:S.user.id,title:x.l.title.trim(),url:x.l.url.trim(),position:x.i}))).select(); if(r.error) throw r.error; r.data.forEach((row,k)=>{ baru[k].l.id=row.id; }); }
+    if(baru.length){ r=await sb.from("links").insert(baru.map(x=>({user_id:S.user.id,title:x.l.title.trim(),url:x.l.url.trim(),image_url:(x.l.image_url||"").trim()||null,position:x.i}))).select(); if(r.error) throw r.error; r.data.forEach((row,k)=>{ baru[k].l.id=row.id; }); }
     S.dirty=false; S.p={...S.p,...f}; status.textContent="Tersimpan ✓ Perubahan sudah tampil di halaman publik.";
   }catch(e){ status.textContent="Gagal menyimpan: "+(e.message||e); }
   save.disabled=false;
@@ -178,13 +182,13 @@ function vLink(){
   editor("Link","Tambah, ubah, dan atur urutan link kamu.",mark=>{
     const box=el("div");
     const gambar=()=>box.replaceChildren(...S.links.map((l,i)=>{
-      const t=el("input",{value:l.title,placeholder:"Judul, contoh: Instagram"}), u=el("input",{value:l.url,placeholder:"https://..."});
-      t.oninput=()=>{ l.title=t.value; mark(); }; u.oninput=()=>{ l.url=u.value; mark(); };
+      const t=el("input",{value:l.title,placeholder:"Judul, contoh: Instagram"}), u=el("input",{value:l.url,placeholder:"https://..."}), im=el("input",{value:l.image_url||"",placeholder:"Gambar kecil (opsional) https://..."});
+      t.oninput=()=>{ l.title=t.value; mark(); }; u.oninput=()=>{ l.url=u.value; mark(); }; im.oninput=()=>{ l.image_url=im.value; mark(); };
       const up=el("button",{className:"g",textContent:"↑",title:"Naik"}), dn=el("button",{className:"g",textContent:"↓",title:"Turun"}), del=el("button",{className:"g",textContent:"✕",title:"Hapus"});
       up.onclick=()=>{ if(i>0){ [S.links[i-1],S.links[i]]=[S.links[i],S.links[i-1]]; mark(); gambar(); } };
       dn.onclick=()=>{ if(i<S.links.length-1){ [S.links[i+1],S.links[i]]=[S.links[i],S.links[i+1]]; mark(); gambar(); } };
       del.onclick=()=>{ if(l.id) S.deleted.push(l.id); S.links.splice(i,1); mark(); gambar(); };
-      return el("div",{className:"box"},el("div",{className:"row"},el("div",{className:"f"},t,u),up,dn,del),T(l.clicks+" klik"));
+      return el("div",{className:"box"},el("div",{className:"row"},el("div",{className:"f"},t,u,im),up,dn,del),T(l.clicks+" klik"));
     }));
     gambar();
     const add=el("button",{className:"g",textContent:"+ Tambah link"});
@@ -211,10 +215,10 @@ function vTampilan(){
     const f=S.prof;
     const sw=el("div",{className:"sw"},...Object.keys(WARNA).map(k=>{ const b=el("button",{title:k}); b.style.background=WARNA[k]; b.onclick=()=>{ f.theme=k; setTheme(k); mark(); col.value=WARNA[k]; }; return b; }));
     const col=el("input",{type:"color",value:hexOf(f.theme),title:"Warna sendiri"}); col.oninput=()=>{ f.theme=col.value; setTheme(col.value); mark(); }; sw.append(col);
-    const fp=pilihan("font",FONT_NAMA,mark,v=>FONTS[v]), grid=el("div",{className:"tgrid"});
-    const tg=()=>grid.replaceChildren(...Object.entries(TEMA).map(([k,t])=>{ const b=el("button",{className:"tt"+(f.tema===k?" on":"")},el("span",{className:"tn",textContent:t.n}),el("i"),el("i")); b.dataset.tema=k; b.onclick=()=>{ f.tema=k; f.font=t.font; mark(); tg(); fp.tampil(); }; return b; }));
+    const fp=pilihan("font",FONT_NAMA,mark,v=>FONTS[v]), grid=el("div",{className:"tgrid"}), lp=pilihan("layout",{standar:"Standar",cover:"Cover foto"},mark);
+    const tg=()=>grid.replaceChildren(...Object.entries(TEMA).map(([k,t])=>{ const b=el("button",{className:"tt"+(f.tema===k?" on":"")},el("span",{className:"tn",textContent:t.n}),el("i"),el("i")); b.dataset.tema=k; b.onclick=()=>{ f.tema=k; f.font=t.font; f.layout=t.layout||"standar"; if(t.acc){ f.theme=t.acc; setTheme(t.acc); col.value=t.acc; } mark(); tg(); fp.tampil(); lp.tampil(); }; return b; }));
     tg();
-    return {cols:[el("div",{className:"box"},T("Tema halaman"),grid,T("Warna utama",{style:"margin-top:8px"}),sw,T("Font",{style:"margin-top:8px"}),fp,T("Bentuk tombol",{style:"margin-top:8px"}),pilihan("btn_style",{bulat:"Ikut tema",kotak:"Kotak",pil:"Pil",isi:"Berwarna"},mark))]};
+    return {cols:[el("div",{className:"box"},T("Tema halaman"),grid,T("Tata letak",{style:"margin-top:8px"}),lp,T("Warna utama",{style:"margin-top:8px"}),sw,T("Font",{style:"margin-top:8px"}),fp,T("Bentuk tombol",{style:"margin-top:8px"}),pilihan("btn_style",{bulat:"Ikut tema",kotak:"Kotak",pil:"Pil",isi:"Berwarna"},mark))]};
   });
 }
 
@@ -260,8 +264,8 @@ async function muat(){
   const {data:p}=await sb.from("profiles").select("*").eq("id",S.user.id).maybeSingle();
   if(!p) return buatProfil();
   const {data:ls}=await sb.from("links").select("*").eq("user_id",S.user.id).order("position");
-  S.p=p; S.prof={display_name:p.display_name||"",bio:p.bio||"",theme:p.theme||"hijau",font:p.font||"jakarta",btn_style:p.btn_style||"bulat",tema:TEMA[p.tema]?p.tema:"klasik",avatar_url:p.avatar_url||"",socials:{...(p.socials||{})}};
-  S.links=(ls||[]).map(l=>({id:l.id,title:l.title,url:l.url,clicks:l.clicks})); S.deleted=[]; S.dirty=false;
+  S.p=p; S.prof={display_name:p.display_name||"",bio:p.bio||"",theme:p.theme||"hijau",font:p.font||"jakarta",btn_style:p.btn_style||"bulat",tema:TEMA[p.tema]?p.tema:"klasik",layout:p.layout==="cover"?"cover":"standar",avatar_url:p.avatar_url||"",socials:{...(p.socials||{})}};
+  S.links=(ls||[]).map(l=>({id:l.id,title:l.title,url:l.url,image_url:l.image_url||"",clicks:l.clicks})); S.deleted=[]; S.dirty=false;
   setTheme(S.prof.theme);
   const h=location.hash.slice(1); S.view=MENU.flatMap(g=>g[1]).some(x=>x[0]===h)?h:"beranda";
   render();
