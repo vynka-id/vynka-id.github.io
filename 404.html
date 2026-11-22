@@ -22,7 +22,7 @@
   document.title=(p.display_name||p.username)+" · Vynka"; document.body.dataset.tema=TEMA[p.tema]?p.tema:"klasik";
   sb.auth.getSession().then(({data:{session}})=>{ if(!session||session.user.id!==p.id) sb.rpc("increment_view",{uname:u}); });
   const {data:ls}=await sb.from("links").select("*").eq("user_id",p.id).order("position");
-  const box=el("div"); app.replaceChildren(box);
+  app.className="pgwrap"; const box=el("div"); app.replaceChildren(box);
   renderPublik(box,p,ls||[],{track:l=>sb.rpc("increment_click",{link_id:l.id})});
 })();
 </script>
