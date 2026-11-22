@@ -14,7 +14,7 @@ const setTheme = t => { const h=hexOf(t), s=document.documentElement.style; s.se
 function fixUrl(u){ u=(u||"").trim(); if(!u) return "#"; if(/^(https?:|mailto:|tel:)/i.test(u)) return u; if(/^[a-z][a-z0-9+.-]*:/i.test(u)) return "#"; return "https://"+u; }
 function socUrl(k,v){ v=(v||"").trim(); if(!v) return ""; if(k==="email") return "mailto:"+v; if(k==="whatsapp"&&/^[0-9+ ]+$/.test(v)) return "https://wa.me/"+v.replace(/\D/g,""); return fixUrl(v); }
 function el(t, p={}, ...c){ const e=document.createElement(t); Object.assign(e,p); c.forEach(x=>e.append(x)); return e; }
-// Dipakai halaman publik (404.html) dan pratinjau di dashboard
+// Dipakai halaman publik (404.html), pratinjau dashboard, dan contoh di landing
 function renderPublik(c, p, links, o={}){
   const tm=TEMA[p.tema]?p.tema:"klasik", cover=p.layout==="cover";
   const acc=hexOf(p.theme), nama=p.display_name||p.username||"?", huruf=nama.charAt(0).toUpperCase();
@@ -22,17 +22,23 @@ function renderPublik(c, p, links, o={}){
   c.style.setProperty("--accent",acc); c.style.setProperty("--on",onOf(acc));
   c.style.fontFamily=(FONTS[p.font]||FONTS.jakarta)+",system-ui,sans-serif";
   const foto=/^https:\/\//.test(p.avatar_url||"")?p.avatar_url:"", url=location.origin+"/"+(p.username||"");
-  let kepala;
+  // logo Vynka (pojok kiri atas) -> landing page
+  let logo;
+  if(o.preview&&o.home===false) logo=el("span",{className:"vlogo"});
+  else { logo=el("a",{className:"vlogo",href:o.preview?location.origin+"/":"/",title:"Vynka"}); if(o.preview){ logo.target="_blank"; logo.rel="noopener"; } }
+  logo.append(el("i",{textContent:"V"}),el("b",{textContent:"Vynka"}));
+  const sh=el("button",{className:"cb",textContent:"↗",title:"Bagikan"});
+  if(!o.preview) sh.onclick=async()=>{ try{ if(navigator.share) await navigator.share({title:nama,url}); else { await navigator.clipboard.writeText(url); sh.textContent="✓"; setTimeout(()=>sh.textContent="↗",1500); } }catch(e){} };
+  const top=el("div",{className:"ctop"},logo,sh);
+  let parts;
   if(cover){
-    kepala=el("div",{className:"hero"});
-    if(foto) kepala.style.backgroundImage="url("+JSON.stringify(foto)+")"; else kepala.append(el("span",{className:"hl",textContent:huruf}));
-    const logo=o.preview?el("span",{className:"cb",textContent:"V"}):el("a",{className:"cb",href:"/",textContent:"V",title:"Vynka"});
-    const sh=el("button",{className:"cb",textContent:"↗",title:"Bagikan"});
-    if(!o.preview) sh.onclick=async()=>{ try{ if(navigator.share) await navigator.share({title:nama,url}); else { await navigator.clipboard.writeText(url); sh.textContent="✓"; setTimeout(()=>sh.textContent="↗",1500); } }catch(e){} };
-    kepala.append(el("div",{className:"ctop"},logo,sh));
+    const hero=el("div",{className:"hero"});
+    if(foto) hero.style.backgroundImage="url("+JSON.stringify(foto)+")"; else hero.append(el("span",{className:"hl",textContent:huruf}));
+    hero.append(top); parts=[hero];
   } else {
-    kepala=el("div",{className:"av"});
-    if(foto){ const im=el("img",{src:foto,alt:""}); im.onerror=()=>{ kepala.textContent=huruf; }; kepala.append(im); } else kepala.textContent=huruf;
+    const av=el("div",{className:"av"});
+    if(foto){ const im=el("img",{src:foto,alt:""}); im.onerror=()=>{ av.textContent=huruf; }; av.append(im); } else av.textContent=huruf;
+    parts=[top,av];
   }
   const soc=Object.entries(p.socials||{}).filter(([k,v])=>SOSIAL[k]&&(v||"").trim()).map(([k,v])=>{
     const t=cover?KODE[k]:SOSIAL[k], cls=cover?"sc":"";
@@ -49,5 +55,5 @@ function renderPublik(c, p, links, o={}){
     return a;
   });
   const foot=o.preview?el("span",{className:"pfoot",textContent:"Buat halaman Vynka-mu"}):el("a",{className:"pfoot",href:"/",textContent:"Buat halaman Vynka-mu"});
-  c.replaceChildren(kepala, el("h1",{className:"c nm",textContent:nama}), el("p",{className:"bio c",textContent:p.bio||""}), ...(soc.length?[el("div",{className:"soc"},...soc)]:[]), ...ls, foot);
+  c.replaceChildren(...parts, el("h1",{className:"c nm",textContent:nama}), el("p",{className:"bio c",textContent:p.bio||""}), ...(soc.length?[el("div",{className:"soc"},...soc)]:[]), ...ls, foot);
 }
