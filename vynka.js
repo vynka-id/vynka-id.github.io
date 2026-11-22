@@ -11,6 +11,8 @@ const RESERVED = ["dashboard","login","register","daftar","masuk","admin","api",
 const hexOf = t => WARNA[t] || (/^#[0-9a-f]{6}$/i.test(t||"") ? t : WARNA.hijau);
 const onOf = h => { const n=parseInt(h.slice(1),16), r=n>>16, g=(n>>8)&255, b=n&255; return (r*299+g*587+b*114)/1000>150 ? "#0f172a" : "#fff"; };
 const setTheme = t => { const h=hexOf(t), s=document.documentElement.style; s.setProperty("--accent",h); s.setProperty("--on",onOf(h)); };
+const LOGO='<svg viewBox="0 0 48 48" aria-hidden="true"><g transform="translate(19 25) rotate(-22)"><rect x="-3.6" y="-14" width="7.2" height="28" rx="3.6" fill="#fff"/></g><g transform="translate(29 25) rotate(22)"><rect x="-3.6" y="-14" width="7.2" height="28" rx="3.6" fill="none" stroke="#fff" stroke-width="2.6"/></g><path class="sp" d="M41 5 L42 7 L44 8 L42 9 L41 11 L40 9 L38 8 L40 7 Z" fill="#fff"/></svg>';
+function logoEl(tag="span",cls=""){ const e=document.createElement(tag); e.className=cls; e.innerHTML=LOGO; return e; }
 function fixUrl(u){ u=(u||"").trim(); if(!u) return "#"; if(/^(https?:|mailto:|tel:)/i.test(u)) return u; if(/^[a-z][a-z0-9+.-]*:/i.test(u)) return "#"; return "https://"+u; }
 function socUrl(k,v){ v=(v||"").trim(); if(!v) return ""; if(k==="email") return "mailto:"+v; if(k==="whatsapp"&&/^[0-9+ ]+$/.test(v)) return "https://wa.me/"+v.replace(/\D/g,""); return fixUrl(v); }
 function el(t, p={}, ...c){ const e=document.createElement(t); Object.assign(e,p); c.forEach(x=>e.append(x)); return e; }
@@ -26,7 +28,7 @@ function renderPublik(c, p, links, o={}){
   let logo;
   if(o.preview&&o.home===false) logo=el("span",{className:"vlogo"});
   else { logo=el("a",{className:"vlogo",href:o.preview?location.origin+"/":"/",title:"Vynka"}); if(o.preview){ logo.target="_blank"; logo.rel="noopener"; } }
-  logo.append(el("i",{textContent:"V"}),el("b",{textContent:"Vynka"}));
+  logo.append(logoEl("i"),el("b",{textContent:"Vynka"}));
   const sh=el("button",{className:"cb",textContent:"↗",title:"Bagikan"});
   if(!o.preview) sh.onclick=async()=>{ try{ if(navigator.share) await navigator.share({title:nama,url}); else { await navigator.clipboard.writeText(url); sh.textContent="✓"; setTimeout(()=>sh.textContent="↗",1500); } }catch(e){} };
   const top=el("div",{className:"ctop"},logo,sh);
