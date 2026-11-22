@@ -57,6 +57,12 @@ input{border-radius:12px}
 .prev .lk{padding:11px;font-size:14px;margin-top:9px}
 .prev .av{width:64px;height:64px;font-size:26px}.prev h1{font-size:18px}.prev .bio{font-size:13px}
 .sbar{position:sticky;bottom:var(--navh);background:var(--card);border:1px solid var(--line);border-radius:20px;padding:12px 14px;margin-top:16px;display:flex;flex-direction:column;gap:8px;box-shadow:0 12px 30px -14px rgba(0,0,0,.35)}
+.prev[data-tema]{background:var(--pbg)}
+.tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:10px}
+.tt{border:3px solid var(--line);border-radius:16px;padding:10px 10px 12px;background:var(--pbg);color:var(--ptext);text-align:left;display:flex;flex-direction:column;gap:6px;min-height:92px}
+.tt.on{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 30%,transparent)}
+.tt .tn{font-weight:700;font-size:13px}
+.tt i{display:block;height:12px;background:var(--pcard);border:var(--pborder);border-radius:var(--pr);box-shadow:var(--pshadow);backdrop-filter:var(--pblur,none)}
 @media (prefers-color-scheme:dark){
   .shell{background:radial-gradient(900px 500px at 8% -5%,#4c1d9566,transparent 60%),radial-gradient(700px 500px at 100% 0%,#be185d33,transparent 55%),radial-gradient(800px 600px at 50% 110%,#0f766e44,transparent 60%),var(--bg)}
   .stats .stat:nth-child(1){background:#4c1d9566;color:#ddd6fe}.stats .stat:nth-child(2){background:#06503f77;color:#a7f3d0}.stats .stat:nth-child(3){background:#7c2d1266;color:#fed7aa}
@@ -146,7 +152,7 @@ async function simpan(save,status){
   if(L.some(l=>!l.title.trim()||!l.url.trim()||l.url.trim()==="https://")){ status.textContent="Isi judul dan URL semua link, atau hapus yang kosong."; return; }
   save.disabled=true; status.textContent="Menyimpan…";
   try{
-    const f=S.prof; let r=await sb.from("profiles").update({display_name:f.display_name,bio:f.bio,theme:f.theme,font:f.font,btn_style:f.btn_style,avatar_url:f.avatar_url||null,socials:f.socials}).eq("id",S.user.id); if(r.error) throw r.error;
+    const f=S.prof; let r=await sb.from("profiles").update({display_name:f.display_name,bio:f.bio,theme:f.theme,font:f.font,btn_style:f.btn_style,tema:f.tema,avatar_url:f.avatar_url||null,socials:f.socials}).eq("id",S.user.id); if(r.error) throw r.error;
     if(S.deleted.length){ r=await sb.from("links").delete().in("id",S.deleted); if(r.error) throw r.error; S.deleted=[]; }
     const lama=L.map((l,i)=>({l,i})).filter(x=>x.l.id);
     if(lama.length){ const hs=await Promise.all(lama.map(x=>sb.from("links").update({title:x.l.title.trim(),url:x.l.url.trim(),position:x.i}).eq("id",x.l.id))); const bad=hs.find(h=>h.error); if(bad) throw bad.error; }
@@ -160,7 +166,7 @@ async function simpan(save,status){
 // Kerangka halaman edit: kolom kiri + pratinjau kanan + tombol simpan
 function editor(judul,sub,build){
   const status=T("",{style:"min-height:1.4em"}), pvBox=el("div"), prev=el("div",{className:"prev"},pvBox);
-  const pv=()=>renderPublik(pvBox,{...S.p,...S.prof},S.links,{preview:true});
+  const pv=()=>{ prev.dataset.tema=TEMA[S.prof.tema]?S.prof.tema:"klasik"; renderPublik(pvBox,{...S.p,...S.prof},S.links,{preview:true}); };
   const mark=()=>{ S.dirty=true; status.textContent="Ada perubahan yang belum disimpan."; pv(); };
   const save=el("button",{className:"b",textContent:"Simpan perubahan"}); save.onclick=()=>simpan(save,status);
   const {cols,extra}=build(mark);
@@ -198,14 +204,17 @@ function vProfil(){
 function pilihan(key,opsi,mark,gaya){
   const w=el("div",{className:"sw"});
   const tampil=()=>w.replaceChildren(...Object.entries(opsi).map(([v,t])=>{ const b=el("button",{className:"opt"+(S.prof[key]===v?" on":""),textContent:t}); if(gaya) b.style.fontFamily=gaya(v); b.onclick=()=>{ S.prof[key]=v; mark(); tampil(); }; return b; }));
-  tampil(); return w;
+  tampil(); w.tampil=tampil; return w;
 }
 function vTampilan(){
   editor("Tampilan","Atur warna, font, dan bentuk tombol halaman kamu.",mark=>{
     const f=S.prof;
     const sw=el("div",{className:"sw"},...Object.keys(WARNA).map(k=>{ const b=el("button",{title:k}); b.style.background=WARNA[k]; b.onclick=()=>{ f.theme=k; setTheme(k); mark(); col.value=WARNA[k]; }; return b; }));
     const col=el("input",{type:"color",value:hexOf(f.theme),title:"Warna sendiri"}); col.oninput=()=>{ f.theme=col.value; setTheme(col.value); mark(); }; sw.append(col);
-    return {cols:[el("div",{className:"box"},T("Warna utama"),sw,T("Font",{style:"margin-top:8px"}),pilihan("font",FONT_NAMA,mark,v=>FONTS[v]),T("Bentuk tombol",{style:"margin-top:8px"}),pilihan("btn_style",{bulat:"Bulat",kotak:"Kotak",pil:"Pil",isi:"Berwarna"},mark))]};
+    const fp=pilihan("font",FONT_NAMA,mark,v=>FONTS[v]), grid=el("div",{className:"tgrid"});
+    const tg=()=>grid.replaceChildren(...Object.entries(TEMA).map(([k,t])=>{ const b=el("button",{className:"tt"+(f.tema===k?" on":"")},el("span",{className:"tn",textContent:t.n}),el("i"),el("i")); b.dataset.tema=k; b.onclick=()=>{ f.tema=k; f.font=t.font; mark(); tg(); fp.tampil(); }; return b; }));
+    tg();
+    return {cols:[el("div",{className:"box"},T("Tema halaman"),grid,T("Warna utama",{style:"margin-top:8px"}),sw,T("Font",{style:"margin-top:8px"}),fp,T("Bentuk tombol",{style:"margin-top:8px"}),pilihan("btn_style",{bulat:"Ikut tema",kotak:"Kotak",pil:"Pil",isi:"Berwarna"},mark))]};
   });
 }
 
@@ -251,7 +260,7 @@ async function muat(){
   const {data:p}=await sb.from("profiles").select("*").eq("id",S.user.id).maybeSingle();
   if(!p) return buatProfil();
   const {data:ls}=await sb.from("links").select("*").eq("user_id",S.user.id).order("position");
-  S.p=p; S.prof={display_name:p.display_name||"",bio:p.bio||"",theme:p.theme||"hijau",font:p.font||"jakarta",btn_style:p.btn_style||"bulat",avatar_url:p.avatar_url||"",socials:{...(p.socials||{})}};
+  S.p=p; S.prof={display_name:p.display_name||"",bio:p.bio||"",theme:p.theme||"hijau",font:p.font||"jakarta",btn_style:p.btn_style||"bulat",tema:TEMA[p.tema]?p.tema:"klasik",avatar_url:p.avatar_url||"",socials:{...(p.socials||{})}};
   S.links=(ls||[]).map(l=>({id:l.id,title:l.title,url:l.url,clicks:l.clicks})); S.deleted=[]; S.dirty=false;
   setTheme(S.prof.theme);
   const h=location.hash.slice(1); S.view=MENU.flatMap(g=>g[1]).some(x=>x[0]===h)?h:"beranda";
