@@ -92,3 +92,5 @@ body[data-tema]{background:var(--pbg);background-attachment:fixed;color:var(--pt
 .pg .nm{line-height:1.2;padding-bottom:2px;overflow-wrap:anywhere}
 .pg[data-l=cover] .nm{line-height:1.2;padding-bottom:2px;overflow-wrap:anywhere}
 .pg .bio{overflow-wrap:anywhere;line-height:1.5;position:relative;z-index:1}
+
+.pg[data-l=standar] .nm{font-size:22px;letter-spacing:-.3px}
