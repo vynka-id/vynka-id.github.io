@@ -15,7 +15,8 @@
 <script>
 // GitHub Pages menyajikan file ini untuk setiap path yang tidak ada, misalnya /budi
 (async()=>{
-  const tidakAda=()=>app.replaceChildren(el("p",{className:"m c",textContent:"Halaman tidak ditemukan."}), el("p",{className:"c"}, el("a",{className:"back",href:"/",textContent:"Buat halaman Vynka kamu"})));
+  const id_=(()=>{ try{ return localStorage.getItem("vynka_lang")==="id"; }catch(e){ return false; } })();
+  const tidakAda=()=>app.replaceChildren(el("p",{className:"m c",textContent:id_?"Halaman tidak ditemukan.":"Page not found."}), el("p",{className:"c"}, el("a",{className:"back",href:"/",textContent:id_?"Buat halaman Vynka kamu":"Create your own Vynka page"})));
   let u=""; try{ u=decodeURIComponent(location.pathname.split("/").filter(Boolean)[0]||"").toLowerCase(); }catch(e){}
   if(!/^[a-z0-9_]{3,30}$/.test(u)) return tidakAda();
   const {data:p}=await sb.from("profiles").select("*").eq("username",u).maybeSingle();
