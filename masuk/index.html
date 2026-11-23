@@ -66,6 +66,7 @@ h1,h2,.brand2{font-family:Outfit,'Plus Jakarta Sans',sans-serif}
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script src="/config.js"></script>
 <script src="/vynka.js"></script>
+<script src="/demo.js"></script>
 <script src="/i18n.js"></script>
 <script>
 (async()=>{
@@ -74,7 +75,7 @@ h1,h2,.brand2{font-family:Outfit,'Plus Jakarta Sans',sans-serif}
   const $=i=>document.getElementById(i);
   $("lg").innerHTML=LOGO; document.querySelectorAll(".dots span").forEach((e,i)=>{ e.innerHTML=ikon(["instagram","tiktok","youtube"][i]); }); $("pu").textContent=location.host+"/raka";
   const box=el("div"); $("ph").append(box); $("ph").dataset.tema="noir";
-  renderPublik(box,{username:"raka",display_name:"Raka",bio:"Streamer & creator",tema:"noir",layout:"cover",theme:"#d08f78",font:"grotesk",socials:{tiktok:"x",instagram:"x"}},[{title:"Slow flow"},{title:"Online courses"},{title:"Wellness retreats"}],{preview:true,home:false});
+  renderPublik(box,{username:"raka",avatar_url:"demo:raka",display_name:"Raka",bio:"Streamer & creator",tema:"noir",layout:"cover",theme:"#d08f78",font:"grotesk",socials:{tiktok:"x",instagram:"x"}},[{title:"Slow flow"},{title:"Online courses"},{title:"Wellness retreats"}],{preview:true,home:false});
   let daftar=location.hash==="#daftar";
   const mode=d=>{
     daftar=d; $("ttl").dataset.i=d?"au_join":"au_login"; $("sub").dataset.i=d?"au_sub_up":"au_sub_in"; $("go").dataset.i=d?"au_btn_up":"au_btn_in";
