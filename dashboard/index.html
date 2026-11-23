@@ -17,7 +17,8 @@
 .nav{background:none;border:0;text-align:left;padding:10px 14px;border-radius:14px;color:var(--text);font-weight:600;white-space:nowrap;transition:.15s}
 .nav:hover{background:color-mix(in srgb,var(--accent) 12%,transparent);transform:translateX(3px)}
 .nav.on{background:linear-gradient(135deg,var(--accent),color-mix(in srgb,var(--accent) 55%,#ec4899));color:#fff;box-shadow:0 8px 18px -8px var(--accent)}
-.out{margin-top:auto;color:var(--muted)}
+.lsw{margin-top:auto;padding:10px 6px}.out{color:var(--muted)}
+.side .lang{background:#1b2640;border-color:#2b3858}.side .lang button{color:#9fb0cf}.side .lang button.on{color:#fff}
 .main{padding:34px 34px 90px;max-width:1020px;width:100%}
 .hd{margin-bottom:22px}.hd h1{font:800 34px/1.1 Outfit,sans-serif;letter-spacing:-1px}.hd p{margin:0}
 .sec{font:700 22px Outfit,sans-serif;margin:30px 0 14px}
@@ -83,7 +84,7 @@ input{border-radius:12px}
   :root{--navh:84px}
   .shell{grid-template-columns:1fr}
   .side{position:fixed;left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom,0px));top:auto;margin:0;height:auto;flex-direction:row;overflow-x:auto;overflow-y:hidden;z-index:5;padding:8px;border-radius:24px}
-  .me,.grp{display:none}.out{margin-top:0}
+  .me,.grp,.lsw{display:none}
   .main{padding:22px 16px 130px}.hd h1{font-size:28px}
   .edit{grid-template-columns:1fr}.prev{display:none}
   .sbar{bottom:calc(var(--navh) + env(safe-area-inset-bottom,0px))}
@@ -95,73 +96,79 @@ input{border-radius:12px}
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script src="/config.js"></script>
 <script src="/vynka.js"></script>
+<script src="/i18n.js"></script>
 <script>
+const EN={"Utama": "Main", "Bertumbuh": "Growth", "Akun": "Account", "🏠 Beranda": "🏠 Home", "🔗 Link": "🔗 Links", "🙂 Profil": "🙂 Profile", "🎨 Tampilan": "🎨 Appearance", "📊 Statistik": "📊 Statistics", "📱 Kode QR": "📱 QR code", "⚙️ Pengaturan": "⚙️ Settings", "🚪 Keluar": "🚪 Log out", "Tersalin ✓": "Copied ✓", "Salin link ini:": "Copy this link:", "Ada perubahan yang belum disimpan. Tetap keluar?": "You have unsaved changes. Log out anyway?", "Salin link": "Copy link", "Buka halaman": "Open page", "Ini ringkasan halaman Vynka kamu.": "Here is a summary of your Vynka page.", "Alamat halaman kamu": "Your page address", "Pengunjung": "Visitors", "Total klik": "Total clicks", "Rasio klik": "Click rate", "Mulai cepat": "Quick start", "Tambah link": "Add link", "Kelola daftar link": "Manage your links", "Lengkapi profil": "Complete your profile", "Foto, bio, ikon sosial": "Photo, bio, social icons", "Ganti tampilan": "Change appearance", "Warna, font, bentuk tombol": "Colors, fonts, button shapes", "Kode QR": "QR code", "Untuk kartu atau poster": "For cards or posters", "Link terpopuler": "Top links", " klik": " clicks", "Belum ada link. Buka menu Link untuk menambahkan.": "No links yet. Open the Links menu to add some.", "Statistik": "Statistics", "Jumlah pengunjung dan klik seluruh waktu.": "Total visitors and clicks of all time.", "Pengunjung belum tercatat. Jalankan tambahan2.sql di Supabase.": "Visitors are not tracked yet. Run tambahan2.sql in Supabase.", "Klik per link": "Clicks per link", "Belum ada link.": "No links yet.", "Unduh PNG": "Download PNG", "Pindai untuk membuka halaman kamu. Cocok untuk kartu nama, stiker, atau poster.": "Scan to open your page. Great for business cards, stickers, or posters.", "Pustaka QR gagal dimuat. Muat ulang halaman.": "QR library failed to load. Reload the page.", "Isi judul dan URL semua link, atau hapus yang kosong.": "Fill in the title and URL of every link, or delete the empty ones.", "Menyimpan…": "Saving…", "Tersimpan ✓ Perubahan sudah tampil di halaman publik.": "Saved ✓ Your changes are now live on your public page.", "Gagal menyimpan: ": "Failed to save: ", "Ada perubahan yang belum disimpan.": "You have unsaved changes.", "Simpan perubahan": "Save changes", "Link": "Links", "Tambah, ubah, dan atur urutan link kamu.": "Add, edit, and reorder your links.", "Judul, contoh: Instagram": "Title, e.g. Instagram", "Naik": "Move up", "Turun": "Move down", "Hapus": "Delete", "+ Tambah link": "+ Add link", "Gagal memproses gambar": "Failed to process image", "File bukan gambar yang valid": "File is not a valid image", "Klik atau seret foto ke sini": "Click or drag a photo here", "Hapus foto": "Remove photo", "File harus berupa gambar.": "File must be an image.", "File terlalu besar (maks 10 MB).": "File is too large (max 10 MB).", "Gagal mengunggah: ": "Upload failed: ", "Profil": "Profile", "Nama, bio, foto, dan ikon sosial yang tampil di halaman kamu.": "Name, bio, photo, and social icons shown on your page.", "Klik atau seret foto ke lingkaran. JPG, PNG, atau WebP; otomatis dikecilkan. Klik Simpan perubahan agar tampil di halaman publik.": "Click or drag a photo onto the circle. JPG, PNG, or WebP; resized automatically. Click Save changes to publish it.", "Nama": "Name", "Bio singkat": "Short bio", "Foto profil": "Profile photo", "Ikon sosial": "Social icons", "Tampilan": "Appearance", "Atur warna, font, dan bentuk tombol halaman kamu.": "Set the colors, fonts, and button shapes of your page.", "Warna sendiri": "Custom color", "Standar": "Standard", "Cover foto": "Cover photo", "Tema halaman": "Page theme", "Tata letak": "Layout", "Warna utama": "Main color", "Bentuk tombol": "Button shape", "Ikut tema": "Follow theme", "Kotak": "Square", "Pil": "Pill", "Berwarna": "Filled", "Kata sandi baru (min. 6 karakter)": "New password (min. 6 characters)", "Ganti username": "Change username", "Ganti kata sandi": "Change password", "Username 3–30 karakter: huruf kecil, angka, atau _.": "Username must be 3–30 characters: lowercase letters, numbers, or _.", "Username ini dicadangkan. Pilih yang lain.": "This username is reserved. Pick another one.", "Username belum berubah.": "Username has not changed.", "Link lama ": "The old link ", " akan berhenti berfungsi. Lanjutkan?": " will stop working. Continue?", "Username sudah dipakai.": "Username is already taken.", "Berhasil. Link baru: ": "Done. New link: ", "Minimal 6 karakter.": "At least 6 characters.", "Kata sandi berhasil diganti.": "Password changed successfully.", "Pengaturan": "Settings", "Kelola akun kamu.": "Manage your account.", "Menentukan alamat halaman publik kamu.": "Determines the address of your public page.", "Kata sandi": "Password", "Email akun: ": "Account email: ", "username (huruf kecil, angka, _)": "username (lowercase, numbers, _)", "Buat halaman": "Create page", "Pilih username": "Choose a username", "Ini akan jadi alamat halaman kamu: ": "This will be your page address: ", "Bahasa": "Language", "Pilih bahasa tampilan dashboard.": "Choose the dashboard language."};
+const L=s=>LANG==="id"?s:(EN[s]||s);
+const langSw=()=>{ const w=el("div",{className:"lang"}); [["en","EN"],["id","ID"]].forEach(([l,t])=>{ const b=el("button",{textContent:t,className:LANG===l?"on":""}); b.onclick=()=>setLang(l); w.append(b); }); return w; };
+document.addEventListener("langchange",()=>{ if(S.p) render(); });
 const S={view:"beranda",p:null,prof:null,links:[],deleted:[],oldFotos:[],dirty:false,user:null};
 const MENU=[["Utama",[["beranda","🏠 Beranda"],["link","🔗 Link"],["profil","🙂 Profil"],["tampilan","🎨 Tampilan"]]],["Bertumbuh",[["statistik","📊 Statistik"],["qr","📱 Kode QR"]]],["Akun",[["pengaturan","⚙️ Pengaturan"]]]];
 window.onbeforeunload=e=>{ if(S.dirty){ e.preventDefault(); e.returnValue=""; } };
+const greet=()=>{ const h=new Date().getHours(); return LANG==="id"?"Selamat "+(h<11?"pagi":h<15?"siang":h<18?"sore":"malam"):"Good "+(h<12?"morning":h<18?"afternoon":"evening"); };
 const sapa=()=>{const h=new Date().getHours();return h<11?"pagi":h<15?"siang":h<18?"sore":"malam";};
 const pubUrl=()=>location.origin+"/"+S.p.username;
 const totalKlik=()=>S.links.reduce((a,l)=>a+(l.clicks||0),0);
 const T=(t,x={})=>el("div",{className:"m",textContent:t,...x});
 
 async function salin(btn){
-  try{ await navigator.clipboard.writeText(pubUrl()); const t=btn.textContent; btn.textContent="Tersalin ✓"; setTimeout(()=>btn.textContent=t,1800); }
-  catch(e){ prompt("Salin link ini:",pubUrl()); }
+  try{ await navigator.clipboard.writeText(pubUrl()); const t=btn.textContent; btn.textContent=L("Tersalin ✓"); setTimeout(()=>btn.textContent=t,1800); }
+  catch(e){ prompt(L("Salin link ini:"),pubUrl()); }
 }
 async function keluar(){
-  if(S.dirty && !confirm("Ada perubahan yang belum disimpan. Tetap keluar?")) return;
+  if(S.dirty && !confirm(L("Ada perubahan yang belum disimpan. Tetap keluar?"))) return;
   S.dirty=false; await sb.auth.signOut(); location.replace("/");
 }
 function go(v){ S.view=v; history.replaceState(null,"","#"+v); render(); window.scrollTo(0,0); }
 
 function shell(...main){
-  const out=el("button",{className:"nav out",textContent:"🚪 Keluar"}); out.onclick=keluar;
-  const nav=[]; MENU.forEach(([g,its])=>{ nav.push(el("div",{className:"grp",textContent:g})); its.forEach(([k,t])=>{ const b=el("button",{className:"nav"+(S.view===k?" on":""),textContent:t}); b.onclick=()=>go(k); nav.push(b); }); });
-  app.replaceChildren(el("div",{className:"shell"},el("nav",{className:"side"},el("div",{className:"me"},logoEl("span","mini"),el("span",{textContent:"Vynka"})),...nav,out),el("main",{className:"main"},...main)));
+  const out=el("button",{className:"nav out",textContent:L("🚪 Keluar")}); out.onclick=keluar;
+  const nav=[]; MENU.forEach(([g,its])=>{ nav.push(el("div",{className:"grp",textContent:L(g)})); its.forEach(([k,t])=>{ const b=el("button",{className:"nav"+(S.view===k?" on":""),textContent:L(t)}); b.onclick=()=>go(k); nav.push(b); }); });
+  app.replaceChildren(el("div",{className:"shell"},el("nav",{className:"side"},el("div",{className:"me"},logoEl("span","mini"),el("span",{textContent:"Vynka"})),...nav,el("div",{className:"lsw"},langSw()),out),el("main",{className:"main"},...main)));
 }
 const hd=(j,s)=>el("div",{className:"hd"},el("h1",{textContent:j}),...(s?[T(s)]:[]));
 
 function vBeranda(){
   const v=S.p.views||0, k=totalKlik(), top=[...S.links].sort((a,b)=>b.clicks-a.clicks).slice(0,3);
-  const cp=el("button",{className:"b",textContent:"Salin link",style:"padding:9px 16px"}); cp.onclick=()=>salin(cp);
-  const buka=el("a",{className:"g",textContent:"Buka halaman",href:pubUrl(),target:"_blank",style:"text-decoration:none;color:var(--text)"});
+  const cp=el("button",{className:"b",textContent:L("Salin link"),style:"padding:9px 16px"}); cp.onclick=()=>salin(cp);
+  const buka=el("a",{className:"g",textContent:L("Buka halaman"),href:pubUrl(),target:"_blank",style:"text-decoration:none;color:var(--text)"});
   const tile=(j,s,v)=>{ const b=el("button",{className:"tile"},j,el("small",{textContent:s})); b.onclick=()=>go(v); return b; };
-  shell(hd("Selamat "+sapa()+", "+(S.prof.display_name||S.p.username)+" 👋","Ini ringkasan halaman Vynka kamu."),
-    el("div",{className:"panel"},el("div",{},T("Alamat halaman kamu"),el("b",{textContent:location.host+"/"+S.p.username})),el("div",{className:"row"},cp,buka)),
+  shell(hd(greet()+", "+(S.prof.display_name||S.p.username)+" 👋",L("Ini ringkasan halaman Vynka kamu.")),
+    el("div",{className:"panel"},el("div",{},T(L("Alamat halaman kamu")),el("b",{textContent:location.host+"/"+S.p.username})),el("div",{className:"row"},cp,buka)),
     el("div",{className:"stats"},
-      el("div",{className:"stat"},T("Pengunjung"),el("b",{textContent:String(v)})),
-      el("div",{className:"stat"},T("Total klik"),el("b",{textContent:String(k)})),
-      el("div",{className:"stat"},T("Rasio klik"),el("b",{textContent:v?Math.round(k/v*100)+"%":"–"}))),
-    el("h2",{className:"sec",textContent:"Mulai cepat"}),
-    el("div",{className:"tiles"},tile("Tambah link","Kelola daftar link","link"),tile("Lengkapi profil","Foto, bio, ikon sosial","profil"),tile("Ganti tampilan","Warna, font, bentuk tombol","tampilan"),tile("Kode QR","Untuk kartu atau poster","qr")),
-    el("h2",{className:"sec",textContent:"Link terpopuler"}),
-    ...(top.length?top.map(l=>el("div",{className:"top3"},el("span",{textContent:l.title}),T(l.clicks+" klik"))):[T("Belum ada link. Buka menu Link untuk menambahkan.")]));
+      el("div",{className:"stat"},T(L("Pengunjung")),el("b",{textContent:String(v)})),
+      el("div",{className:"stat"},T(L("Total klik")),el("b",{textContent:String(k)})),
+      el("div",{className:"stat"},T(L("Rasio klik")),el("b",{textContent:v?Math.round(k/v*100)+"%":"–"}))),
+    el("h2",{className:"sec",textContent:L("Mulai cepat")}),
+    el("div",{className:"tiles"},tile(L("Tambah link"),L("Kelola daftar link"),"link"),tile(L("Lengkapi profil"),L("Foto, bio, ikon sosial"),"profil"),tile(L("Ganti tampilan"),L("Warna, font, bentuk tombol"),"tampilan"),tile(L("Kode QR"),L("Untuk kartu atau poster"),"qr")),
+    el("h2",{className:"sec",textContent:L("Link terpopuler")}),
+    ...(top.length?top.map(l=>el("div",{className:"top3"},el("span",{textContent:l.title}),T(l.clicks+L(" klik")))):[T(L("Belum ada link. Buka menu Link untuk menambahkan."))]));
 }
 
 function vStat(){
   const v=S.p.views, k=totalKlik(), max=Math.max(1,...S.links.map(l=>l.clicks||0));
-  shell(hd("Statistik","Jumlah pengunjung dan klik seluruh waktu."),
+  shell(hd(L("Statistik"),L("Jumlah pengunjung dan klik seluruh waktu.")),
     el("div",{className:"stats",style:"margin-top:0"},
-      el("div",{className:"stat"},T("Pengunjung"),el("b",{textContent:String(v||0)})),
-      el("div",{className:"stat"},T("Total klik"),el("b",{textContent:String(k)})),
-      el("div",{className:"stat"},T("Rasio klik"),el("b",{textContent:v?Math.round(k/v*100)+"%":"–"}))),
-    ...(v===undefined?[T("Pengunjung belum tercatat. Jalankan tambahan2.sql di Supabase.",{style:"margin-top:12px"})]:[]),
-    el("h2",{className:"sec",textContent:"Klik per link"}),
-    ...(S.links.length?S.links.map(l=>{ const b=el("div",{className:"bar1"}); b.style.width=Math.round((l.clicks||0)/max*100)+"%"; return el("div",{className:"top3",style:"flex-direction:column;gap:0"},el("div",{style:"display:flex;justify-content:space-between"},el("span",{textContent:l.title}),T(l.clicks+" klik")),b); }):[T("Belum ada link.")]));
+      el("div",{className:"stat"},T(L("Pengunjung")),el("b",{textContent:String(v||0)})),
+      el("div",{className:"stat"},T(L("Total klik")),el("b",{textContent:String(k)})),
+      el("div",{className:"stat"},T(L("Rasio klik")),el("b",{textContent:v?Math.round(k/v*100)+"%":"–"}))),
+    ...(v===undefined?[T(L("Pengunjung belum tercatat. Jalankan tambahan2.sql di Supabase."),{style:"margin-top:12px"})]:[]),
+    el("h2",{className:"sec",textContent:L("Klik per link")}),
+    ...(S.links.length?S.links.map(l=>{ const b=el("div",{className:"bar1"}); b.style.width=Math.round((l.clicks||0)/max*100)+"%"; return el("div",{className:"top3",style:"flex-direction:column;gap:0"},el("div",{style:"display:flex;justify-content:space-between"},el("span",{textContent:l.title}),T(l.clicks+L(" klik"))),b); }):[T(L("Belum ada link."))]));
 }
 
 function vQR(){
   const qrd=el("div",{style:"background:#fff;padding:14px;border-radius:12px;width:fit-content"});
-  const dl=el("a",{className:"g",textContent:"Unduh PNG",download:"vynka-qr.png",style:"text-decoration:none;color:var(--text);width:fit-content"});
-  shell(hd("Kode QR","Pindai untuk membuka halaman kamu. Cocok untuk kartu nama, stiker, atau poster."),el("div",{className:"box",style:"width:fit-content"},qrd,T(pubUrl()),dl));
+  const dl=el("a",{className:"g",textContent:L("Unduh PNG"),download:"vynka-qr.png",style:"text-decoration:none;color:var(--text);width:fit-content"});
+  shell(hd(L("Kode QR"),L("Pindai untuk membuka halaman kamu. Cocok untuk kartu nama, stiker, atau poster.")),el("div",{className:"box",style:"width:fit-content"},qrd,T(pubUrl()),dl));
   if(window.QRCode){ new QRCode(qrd,{text:pubUrl(),width:200,height:200}); setTimeout(()=>{ const c=qrd.querySelector("canvas"); if(c) dl.href=c.toDataURL("image/png"); },200); }
-  else qrd.textContent="Pustaka QR gagal dimuat. Muat ulang halaman.";
+  else qrd.textContent=L("Pustaka QR gagal dimuat. Muat ulang halaman.");
 }
 
 async function simpan(save,status){
   const L=S.links;
-  if(L.some(l=>!l.title.trim()||!l.url.trim()||l.url.trim()==="https://")){ status.textContent="Isi judul dan URL semua link, atau hapus yang kosong."; return; }
-  save.disabled=true; status.textContent="Menyimpan…";
+  if(L.some(l=>!l.title.trim()||!l.url.trim()||l.url.trim()==="https://")){ status.textContent=L("Isi judul dan URL semua link, atau hapus yang kosong."); return; }
+  save.disabled=true; status.textContent=L("Menyimpan…");
   try{
     const f=S.prof; let r=await sb.from("profiles").update({display_name:f.display_name,bio:f.bio,theme:f.theme,font:f.font,btn_style:f.btn_style,tema:f.tema,layout:f.layout,avatar_url:f.avatar_url||null,socials:f.socials}).eq("id",S.user.id); if(r.error) throw r.error;
     if(S.deleted.length){ r=await sb.from("links").delete().in("id",S.deleted); if(r.error) throw r.error; S.deleted=[]; }
@@ -170,8 +177,8 @@ async function simpan(save,status){
     const baru=L.map((l,i)=>({l,i})).filter(x=>!x.l.id);
     if(baru.length){ r=await sb.from("links").insert(baru.map(x=>({user_id:S.user.id,title:x.l.title.trim(),url:x.l.url.trim(),image_url:(x.l.image_url||"").trim()||null,position:x.i}))).select(); if(r.error) throw r.error; r.data.forEach((row,k)=>{ baru[k].l.id=row.id; }); }
     if(S.oldFotos.length){ const cur=[f.avatar_url,...L.map(l=>l.image_url)].join(" "); const hp=S.oldFotos.filter(x=>!cur.includes(x)); if(hp.length) sb.storage.from("avatars").remove(hp); S.oldFotos=[]; }
-      S.dirty=false; S.p={...S.p,...f}; status.textContent="Tersimpan ✓ Perubahan sudah tampil di halaman publik.";
-  }catch(e){ status.textContent="Gagal menyimpan: "+(e.message||e); }
+      S.dirty=false; S.p={...S.p,...f}; status.textContent=L("Tersimpan ✓ Perubahan sudah tampil di halaman publik.");
+  }catch(e){ status.textContent=L("Gagal menyimpan: ")+(e.message||e); }
   save.disabled=false;
 }
 
@@ -179,28 +186,28 @@ async function simpan(save,status){
 function editor(judul,sub,build){
   const status=T("",{style:"min-height:1.4em"}), pvBox=el("div"), prev=el("div",{className:"prev"},pvBox);
   const pv=()=>{ prev.dataset.tema=TEMA[S.prof.tema]?S.prof.tema:"klasik"; renderPublik(pvBox,{...S.p,...S.prof},S.links,{preview:true}); };
-  const mark=()=>{ S.dirty=true; status.textContent="Ada perubahan yang belum disimpan."; pv(); };
-  const save=el("button",{className:"b",textContent:"Simpan perubahan"}); save.onclick=()=>simpan(save,status);
+  const mark=()=>{ S.dirty=true; status.textContent=L("Ada perubahan yang belum disimpan."); pv(); };
+  const save=el("button",{className:"b",textContent:L("Simpan perubahan")}); save.onclick=()=>simpan(save,status);
   const {cols,extra}=build(mark);
   pv();
   shell(hd(judul,sub),el("div",{className:"edit"},el("div",{},...cols,el("div",{className:"sbar"},status,el("div",{className:"row"},...(extra||[]),el("div",{style:"flex:1"}),save))),prev));
 }
 
 function vLink(){
-  editor("Link","Tambah, ubah, dan atur urutan link kamu.",mark=>{
+  editor(L("Link"),L("Tambah, ubah, dan atur urutan link kamu."),mark=>{
     const box=el("div");
     const gambar=()=>box.replaceChildren(...S.links.map((l,i)=>{
-      const t=el("input",{value:l.title,placeholder:"Judul, contoh: Instagram"}), u=el("input",{value:l.url,placeholder:"https://..."});
+      const t=el("input",{value:l.title,placeholder:L("Judul, contoh: Instagram")}), u=el("input",{value:l.url,placeholder:"https://..."});
       const pk=fotoPicker({url:l.image_url,huruf:"＋",ukuran:58,bulat:false,maks:300,pre:"link",onChange:v=>{ catatFoto(l.image_url); l.image_url=v; mark(); }});
       t.oninput=()=>{ l.title=t.value; mark(); }; u.oninput=()=>{ l.url=u.value; mark(); };
-      const up=el("button",{className:"g",textContent:"↑",title:"Naik"}), dn=el("button",{className:"g",textContent:"↓",title:"Turun"}), del=el("button",{className:"g",textContent:"✕",title:"Hapus"});
+      const up=el("button",{className:"g",textContent:"↑",title:L("Naik")}), dn=el("button",{className:"g",textContent:"↓",title:L("Turun")}), del=el("button",{className:"g",textContent:"✕",title:L("Hapus")});
       up.onclick=()=>{ if(i>0){ [S.links[i-1],S.links[i]]=[S.links[i],S.links[i-1]]; mark(); gambar(); } };
       dn.onclick=()=>{ if(i<S.links.length-1){ [S.links[i+1],S.links[i]]=[S.links[i],S.links[i+1]]; mark(); gambar(); } };
       del.onclick=()=>{ catatFoto(l.image_url); if(l.id) S.deleted.push(l.id); S.links.splice(i,1); mark(); gambar(); };
-      return el("div",{className:"box"},el("div",{className:"row"},pk.el,el("div",{className:"f"},t,u),up,dn,del),T(l.clicks+" klik"));
+      return el("div",{className:"box"},el("div",{className:"row"},pk.el,el("div",{className:"f"},t,u),up,dn,del),T(l.clicks+L(" klik")));
     }));
     gambar();
-    const add=el("button",{className:"g",textContent:"+ Tambah link"});
+    const add=el("button",{className:"g",textContent:L("+ Tambah link")});
     add.onclick=()=>{ S.links.push({title:"",url:"",clicks:0}); mark(); gambar(); const ins=box.querySelectorAll("input"); if(ins.length>1) ins[ins.length-2].focus(); };
     return {cols:[box],extra:[add]};
   });
@@ -210,31 +217,31 @@ function vLink(){
 function kecil(file,maks=900){
   return new Promise((ok,gagal)=>{
     const img=new Image(), u=URL.createObjectURL(file);
-    img.onload=()=>{ const r=Math.min(1,maks/Math.max(img.width,img.height)), c=document.createElement("canvas"); c.width=Math.round(img.width*r); c.height=Math.round(img.height*r); c.getContext("2d").drawImage(img,0,0,c.width,c.height); URL.revokeObjectURL(u); c.toBlob(b=>b?ok(b):gagal(new Error("Gagal memproses gambar")),"image/jpeg",0.85); };
-    img.onerror=()=>gagal(new Error("File bukan gambar yang valid")); img.src=u;
+    img.onload=()=>{ const r=Math.min(1,maks/Math.max(img.width,img.height)), c=document.createElement("canvas"); c.width=Math.round(img.width*r); c.height=Math.round(img.height*r); c.getContext("2d").drawImage(img,0,0,c.width,c.height); URL.revokeObjectURL(u); c.toBlob(b=>b?ok(b):gagal(new Error(L("Gagal memproses gambar"))),"image/jpeg",0.85); };
+    img.onerror=()=>gagal(new Error(L("File bukan gambar yang valid"))); img.src=u;
   });
 }
 
 function catatFoto(u){ const m=(u||"").match(/\/avatars\/([^?]+)/); if(m&&m[1].startsWith(S.user.id+"/")) S.oldFotos.push(decodeURIComponent(m[1])); }
 // Kotak foto modern: klik atau seret gambar, langsung terunggah
 function fotoPicker({url,huruf,ukuran,bulat,maks,pre,onChange}){
-  const lab=el("label",{className:"fp"+(bulat?" round":""),title:"Klik atau seret foto ke sini"});
+  const lab=el("label",{className:"fp"+(bulat?" round":""),title:L("Klik atau seret foto ke sini")});
   lab.style.width=lab.style.height=ukuran+"px";
   const file=el("input",{type:"file",accept:"image/*",style:"display:none"});
   const isi=el("span",{className:"fpi"}), cam=el("span",{className:"fpc",textContent:"📷"});
-  const x=el("button",{className:"fpx",textContent:"✕",title:"Hapus foto",type:"button"});
+  const x=el("button",{className:"fpx",textContent:"✕",title:L("Hapus foto"),type:"button"});
   let cur=url||"";
   const tampil=()=>{ lab.classList.toggle("ada",!!cur); x.classList.toggle("on",!!cur); isi.replaceChildren(cur?el("img",{src:cur,alt:""}):el("span",{textContent:huruf})); };
   const kirim=async fl=>{
     if(!fl) return;
-    if(!fl.type.startsWith("image/")) return alert("File harus berupa gambar.");
-    if(fl.size>10*1024*1024) return alert("File terlalu besar (maks 10 MB).");
+    if(!fl.type.startsWith("image/")) return alert(L("File harus berupa gambar."));
+    if(fl.size>10*1024*1024) return alert(L("File terlalu besar (maks 10 MB)."));
     lab.classList.add("load");
     try{
       const blob=await kecil(fl,maks), path=S.user.id+"/"+pre+"-"+Date.now()+Math.floor(Math.random()*1000)+".jpg";
       const r=await sb.storage.from("avatars").upload(path,blob,{contentType:"image/jpeg",cacheControl:"31536000"}); if(r.error) throw r.error;
       cur=sb.storage.from("avatars").getPublicUrl(path).data.publicUrl; onChange(cur); tampil();
-    }catch(e){ alert("Gagal mengunggah: "+(e.message||e)); }
+    }catch(e){ alert(L("Gagal mengunggah: ")+(e.message||e)); }
     lab.classList.remove("load"); file.value="";
   };
   file.onchange=()=>kirim(file.files[0]);
@@ -247,12 +254,12 @@ function fotoPicker({url,huruf,ukuran,bulat,maks,pre,onChange}){
 }
 
 function vProfil(){
-  editor("Profil","Nama, bio, foto, dan ikon sosial yang tampil di halaman kamu.",mark=>{
+  editor(L("Profil"),L("Nama, bio, foto, dan ikon sosial yang tampil di halaman kamu."),mark=>{
     const f=S.prof, inp=(k,ph,max)=>{ const i=el("input",{value:f[k]||"",placeholder:ph,maxLength:max}); i.oninput=()=>{ f[k]=i.value; mark(); }; return i; };
-    const soc=Object.keys(SOSIAL).map(k=>{ const i=el("input",{value:f.socials[k]||"",placeholder:k==="email"?"nama@email.com":k==="whatsapp"?"628123456789":"Link "+SOSIAL[k]}); i.oninput=()=>{ if(i.value.trim()) f.socials[k]=i.value; else delete f.socials[k]; mark(); }; return el("div",{className:"row"},el("span",{className:"m",style:"width:88px",textContent:SOSIAL[k]}),i); });
+    const soc=Object.keys(SOSIAL).map(k=>{ const i=el("input",{value:f.socials[k]||"",placeholder:k==="email"?"nama@email.com":k==="whatsapp"?"628123456789":"Link "+SOSIAL[k]}); i.oninput=()=>{ if(i.value.trim()) f.socials[k]=i.value; else delete f.socials[k]; mark(); }; return el("div",{className:"row"},(()=>{ const sp=el("span",{className:"m",style:"width:112px;display:flex;align-items:center;gap:8px;flex:none"}), ic=el("span",{style:"display:inline-flex"}); ic.innerHTML=ikon(k,18); sp.append(ic,SOSIAL[k]); return sp; })(),i); });
     const pk=fotoPicker({url:f.avatar_url,huruf:(f.display_name||S.p.username||"?").charAt(0).toUpperCase(),ukuran:96,bulat:true,maks:900,pre:"avatar",onChange:v=>{ catatFoto(f.avatar_url); f.avatar_url=v; mark(); }});
-    const fs=T("Klik atau seret foto ke lingkaran. JPG, PNG, atau WebP; otomatis dikecilkan. Klik Simpan perubahan agar tampil di halaman publik.");
-    return {cols:[el("div",{className:"box"},T("Nama"),inp("display_name","Nama",40),T("Bio"),inp("bio","Bio singkat",120),T("Foto profil"),el("div",{className:"row",style:"gap:14px;align-items:center"},pk.el,fs)),el("h2",{className:"sec",textContent:"Ikon sosial"}),el("div",{className:"box"},...soc)]};
+    const fs=T(L("Klik atau seret foto ke lingkaran. JPG, PNG, atau WebP; otomatis dikecilkan. Klik Simpan perubahan agar tampil di halaman publik."));
+    return {cols:[el("div",{className:"box"},T(L("Nama")),inp("display_name",L("Nama"),40),T("Bio"),inp("bio",L("Bio singkat"),120),T(L("Foto profil")),el("div",{className:"row",style:"gap:14px;align-items:center"},pk.el,fs)),el("h2",{className:"sec",textContent:L("Ikon sosial")}),el("div",{className:"box"},...soc)]};
   });
 }
 
@@ -262,53 +269,54 @@ function pilihan(key,opsi,mark,gaya){
   tampil(); w.tampil=tampil; return w;
 }
 function vTampilan(){
-  editor("Tampilan","Atur warna, font, dan bentuk tombol halaman kamu.",mark=>{
+  editor(L("Tampilan"),L("Atur warna, font, dan bentuk tombol halaman kamu."),mark=>{
     const f=S.prof;
     const sw=el("div",{className:"sw"},...Object.keys(WARNA).map(k=>{ const b=el("button",{title:k}); b.style.background=WARNA[k]; b.onclick=()=>{ f.theme=k; setTheme(k); mark(); col.value=WARNA[k]; }; return b; }));
-    const col=el("input",{type:"color",value:hexOf(f.theme),title:"Warna sendiri"}); col.oninput=()=>{ f.theme=col.value; setTheme(col.value); mark(); }; sw.append(col);
-    const fp=pilihan("font",FONT_NAMA,mark,v=>FONTS[v]), grid=el("div",{className:"tgrid"}), lp=pilihan("layout",{standar:"Standar",cover:"Cover foto"},mark);
+    const col=el("input",{type:"color",value:hexOf(f.theme),title:L("Warna sendiri")}); col.oninput=()=>{ f.theme=col.value; setTheme(col.value); mark(); }; sw.append(col);
+    const fp=pilihan("font",FONT_NAMA,mark,v=>FONTS[v]), grid=el("div",{className:"tgrid"}), lp=pilihan("layout",{standar:L("Standar"),cover:L("Cover foto")},mark);
     const tg=()=>grid.replaceChildren(...Object.entries(TEMA).map(([k,t])=>{ const b=el("button",{className:"tt"+(f.tema===k?" on":"")},el("span",{className:"tn",textContent:t.n}),el("i"),el("i")); b.dataset.tema=k; b.onclick=()=>{ f.tema=k; f.font=t.font; f.layout=t.layout||"standar"; if(t.acc){ f.theme=t.acc; setTheme(t.acc); col.value=t.acc; } mark(); tg(); fp.tampil(); lp.tampil(); }; return b; }));
     tg();
-    return {cols:[el("div",{className:"box"},T("Tema halaman"),grid,T("Tata letak",{style:"margin-top:8px"}),lp,T("Warna utama",{style:"margin-top:8px"}),sw,T("Font",{style:"margin-top:8px"}),fp,T("Bentuk tombol",{style:"margin-top:8px"}),pilihan("btn_style",{bulat:"Ikut tema",kotak:"Kotak",pil:"Pil",isi:"Berwarna"},mark))]};
+    return {cols:[el("div",{className:"box"},T(L("Tema halaman")),grid,T(L("Tata letak"),{style:"margin-top:8px"}),lp,T(L("Warna utama"),{style:"margin-top:8px"}),sw,T("Font",{style:"margin-top:8px"}),fp,T(L("Bentuk tombol"),{style:"margin-top:8px"}),pilihan("btn_style",{bulat:L("Ikut tema"),kotak:L("Kotak"),pil:L("Pil"),isi:L("Berwarna")},mark))]};
   });
 }
 
 function vPengaturan(){
-  const un=el("input",{value:S.p.username,maxLength:30}), pw=el("input",{type:"password",placeholder:"Kata sandi baru (min. 6 karakter)",autocomplete:"new-password"});
-  const m1=T(""), m2=T(""), b1=el("button",{className:"b",textContent:"Ganti username"}), b2=el("button",{className:"b",textContent:"Ganti kata sandi"});
+  const un=el("input",{value:S.p.username,maxLength:30}), pw=el("input",{type:"password",placeholder:L("Kata sandi baru (min. 6 karakter)"),autocomplete:"new-password"});
+  const m1=T(""), m2=T(""), b1=el("button",{className:"b",textContent:L("Ganti username")}), b2=el("button",{className:"b",textContent:L("Ganti kata sandi")});
   b1.onclick=async()=>{
     const u=un.value.trim().toLowerCase();
-    if(!/^[a-z0-9_]{3,30}$/.test(u)) return m1.textContent="Username 3–30 karakter: huruf kecil, angka, atau _.";
-    if(RESERVED.includes(u)) return m1.textContent="Username ini dicadangkan. Pilih yang lain.";
-    if(u===S.p.username) return m1.textContent="Username belum berubah.";
-    if(!confirm("Link lama "+location.host+"/"+S.p.username+" akan berhenti berfungsi. Lanjutkan?")) return;
+    if(!/^[a-z0-9_]{3,30}$/.test(u)) return m1.textContent=L("Username 3–30 karakter: huruf kecil, angka, atau _.");
+    if(RESERVED.includes(u)) return m1.textContent=L("Username ini dicadangkan. Pilih yang lain.");
+    if(u===S.p.username) return m1.textContent=L("Username belum berubah.");
+    if(!confirm(L("Link lama ")+location.host+"/"+S.p.username+L(" akan berhenti berfungsi. Lanjutkan?"))) return;
     const {error}=await sb.from("profiles").update({username:u}).eq("id",S.user.id);
-    if(error) return m1.textContent=error.code==="23505"?"Username sudah dipakai.":error.message;
-    S.p.username=u; m1.textContent="Berhasil. Link baru: "+location.host+"/"+u;
+    if(error) return m1.textContent=error.code==="23505"?L("Username sudah dipakai."):error.message;
+    S.p.username=u; m1.textContent=L("Berhasil. Link baru: ")+location.host+"/"+u;
   };
   b2.onclick=async()=>{
-    if(pw.value.length<6) return m2.textContent="Minimal 6 karakter.";
+    if(pw.value.length<6) return m2.textContent=L("Minimal 6 karakter.");
     const {error}=await sb.auth.updateUser({password:pw.value});
-    m2.textContent=error?error.message:"Kata sandi berhasil diganti."; if(!error) pw.value="";
+    m2.textContent=error?error.message:L("Kata sandi berhasil diganti."); if(!error) pw.value="";
   };
-  shell(hd("Pengaturan","Kelola akun kamu."),
-    el("div",{className:"box"},el("b",{textContent:"Username"}),T("Menentukan alamat halaman publik kamu."),un,m1,b1),
-    el("div",{className:"box"},el("b",{textContent:"Kata sandi"}),T("Email akun: "+S.user.email),pw,m2,b2));
+  shell(hd(L("Pengaturan"),L("Kelola akun kamu.")),
+    el("div",{className:"box"},el("b",{textContent:"Username"}),T(L("Menentukan alamat halaman publik kamu.")),un,m1,b1),
+    el("div",{className:"box"},el("b",{textContent:L("Bahasa")}),T(L("Pilih bahasa tampilan dashboard.")),langSw()),
+    el("div",{className:"box"},el("b",{textContent:L("Kata sandi")}),T(L("Email akun: ")+S.user.email),pw,m2,b2));
 }
 
 function render(){ ({beranda:vBeranda,link:vLink,profil:vProfil,tampilan:vTampilan,statistik:vStat,qr:vQR,pengaturan:vPengaturan}[S.view]||vBeranda)(); }
 
 function buatProfil(){
-  const un=el("input",{placeholder:"username (huruf kecil, angka, _)",maxLength:30,value:sessionStorage.getItem("vynka_un")||""}), err=el("div",{className:"err"}), btn=el("button",{className:"b",textContent:"Buat halaman"});
+  const un=el("input",{placeholder:L("username (huruf kecil, angka, _)"),maxLength:30,value:sessionStorage.getItem("vynka_un")||""}), err=el("div",{className:"err"}), btn=el("button",{className:"b",textContent:L("Buat halaman")});
   btn.onclick=async()=>{
     const u=un.value.trim().toLowerCase();
-    if(!/^[a-z0-9_]{3,30}$/.test(u)){ err.textContent="Username 3–30 karakter: huruf kecil, angka, atau _."; return; }
-    if(RESERVED.includes(u)){ err.textContent="Username ini dicadangkan. Pilih yang lain."; return; }
+    if(!/^[a-z0-9_]{3,30}$/.test(u)){ err.textContent=L("Username 3–30 karakter: huruf kecil, angka, atau _."); return; }
+    if(RESERVED.includes(u)){ err.textContent=L("Username ini dicadangkan. Pilih yang lain."); return; }
     const {error}=await sb.from("profiles").insert({id:S.user.id,username:u,display_name:u});
-    if(error){ err.textContent=error.code==="23505"?"Username sudah dipakai.":error.message; return; }
+    if(error){ err.textContent=error.code==="23505"?L("Username sudah dipakai."):error.message; return; }
     muat();
   };
-  app.replaceChildren(el("div",{className:"wrap"},el("h1",{textContent:"Pilih username"}),T("Ini akan jadi alamat halaman kamu: "+location.host+"/username"),el("div",{className:"box"},un,err,btn)));
+  app.replaceChildren(el("div",{className:"wrap"},el("h1",{textContent:L("Pilih username")}),T(L("Ini akan jadi alamat halaman kamu: ")+location.host+"/username"),el("div",{className:"box"},un,err,btn)));
 }
 
 async function muat(){
