@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Vynka · Log in / Sign up</title>
+<link rel="stylesheet" href="/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 48 48%22%3E%3Cdefs%3E%3ClinearGradient id=%22g%22 x1=%220%22 y1=%220%22 x2=%221%22 y2=%221%22%3E%3Cstop offset=%220%22 stop-color=%22%237c3aed%22/%3E%3Cstop offset=%22.55%22 stop-color=%22%23ec4899%22/%3E%3Cstop offset=%221%22 stop-color=%22%23f59e0b%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width=%2248%22 height=%2248%22 rx=%2212%22 fill=%22url(%23g)%22/%3E%3Cg transform=%22translate(19 25) rotate(-22)%22%3E%3Crect x=%22-3.6%22 y=%22-14%22 width=%227.2%22 height=%2228%22 rx=%223.6%22 fill=%22%23fff%22/%3E%3C/g%3E%3Cg transform=%22translate(29 25) rotate(22)%22%3E%3Crect x=%22-3.6%22 y=%22-14%22 width=%227.2%22 height=%2228%22 rx=%223.6%22 fill=%22none%22 stroke=%22%23fff%22 stroke-width=%222.6%22/%3E%3C/g%3E%3Cpath d=%22M41 5 L42 7 L44 8 L42 9 L41 11 L40 9 L38 8 L40 7 Z%22 fill=%22%23fff%22/%3E%3C/svg%3E">
+<style>
+h1,h2,.brand2{font-family:Outfit,'Plus Jakarta Sans',sans-serif}
+.auth{display:grid;grid-template-columns:1.05fr 1fr;min-height:100vh;background:var(--card)}
+.vis{position:relative;overflow:hidden;background:linear-gradient(135deg,#7c3aed,#ec4899 58%,#f59e0b);display:grid;place-items:center;padding:40px}
+.blob{position:absolute;border-radius:50%;background:rgba(255,255,255,.14)}.b1{width:380px;height:380px;left:-120px;top:-120px}.b2{width:300px;height:300px;right:-90px;bottom:-90px}
+.phone{position:relative;width:250px;height:510px;border:8px solid #1e1b4b;border-radius:42px;overflow:hidden;background:var(--pbg);transform:rotate(5deg);box-shadow:0 40px 70px -30px rgba(30,27,75,.8)}
+.phone .pg{--pp:16px;min-height:100%}
+.pill1{position:absolute;left:8%;top:17%;z-index:2;display:flex;align-items:center;gap:10px;background:#fff;color:#111827;border-radius:999px;padding:10px 20px 10px 10px;font-weight:700;transform:rotate(-7deg);box-shadow:0 20px 40px -18px rgba(0,0,0,.5)}
+.pill1 i{width:34px;height:34px;border-radius:11px;background:linear-gradient(135deg,#7c3aed,#ec4899);display:grid;place-items:center}.pill1 svg{width:74%;height:74%}
+.dots{position:absolute;left:9%;bottom:12%;z-index:2;display:flex;gap:12px}
+.dots span{width:60px;height:60px;border-radius:50%;background:#171717;color:#fff;display:grid;place-items:center;font-weight:800;box-shadow:0 14px 26px -12px rgba(0,0,0,.6)}
+.dots span:nth-child(2){transform:translateY(-12px)}
+.vt{position:absolute;z-index:2;right:7%;bottom:7%;max-width:240px;color:#fff;font:800 26px/1.1 Outfit,sans-serif;text-align:right;letter-spacing:-.8px}
+.fm{display:flex;flex-direction:column;justify-content:center;align-items:center;padding:40px 24px;position:relative}
+.fm .lang{position:absolute;top:20px;right:20px}
+.box2{width:100%;max-width:420px;display:flex;flex-direction:column;gap:12px}
+.brand2{display:flex;align-items:center;gap:8px;justify-content:center;font-weight:800;font-size:22px;letter-spacing:-.6px;text-decoration:none;color:var(--text)}
+.brand2 i{width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,#7c3aed,#ec4899,#f59e0b);display:grid;place-items:center;transform:rotate(-6deg)}.brand2 svg{width:74%;height:74%}
+.box2 h1{font-size:34px;text-align:center;letter-spacing:-1.2px;margin:14px 0 0}
+.box2 .m{text-align:center}
+.box2 input{border-radius:999px;padding:15px 20px;font-size:15px}
+.go{border:0;border-radius:999px;padding:15px;font-weight:700;font-size:16px;color:#fff;background:linear-gradient(135deg,#7c3aed,#ec4899)}
+.go:disabled{opacity:.6}
+.or{display:flex;align-items:center;gap:12px;color:var(--muted);font-size:14px}.or:before,.or:after{content:"";flex:1;height:1px;background:var(--line)}
+.gg{display:flex;align-items:center;justify-content:center;gap:10px;border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:999px;padding:14px;font-weight:600;font-size:15px}
+.gg b{font-size:18px;color:#4285f4}
+.sm{font-size:12px;color:var(--muted);text-align:center;margin:0}
+.sw2{text-align:center;font-size:15px;color:var(--muted)}.sw2 button{border:0;background:none;color:#7c3aed;font-weight:700;padding:0 0 0 4px;font-size:15px}
+@media (max-width:820px){.auth{grid-template-columns:1fr}.vis{display:none}}
+</style>
+</head>
+<body>
+<div class="auth">
+  <aside class="vis">
+    <div class="blob b1"></div><div class="blob b2"></div>
+    <div class="pill1"><i id="lg"></i><span id="pu"></span></div>
+    <div class="phone" id="ph"></div>
+    <div class="dots"><span>IG</span><span>TT</span><span>YT</span></div>
+    <p class="vt" data-i="au_vh">Your whole world in one link.</p>
+  </aside>
+  <main class="fm">
+    <div class="lang"><button data-l="en">EN</button><button data-l="id">ID</button></div>
+    <div class="box2">
+      <a class="brand2" href="/"><i><svg viewBox="0 0 48 48" aria-hidden="true"><g transform="translate(19 25) rotate(-22)"><rect x="-3.6" y="-14" width="7.2" height="28" rx="3.6" fill="#fff"/></g><g transform="translate(29 25) rotate(22)"><rect x="-3.6" y="-14" width="7.2" height="28" rx="3.6" fill="none" stroke="#fff" stroke-width="2.6"/></g><path class="sp" d="M41 5 L42 7 L44 8 L42 9 L41 11 L40 9 L38 8 L40 7 Z" fill="#fff"/></svg></i>Vynka</a>
+      <h1 id="ttl" data-i="au_login">Log in to Vynka</h1>
+      <p class="m" id="sub" data-i="au_sub_in">Welcome back.</p>
+      <input id="em" type="email" data-ip="au_email" placeholder="Email" autocomplete="email">
+      <input id="pw" type="password" data-ip="au_pw" placeholder="Password (min. 6 characters)" autocomplete="current-password">
+      <div class="err" id="er"></div>
+      <button class="go" id="go" data-i="au_btn_in">Log in</button>
+      <p class="sm" id="terms" style="display:none" data-i="au_terms">By signing up, you agree to use Vynka responsibly.</p>
+      <div class="or" data-i="au_or">or continue with</div>
+      <button class="gg" id="gg"><b>G</b><span data-i="au_google">Continue with Google</span></button>
+      <div class="sw2"><span id="sw1" data-i="au_no">Don't have an account?</span><button id="sw2" data-i="n_signup">Sign up free</button></div>
+    </div>
+  </main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="/config.js"></script>
+<script src="/vynka.js"></script>
+<script src="/i18n.js"></script>
+<script>
+(async()=>{
+  const {data:{session}}=await sb.auth.getSession();
+  if(session){ location.replace("/dashboard/"); return; }
+  const $=i=>document.getElementById(i);
+  $("lg").innerHTML=LOGO; $("pu").textContent=location.host+"/raka";
+  const box=el("div"); $("ph").append(box); $("ph").dataset.tema="noir";
+  renderPublik(box,{username:"raka",display_name:"Raka",bio:"Streamer & creator",tema:"noir",layout:"cover",theme:"#d08f78",font:"grotesk",socials:{tiktok:"x",instagram:"x"}},[{title:"Slow flow"},{title:"Online courses"},{title:"Wellness retreats"}],{preview:true,home:false});
+  let daftar=location.hash==="#daftar";
+  const mode=d=>{
+    daftar=d; $("ttl").dataset.i=d?"au_join":"au_login"; $("sub").dataset.i=d?"au_sub_up":"au_sub_in"; $("go").dataset.i=d?"au_btn_up":"au_btn_in";
+    $("sw1").dataset.i=d?"au_have":"au_no"; $("sw2").dataset.i=d?"n_login":"n_signup"; $("terms").style.display=d?"block":"none"; $("er").textContent="";
+    $("pw").autocomplete=d?"new-password":"current-password"; history.replaceState(null,"",d?"#daftar":location.pathname); applyLang();
+  };
+  $("sw2").onclick=()=>mode(!daftar);
+  $("go").onclick=async()=>{
+    $("er").textContent=""; $("go").disabled=true;
+    const r=daftar?await sb.auth.signUp({email:$("em").value,password:$("pw").value}):await sb.auth.signInWithPassword({email:$("em").value,password:$("pw").value});
+    $("go").disabled=false;
+    if(r.error){ $("er").textContent=r.error.message; return; }
+    if(daftar&&!r.data.session){ $("er").textContent=tr("au_check"); return; }
+    location.replace("/dashboard/");
+  };
+  $("gg").onclick=async()=>{ const {error}=await sb.auth.signInWithOAuth({provider:"google",options:{redirectTo:location.origin+"/dashboard/"}}); if(error) $("er").textContent=error.message; };
+  initLang(); mode(daftar);
+})();
+</script>
+</body>
+</html>
