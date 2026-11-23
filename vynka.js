@@ -56,6 +56,7 @@ function renderPublik(c, p, links, o={}){
     if(o.track) a.addEventListener("click",()=>o.track(l));
     return a;
   });
-  const foot=o.preview?el("span",{className:"pfoot",textContent:"Buat halaman Vynka-mu"}):el("a",{className:"pfoot",href:"/",textContent:"Buat halaman Vynka-mu"});
+  const ftx=(()=>{ try{ return localStorage.getItem("vynka_lang")==="id"; }catch(e){ return false; } })()?"Buat halaman Vynka-mu":"Create your own Vynka page";
+  const foot=o.preview?el("span",{className:"pfoot",textContent:ftx}):el("a",{className:"pfoot",href:"/",textContent:ftx});
   c.replaceChildren(...parts, el("h1",{className:"c nm",textContent:nama}), el("p",{className:"bio c",textContent:p.bio||""}), ...(soc.length?[el("div",{className:"soc"},...soc)]:[]), ...ls, foot);
 }
