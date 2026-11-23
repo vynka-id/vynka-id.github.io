@@ -26,7 +26,7 @@ function renderPublik(c, p, links, o={}){
   c.className="pg"; c.dataset.b=p.btn_style||"bulat"; c.dataset.tema=tm; c.dataset.l=cover?"cover":"standar";
   c.style.setProperty("--accent",acc); c.style.setProperty("--on",onOf(acc));
   c.style.fontFamily=(FONTS[p.font]||FONTS.jakarta)+",system-ui,sans-serif";
-  const foto=/^https:\/\//.test(p.avatar_url||"")?p.avatar_url:"", url=location.origin+"/"+(p.username||"");
+  const av0=p.avatar_url||"", foto=av0.startsWith("demo:")?((typeof AVATAR!=="undefined"&&AVATAR[av0.slice(5)])||""):(/^https:\/\//.test(av0)?av0:""), url=location.origin+"/"+(p.username||"");
   // logo Vynka (pojok kiri atas) -> landing page
   let logo;
   if(o.preview&&o.home===false) logo=el("span",{className:"vlogo"});
