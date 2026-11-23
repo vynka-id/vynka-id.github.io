@@ -42,6 +42,17 @@ h1,h2,h3,.logo{font-family:Outfit,'Plus Jakarta Sans',sans-serif}
 .tg{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px}
 .tt{border:3px solid var(--line);border-radius:18px;padding:12px;background:var(--pbg);color:var(--ptext);display:flex;flex-direction:column;gap:7px;min-height:110px;font-weight:700;font-size:14px}
 .tt i{display:block;height:13px;background:var(--pcard);border:var(--pborder);border-radius:var(--pr);box-shadow:var(--pshadow)}
+.mq{overflow:hidden;padding:24px 0 8px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent)}
+.mt{display:flex;gap:22px;width:max-content;animation:mqr 70s linear infinite}
+.mq:hover .mt{animation-play-state:paused}
+@keyframes mqr{from{transform:translateX(-50%)}to{transform:translateX(0)}}
+.mi{display:flex;flex-direction:column;align-items:center;gap:12px;flex:none}
+.mp{width:200px;height:410px;border:6px solid #1e1b4b;border-radius:34px;overflow:hidden;background:var(--pbg);box-shadow:0 24px 44px -24px rgba(30,27,75,.55)}
+.mp .in{width:188px;height:398px;position:relative;overflow:hidden}
+.mp .in>div{width:282px;height:597px;transform:scale(.6667);transform-origin:0 0}
+.mp .pg{--pp:16px;min-height:100%}
+.mn{font-weight:700;font-size:14px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:4px 14px}
+@media (prefers-reduced-motion:reduce){.mt{animation:none}.mq{overflow-x:auto}}
 .st{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
 .s{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:24px}
 .s em{display:grid;place-items:center;width:44px;height:44px;border-radius:14px;background:linear-gradient(135deg,#7c3aed,#ec4899);color:#fff;font:800 20px Outfit,sans-serif;font-style:normal}
@@ -75,7 +86,7 @@ h1,h2,h3,.logo{font-family:Outfit,'Plus Jakarta Sans',sans-serif}
   </section>
 </div>
 <section class="sec" id="fitur"><div class="w"><h2 data-i="f_h">Everything you need</h2><p data-i="f_p">Complete, lightweight, and easy to use from your phone.</p><div class="fg"><div class="f"><span>🎨</span><b data-i="f1t">15 modern themes</b><p data-i="f1d">From Aurora to Noir. Change your look in one click.</p></div><div class="f"><span>🖼️</span><b data-i="f2t">Cover photo & link avatars</b><p data-i="f2d">Upload directly and get a professional-looking page.</p></div><div class="f"><span>📊</span><b data-i="f3t">Statistics</b><p data-i="f3d">See visitors and clicks for every link.</p></div><div class="f"><span>📱</span><b data-i="f4t">QR code</b><p data-i="f4d">Download a PNG for business cards, stickers, or posters.</p></div><div class="f"><span>🔗</span><b data-i="f5t">Social icons</b><p data-i="f5d">Instagram, TikTok, YouTube, WhatsApp, and more.</p></div><div class="f"><span>💸</span><b data-i="f6t">Free</b><p data-i="f6d">Start at no cost. All you need is an email and a password.</p></div></div></div></section>
-<section class="sec" id="tema"><div class="w"><h2 data-i="t_h">Pick your style</h2><p data-i="t_p">Every theme can be combined with your own color, font, and button shape.</p><div class="tg" id="tg"></div></div></section>
+<section class="sec" id="tema"><div class="w"><h2 data-i="t_h">Pick your style</h2><p data-i="t_p">Every theme can be combined with your own color, font, and button shape.</p><div class="mq"><div class="mt" id="mt"></div></div></div></section>
 <section class="sec" id="cara"><div class="w"><h2 data-i="h_h">Just three steps</h2><p data-i="h_p">From zero to a page ready to share.</p><div class="st"><div class="s"><em>1</em><b data-i="s1t">Sign up</b><p data-i="s1d">Create a free account with your email and a password.</p></div><div class="s"><em>2</em><b data-i="s2t">Set up your page</b><p data-i="s2d">Choose a username, upload a photo, add links, and pick a theme.</p></div><div class="s"><em>3</em><b data-i="s3t">Share</b><p data-i="s3d">Put your Vynka link in your Instagram or TikTok bio, or on a business card.</p></div></div></div></section>
 <section class="sec" id="artikel"><div class="w"><h2 data-i="ar_h">Learn more</h2><p data-i="ar_p">Short guides on getting the most out of one link.</p><div class="ag"><article class="ar"><h3 data-i="a1t">What is a link-in-bio page?</h3><p data-i="a1p1">Platforms like Instagram and TikTok only let you place one clickable link in your profile. A link-in-bio page solves this: that single link opens a small page that gathers everything you want to share, such as your store, latest video, WhatsApp, or booking form.</p><p data-i="a1p2">Instead of changing your bio every time you have something new, you update one page and your followers always find the latest links in the same place.</p></article><article class="ar"><h3 data-i="a2t">Why one link beats many</h3><p data-i="a2p1">A crowded bio confuses visitors, and people who are confused rarely click. One clean page with clearly named buttons guides them to the next step, whether that is buying, booking, or following you.</p><p data-i="a2p2">It also gives you numbers. With visits and clicks per link, you can see what your audience actually cares about and put the best link at the top.</p></article><article class="ar"><h3 data-i="a3t">Five tips for a page that gets clicks</h3><p data-i="a3p1">Put your most important link first, use short and specific button names, add a clear photo or logo, and pick a theme that matches your brand.</p><p data-i="a3p2">Keep the list short, around five to eight links, and review your statistics every week. Remove what nobody clicks and move up what works.</p></article></div></div></section>
 <section class="sec"><div class="w"><h2 data-i="q_h">Frequently asked questions</h2><p></p><div class="fq"><details><summary data-i="q1">Is Vynka really free?</summary><p data-i="r1">Yes. You can create an account, build your page, and use every feature at no cost.</p></details><details><summary data-i="q2">Where do I put my Vynka link?</summary><p data-i="r2">Paste it in your Instagram, TikTok, YouTube, or WhatsApp bio, and print the QR code on cards or posters.</p></details><details><summary data-i="q3">Can I change the look of my page?</summary><p data-i="r3">Yes. Pick from 15 themes, change colors, fonts, and button shapes, or use the cover photo layout.</p></details><details><summary data-i="q4">Do I need to know how to code?</summary><p data-i="r4">No. Everything is done from a simple dashboard, and you can preview your page live while you edit.</p></details></div></div></section>
@@ -100,14 +111,24 @@ h1,h2,h3,.logo{font-family:Outfit,'Plus Jakarta Sans',sans-serif}
         {p:{username:"sinta",display_name:"Sinta Studio",bio:"Desainer grafis & ilustrator",tema:"aurora",layout:"standar",theme:"#ec4899",font:"outfit",socials:{instagram:"x",whatsapp:"x"}},l:["Lihat portofolio","Pesan jasa desain","Template gratis"]},
         {p:{username:"mawar",display_name:"Toko Mawar",bio:"Bunga segar tiap hari",tema:"sakura",layout:"standar",theme:"#db2777",font:"lora",socials:{whatsapp:"x",instagram:"x"}},l:["Pesan via WhatsApp","Katalog bunga","Lokasi toko"]}]};
   const demos=()=>$("phs").replaceChildren(...DEMO[LANG].map(d=>{ const f=el("div",{className:"ph"}), box=el("div"); f.dataset.tema=d.p.tema; f.append(box); renderPublik(box,d.p,d.l.map(t=>({title:t})),{preview:true,home:false}); return f; }));
-  $("tg").replaceChildren(...Object.entries(TEMA).map(([k,t])=>{ const b=el("div",{className:"tt"},el("span",{textContent:t.n}),el("i"),el("i")); b.dataset.tema=k; return b; }));
+  const WARN=["#0f766e","#6d28d9","#c2410c","#1d4ed8","#db2777"];
+  const marquee=()=>{
+    const bio=LANG==="id"?"Kreator & desainer":"Creator & designer", ls=LANG==="id"?["Portofolio saya","Pesan jadwal","Video terbaru"]:["My portfolio","Book a call","Latest video"];
+    const set=Object.entries(TEMA).map(([k,t],i)=>{
+      const f=el("div",{className:"mp"}), inn=el("div",{className:"in"}), box=el("div");
+      f.dataset.tema=k; inn.append(box); f.append(inn);
+      renderPublik(box,{username:"alex",display_name:"Alex",bio,tema:k,layout:t.layout||"standar",theme:t.acc||WARN[i%5],font:t.font,socials:{instagram:"x",tiktok:"x",youtube:"x"}},ls.map(x=>({title:x})),{preview:true,home:false});
+      return el("div",{className:"mi"},f,el("span",{className:"mn",textContent:t.n}));
+    });
+    $("mt").replaceChildren(...set,...set.map(n=>n.cloneNode(true)));
+  };
   if(masuk){
     $("nLogin").href="/dashboard/"; $("nLogin").dataset.i="n_dash"; $("nSignup").style.display="none";
     $("ctaGo").href="/dashboard/"; $("ctaGo").dataset.i="n_dash"; $("klaim").dataset.i="c_dash";
   }
   $("klaim").onclick=()=>{ if(masuk){ location.href="/dashboard/"; return; } const v=$("un").value.trim().toLowerCase(); if(v) sessionStorage.setItem("vynka_un",v); location.href="/masuk/#daftar"; };
-  initLang(); demos();
-  document.addEventListener("langchange",demos);
+  initLang(); demos(); marquee();
+  document.addEventListener("langchange",()=>{ demos(); marquee(); });
 })();
 </script>
 </body>
