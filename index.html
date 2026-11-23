@@ -21,7 +21,7 @@ h1,h2,h3,.logo{font-family:Outfit,'Plus Jakarta Sans',sans-serif}
 .bt.o{background:var(--card);color:var(--text);box-shadow:none;border:1px solid var(--line)}
 .hr{display:grid;grid-template-columns:1.05fr 1fr;gap:30px;align-items:center;padding:34px 0 50px}
 .chip{display:inline-block;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-weight:700;font-size:13px}
-.hr h1{font-size:clamp(40px,6vw,66px);line-height:1.03;letter-spacing:-2.5px;margin:16px 0}
+.hr .tx>h1{font-size:clamp(40px,6vw,66px);line-height:1.03;letter-spacing:-2.5px;margin:16px 0}
 .grad{background:linear-gradient(90deg,#7c3aed,#ec4899,#f59e0b);-webkit-background-clip:text;background-clip:text;color:transparent}
 .sub{font-size:18px;color:var(--muted);max-width:480px;margin:0 0 22px}
 .claim{display:flex;align-items:center;background:var(--card);border:2px solid var(--line);border-radius:999px;padding:6px 6px 6px 18px;max-width:480px;gap:4px}
@@ -76,7 +76,7 @@ h1,h2,h3,.logo{font-family:Outfit,'Plus Jakarta Sans',sans-serif}
     <nav class="nl"><a class="t" href="#fitur" data-i="n_feat">Features</a><a class="t" href="#tema" data-i="n_themes">Themes</a><a class="t" href="#artikel" data-i="n_art">Articles</a><div class="lang"><button data-l="en">EN</button><button data-l="id">ID</button></div><a class="bt o" href="/masuk/" id="nLogin" data-i="n_login">Log in</a><a class="bt" href="/masuk/#daftar" id="nSignup" data-i="n_signup">Sign up free</a></nav>
   </header>
   <section class="hr">
-    <div>
+    <div class="tx">
       <span class="chip" data-i="chip">✨ Free, no credit card</span>
       <h1><span data-i="h1a">One link for</span> <span class="grad" data-i="h1b">all</span> <span data-i="h1c">your links.</span></h1>
       <p class="sub" data-i="sub">Gather Instagram, WhatsApp, your shop, and everything that matters in one beautiful page. Pick a theme, upload a photo, share.</p>
@@ -95,6 +95,7 @@ h1,h2,h3,.logo{font-family:Outfit,'Plus Jakarta Sans',sans-serif}
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script src="/config.js"></script>
 <script src="/vynka.js"></script>
+<script src="/demo.js"></script>
 <script src="/i18n.js"></script>
 <script>
 (async()=>{
@@ -104,20 +105,22 @@ h1,h2,h3,.logo{font-family:Outfit,'Plus Jakarta Sans',sans-serif}
   const masuk=!!session, $=i=>document.getElementById(i);
   $("host").textContent=location.host+"/";
   const DEMO={
-    en:[{p:{username:"raka",display_name:"Raka",bio:"Streamer & content creator",tema:"noir",layout:"cover",theme:"#d08f78",font:"grotesk",socials:{tiktok:"x",instagram:"x",youtube:"x"}},l:["Support me","This week's live schedule","Full setup guide"]},
-        {p:{username:"sinta",display_name:"Sinta Studio",bio:"Graphic designer & illustrator",tema:"aurora",layout:"standar",theme:"#ec4899",font:"outfit",socials:{instagram:"x",whatsapp:"x"}},l:["View portfolio","Book a design","Free templates"]},
-        {p:{username:"mawar",display_name:"Mawar Flowers",bio:"Fresh flowers every day",tema:"sakura",layout:"standar",theme:"#db2777",font:"lora",socials:{whatsapp:"x",instagram:"x"}},l:["Order on WhatsApp","Flower catalog","Store location"]}],
-    id:[{p:{username:"raka",display_name:"Raka",bio:"Streamer & content creator",tema:"noir",layout:"cover",theme:"#d08f78",font:"grotesk",socials:{tiktok:"x",instagram:"x",youtube:"x"}},l:["Dukung di SociaBuzz","Jadwal live minggu ini","Panduan instalasi lengkap"]},
-        {p:{username:"sinta",display_name:"Sinta Studio",bio:"Desainer grafis & ilustrator",tema:"aurora",layout:"standar",theme:"#ec4899",font:"outfit",socials:{instagram:"x",whatsapp:"x"}},l:["Lihat portofolio","Pesan jasa desain","Template gratis"]},
-        {p:{username:"mawar",display_name:"Toko Mawar",bio:"Bunga segar tiap hari",tema:"sakura",layout:"standar",theme:"#db2777",font:"lora",socials:{whatsapp:"x",instagram:"x"}},l:["Pesan via WhatsApp","Katalog bunga","Lokasi toko"]}]};
+    en:[{p:{username:"raka",avatar_url:"demo:raka",display_name:"Raka",bio:"Streamer & content creator",tema:"noir",layout:"cover",theme:"#d08f78",font:"grotesk",socials:{tiktok:"x",instagram:"x",youtube:"x"}},l:["Support me","This week's live schedule","Full setup guide"]},
+        {p:{username:"sinta",avatar_url:"demo:sinta",display_name:"Sinta Studio",bio:"Graphic designer & illustrator",tema:"aurora",layout:"standar",theme:"#ec4899",font:"outfit",socials:{instagram:"x",whatsapp:"x"}},l:["View portfolio","Book a design","Free templates"]},
+        {p:{username:"mawar",avatar_url:"demo:mawar",display_name:"Mawar Flowers",bio:"Fresh flowers every day",tema:"sakura",layout:"standar",theme:"#db2777",font:"lora",socials:{whatsapp:"x",instagram:"x"}},l:["Order on WhatsApp","Flower catalog","Store location"]}],
+    id:[{p:{username:"raka",avatar_url:"demo:raka",display_name:"Raka",bio:"Streamer & content creator",tema:"noir",layout:"cover",theme:"#d08f78",font:"grotesk",socials:{tiktok:"x",instagram:"x",youtube:"x"}},l:["Dukung di SociaBuzz","Jadwal live minggu ini","Panduan instalasi lengkap"]},
+        {p:{username:"sinta",avatar_url:"demo:sinta",display_name:"Sinta Studio",bio:"Desainer grafis & ilustrator",tema:"aurora",layout:"standar",theme:"#ec4899",font:"outfit",socials:{instagram:"x",whatsapp:"x"}},l:["Lihat portofolio","Pesan jasa desain","Template gratis"]},
+        {p:{username:"mawar",avatar_url:"demo:mawar",display_name:"Toko Mawar",bio:"Bunga segar tiap hari",tema:"sakura",layout:"standar",theme:"#db2777",font:"lora",socials:{whatsapp:"x",instagram:"x"}},l:["Pesan via WhatsApp","Katalog bunga","Lokasi toko"]}]};
   const demos=()=>$("phs").replaceChildren(...DEMO[LANG].map(d=>{ const f=el("div",{className:"ph"}), box=el("div"); f.dataset.tema=d.p.tema; f.append(box); renderPublik(box,d.p,d.l.map(t=>({title:t})),{preview:true,home:false}); return f; }));
   const WARN=["#0f766e","#6d28d9","#c2410c","#1d4ed8","#db2777"];
   const marquee=()=>{
     const bio=LANG==="id"?"Kreator & desainer":"Creator & designer", ls=LANG==="id"?["Portofolio saya","Pesan jadwal","Video terbaru"]:["My portfolio","Book a call","Latest video"];
+    const CH=[["Raka","raka"],["Sinta","sinta"],["Dimas","dimas"],["Mawar","mawar"]];
     const set=Object.entries(TEMA).map(([k,t],i)=>{
+      const [cn,ca]=CH[i%4];
       const f=el("div",{className:"mp"}), inn=el("div",{className:"in"}), box=el("div");
       f.dataset.tema=k; inn.append(box); f.append(inn);
-      renderPublik(box,{username:"alex",display_name:"Alex",bio,tema:k,layout:t.layout||"standar",theme:t.acc||WARN[i%5],font:t.font,socials:{instagram:"x",tiktok:"x",youtube:"x"}},ls.map(x=>({title:x})),{preview:true,home:false});
+      renderPublik(box,{username:ca,display_name:cn,avatar_url:"demo:"+ca,bio,tema:k,layout:t.layout||"standar",theme:t.acc||WARN[i%5],font:t.font,socials:{instagram:"x",tiktok:"x",youtube:"x"}},ls.map(x=>({title:x})),{preview:true,home:false});
       return el("div",{className:"mi"},f,el("span",{className:"mn",textContent:t.n}));
     });
     $("mt").replaceChildren(...set,...set.map(n=>n.cloneNode(true)));
