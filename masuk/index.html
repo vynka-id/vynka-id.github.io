@@ -17,7 +17,7 @@ h1,h2,.brand2{font-family:Outfit,'Plus Jakarta Sans',sans-serif}
 .pill1 i{width:34px;height:34px;border-radius:11px;background:linear-gradient(135deg,#7c3aed,#ec4899);display:grid;place-items:center}.pill1 svg{width:74%;height:74%}
 .dots{position:absolute;left:9%;bottom:12%;z-index:2;display:flex;gap:12px}
 .dots span{width:60px;height:60px;border-radius:50%;background:#171717;color:#fff;display:grid;place-items:center;font-weight:800;box-shadow:0 14px 26px -12px rgba(0,0,0,.6)}
-.dots span:nth-child(2){transform:translateY(-12px)}
+.dots span:nth-child(2){transform:translateY(-12px)}.dots svg{width:26px;height:26px}
 .vt{position:absolute;z-index:2;right:7%;bottom:7%;max-width:240px;color:#fff;font:800 26px/1.1 Outfit,sans-serif;text-align:right;letter-spacing:-.8px}
 .fm{display:flex;flex-direction:column;justify-content:center;align-items:center;padding:40px 24px;position:relative}
 .fm .lang{position:absolute;top:20px;right:20px}
@@ -72,7 +72,7 @@ h1,h2,.brand2{font-family:Outfit,'Plus Jakarta Sans',sans-serif}
   const {data:{session}}=await sb.auth.getSession();
   if(session){ location.replace("/dashboard/"); return; }
   const $=i=>document.getElementById(i);
-  $("lg").innerHTML=LOGO; $("pu").textContent=location.host+"/raka";
+  $("lg").innerHTML=LOGO; document.querySelectorAll(".dots span").forEach((e,i)=>{ e.innerHTML=ikon(["instagram","tiktok","youtube"][i]); }); $("pu").textContent=location.host+"/raka";
   const box=el("div"); $("ph").append(box); $("ph").dataset.tema="noir";
   renderPublik(box,{username:"raka",display_name:"Raka",bio:"Streamer & creator",tema:"noir",layout:"cover",theme:"#d08f78",font:"grotesk",socials:{tiktok:"x",instagram:"x"}},[{title:"Slow flow"},{title:"Online courses"},{title:"Wellness retreats"}],{preview:true,home:false});
   let daftar=location.hash==="#daftar";
