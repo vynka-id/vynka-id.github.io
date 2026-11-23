@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Vynka: satu link untuk semua link kamu</title>
-<meta name="description" content="Buat halaman link-in-bio yang cantik dan gratis. Kumpulkan semua link, tema modern, statistik, dan kode QR.">
+<title>Vynka: one link for all your links</title>
+<meta name="description" content="Create a beautiful, free link-in-bio page. Gather all your links, pick a modern theme, track statistics, and share a QR code.">
 <link rel="stylesheet" href="/style.css">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 48 48%22%3E%3Cdefs%3E%3ClinearGradient id=%22g%22 x1=%220%22 y1=%220%22 x2=%221%22 y2=%221%22%3E%3Cstop offset=%220%22 stop-color=%22%237c3aed%22/%3E%3Cstop offset=%22.55%22 stop-color=%22%23ec4899%22/%3E%3Cstop offset=%221%22 stop-color=%22%23f59e0b%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width=%2248%22 height=%2248%22 rx=%2212%22 fill=%22url(%23g)%22/%3E%3Cg transform=%22translate(19 25) rotate(-22)%22%3E%3Crect x=%22-3.6%22 y=%22-14%22 width=%227.2%22 height=%2228%22 rx=%223.6%22 fill=%22%23fff%22/%3E%3C/g%3E%3Cg transform=%22translate(29 25) rotate(22)%22%3E%3Crect x=%22-3.6%22 y=%22-14%22 width=%227.2%22 height=%2228%22 rx=%223.6%22 fill=%22none%22 stroke=%22%23fff%22 stroke-width=%222.6%22/%3E%3C/g%3E%3Cpath d=%22M41 5 L42 7 L44 8 L42 9 L41 11 L40 9 L38 8 L40 7 Z%22 fill=%22%23fff%22/%3E%3C/svg%3E">
 <style>
@@ -13,11 +13,11 @@ body{background:radial-gradient(900px 520px at 5% -5%,#e9d5ff,transparent 60%),r
 @media (prefers-color-scheme:dark){body{background:radial-gradient(900px 520px at 5% -5%,#4c1d9566,transparent 60%),radial-gradient(700px 500px at 100% 5%,#be185d33,transparent 55%),radial-gradient(800px 600px at 50% 40%,#0f766e33,transparent 60%),var(--bg)}}
 h1,h2,h3,.logo{font-family:Outfit,'Plus Jakarta Sans',sans-serif}
 .w{max-width:1080px;margin:0 auto;padding:0 20px}
-.nv{display:flex;justify-content:space-between;align-items:center;padding:18px 0}
+.nv{display:flex;justify-content:space-between;align-items:center;padding:18px 0;gap:10px}
 .logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:24px;letter-spacing:-.8px;text-decoration:none;color:var(--text)}
-.logo i{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,#7c3aed,#ec4899);color:#fff;display:grid;place-items:center;font-style:normal;transform:rotate(-6deg)}
-.nl{display:flex;gap:6px;align-items:center}.nl a.t{color:var(--muted);text-decoration:none;font-weight:600;padding:8px 12px}
-.bt{display:inline-block;text-decoration:none;border:0;border-radius:999px;padding:11px 22px;font-weight:700;background:linear-gradient(135deg,#7c3aed,#ec4899);color:#fff;box-shadow:0 10px 24px -12px #7c3aed}
+.logo i{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,#7c3aed,#ec4899,#f59e0b);display:grid;place-items:center;transform:rotate(-6deg)}
+.nl{display:flex;gap:6px;align-items:center}.nl a.t{color:var(--muted);text-decoration:none;font-weight:600;padding:8px 10px}
+.bt{display:inline-block;text-decoration:none;border:0;border-radius:999px;padding:11px 22px;font-weight:700;background:linear-gradient(135deg,#7c3aed,#ec4899);color:#fff;box-shadow:0 10px 24px -12px #7c3aed;cursor:pointer;font-size:15px}
 .bt.o{background:var(--card);color:var(--text);box-shadow:none;border:1px solid var(--line)}
 .hr{display:grid;grid-template-columns:1.05fr 1fr;gap:30px;align-items:center;padding:34px 0 50px}
 .chip{display:inline-block;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-weight:700;font-size:13px}
@@ -46,9 +46,14 @@ h1,h2,h3,.logo{font-family:Outfit,'Plus Jakarta Sans',sans-serif}
 .s{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:24px}
 .s em{display:grid;place-items:center;width:44px;height:44px;border-radius:14px;background:linear-gradient(135deg,#7c3aed,#ec4899);color:#fff;font:800 20px Outfit,sans-serif;font-style:normal}
 .s b{display:block;margin:12px 0 4px;font:700 19px Outfit,sans-serif}.s p{margin:0;color:var(--muted);font-size:14px}
-.cta{max-width:440px;margin:0 auto}
-.card{background:var(--card);border:1px solid var(--line);border-radius:28px;padding:26px;box-shadow:0 24px 50px -28px rgba(76,29,149,.4);display:flex;flex-direction:column;gap:10px}
-.card h2{margin:0;text-align:left!important;font-size:26px!important}
+.ag{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:18px}
+.ar{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:26px}
+.ar h3{font-size:21px;margin:0 0 10px;letter-spacing:-.5px}.ar p{color:var(--muted);font-size:15px;line-height:1.65;margin:0 0 10px}
+.fq{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:10px}
+.fq details{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px 20px}
+.fq summary{font-weight:700;cursor:pointer}.fq p{color:var(--muted);margin:10px 0 0;font-size:15px}
+.cta{border-radius:32px;padding:44px 24px;text-align:center;color:#fff;background:linear-gradient(135deg,#7c3aed,#ec4899 60%,#f59e0b);box-shadow:0 24px 50px -24px #7c3aed}
+.cta h2{margin:0 0 8px;color:#fff}.cta p{margin:0 0 20px;opacity:.9}.cta .bt{background:#fff;color:#111827;box-shadow:none}.cta .bt.o{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.7)}
 .ft{text-align:center;color:var(--muted);font-size:14px;padding:30px 0 40px}
 @media (max-width:820px){.hr{grid-template-columns:1fr;text-align:center}.sub,.claim{margin-left:auto;margin-right:auto}.ph:nth-child(n+2){display:none}.ph{transform:none!important}.nl a.t{display:none}}
 </style>
@@ -57,93 +62,52 @@ h1,h2,h3,.logo{font-family:Outfit,'Plus Jakarta Sans',sans-serif}
 <div class="w">
   <header class="nv">
     <a class="logo" href="/"><i><svg viewBox="0 0 48 48" aria-hidden="true"><g transform="translate(19 25) rotate(-22)"><rect x="-3.6" y="-14" width="7.2" height="28" rx="3.6" fill="#fff"/></g><g transform="translate(29 25) rotate(22)"><rect x="-3.6" y="-14" width="7.2" height="28" rx="3.6" fill="none" stroke="#fff" stroke-width="2.6"/></g><path class="sp" d="M41 5 L42 7 L44 8 L42 9 L41 11 L40 9 L38 8 L40 7 Z" fill="#fff"/></svg></i>Vynka</a>
-    <nav class="nl"><a class="t" href="#fitur">Fitur</a><a class="t" href="#tema">Tema</a><a class="t" href="#cara">Cara kerja</a><a class="bt o" href="#mulai" id="nMasuk">Masuk</a><a class="bt" href="#mulai" id="nDaftar">Daftar gratis</a></nav>
+    <nav class="nl"><a class="t" href="#fitur" data-i="n_feat">Features</a><a class="t" href="#tema" data-i="n_themes">Themes</a><a class="t" href="#artikel" data-i="n_art">Articles</a><div class="lang"><button data-l="en">EN</button><button data-l="id">ID</button></div><a class="bt o" href="/masuk/" id="nLogin" data-i="n_login">Log in</a><a class="bt" href="/masuk/#daftar" id="nSignup" data-i="n_signup">Sign up free</a></nav>
   </header>
-
   <section class="hr">
     <div>
-      <span class="chip">✨ Gratis, tanpa kartu kredit</span>
-      <h1>Satu link untuk <span class="grad">semua</span> link kamu.</h1>
-      <p class="sub">Kumpulkan Instagram, WhatsApp, toko, dan semua yang penting dalam satu halaman cantik. Pilih tema, unggah foto, bagikan.</p>
-      <div class="claim"><span id="host"></span><input id="un" placeholder="namakamu" maxlength="30" autocomplete="off"><button class="bt" id="klaim">Klaim link</button></div>
+      <span class="chip" data-i="chip">✨ Free, no credit card</span>
+      <h1><span data-i="h1a">One link for</span> <span class="grad" data-i="h1b">all</span> <span data-i="h1c">your links.</span></h1>
+      <p class="sub" data-i="sub">Gather Instagram, WhatsApp, your shop, and everything that matters in one beautiful page. Pick a theme, upload a photo, share.</p>
+      <div class="claim"><span id="host"></span><input id="un" data-ip="c_ph" placeholder="yourname" maxlength="30" autocomplete="off"><button class="bt" id="klaim" data-i="c_claim">Claim link</button></div>
     </div>
     <div class="phs" id="phs"></div>
   </section>
 </div>
-
-<section class="sec" id="fitur"><div class="w"><h2>Semua yang kamu butuhkan</h2><p>Lengkap, ringan, dan mudah dipakai dari HP.</p>
-  <div class="fg">
-    <div class="f"><span>🎨</span><b>15 tema modern</b><p>Dari Aurora sampai Noir. Ganti tampilan dalam sekali klik.</p></div>
-    <div class="f"><span>🖼️</span><b>Foto cover &amp; avatar link</b><p>Unggah langsung, tampil seperti halaman profesional.</p></div>
-    <div class="f"><span>📊</span><b>Statistik</b><p>Pantau pengunjung dan klik di setiap link.</p></div>
-    <div class="f"><span>📱</span><b>Kode QR</b><p>Unduh PNG untuk kartu nama, stiker, atau poster.</p></div>
-    <div class="f"><span>🔗</span><b>Ikon sosial</b><p>Instagram, TikTok, YouTube, WhatsApp, dan lainnya.</p></div>
-    <div class="f"><span>💸</span><b>Gratis</b><p>Mulai tanpa biaya. Cukup email dan kata sandi.</p></div>
-  </div></div></section>
-
-<section class="sec" id="tema"><div class="w"><h2>Pilih gayamu</h2><p>Setiap tema bisa dipadukan dengan warna, font, dan bentuk tombol sendiri.</p><div class="tg" id="tg"></div></div></section>
-
-<section class="sec" id="cara"><div class="w"><h2>Tiga langkah saja</h2><p>Dari nol sampai halaman siap dibagikan.</p>
-  <div class="st">
-    <div class="s"><em>1</em><b>Daftar</b><p>Buat akun gratis dengan email dan kata sandi.</p></div>
-    <div class="s"><em>2</em><b>Atur halaman</b><p>Pilih username, unggah foto, tambah link, dan pilih tema.</p></div>
-    <div class="s"><em>3</em><b>Bagikan</b><p>Taruh link Vynka di bio Instagram, TikTok, atau kartu nama.</p></div>
-  </div></div></section>
-
-<section class="sec" id="mulai"><div class="w"><div class="cta"><div class="card">
-  <h2 id="jd">Masuk</h2>
-  <p class="m" id="sj">Selamat datang kembali.</p>
-  <input id="em" type="email" placeholder="Email" autocomplete="email">
-  <input id="pw" type="password" placeholder="Kata sandi (min. 6 karakter)" autocomplete="current-password">
-  <div class="err" id="er"></div>
-  <button class="b" id="go" style="background:linear-gradient(135deg,#7c3aed,#ec4899);border-radius:999px;padding:12px;color:#fff;border:0;font-weight:700">Masuk</button>
-  <button class="g" id="sw" style="border-radius:999px">Belum punya akun? Daftar</button>
-</div></div></div></section>
-
-<div class="w"><div class="ft">© Vynka · Dibuat untuk kreator dan usaha kecil</div></div>
-
+<section class="sec" id="fitur"><div class="w"><h2 data-i="f_h">Everything you need</h2><p data-i="f_p">Complete, lightweight, and easy to use from your phone.</p><div class="fg"><div class="f"><span>🎨</span><b data-i="f1t">15 modern themes</b><p data-i="f1d">From Aurora to Noir. Change your look in one click.</p></div><div class="f"><span>🖼️</span><b data-i="f2t">Cover photo & link avatars</b><p data-i="f2d">Upload directly and get a professional-looking page.</p></div><div class="f"><span>📊</span><b data-i="f3t">Statistics</b><p data-i="f3d">See visitors and clicks for every link.</p></div><div class="f"><span>📱</span><b data-i="f4t">QR code</b><p data-i="f4d">Download a PNG for business cards, stickers, or posters.</p></div><div class="f"><span>🔗</span><b data-i="f5t">Social icons</b><p data-i="f5d">Instagram, TikTok, YouTube, WhatsApp, and more.</p></div><div class="f"><span>💸</span><b data-i="f6t">Free</b><p data-i="f6d">Start at no cost. All you need is an email and a password.</p></div></div></div></section>
+<section class="sec" id="tema"><div class="w"><h2 data-i="t_h">Pick your style</h2><p data-i="t_p">Every theme can be combined with your own color, font, and button shape.</p><div class="tg" id="tg"></div></div></section>
+<section class="sec" id="cara"><div class="w"><h2 data-i="h_h">Just three steps</h2><p data-i="h_p">From zero to a page ready to share.</p><div class="st"><div class="s"><em>1</em><b data-i="s1t">Sign up</b><p data-i="s1d">Create a free account with your email and a password.</p></div><div class="s"><em>2</em><b data-i="s2t">Set up your page</b><p data-i="s2d">Choose a username, upload a photo, add links, and pick a theme.</p></div><div class="s"><em>3</em><b data-i="s3t">Share</b><p data-i="s3d">Put your Vynka link in your Instagram or TikTok bio, or on a business card.</p></div></div></div></section>
+<section class="sec" id="artikel"><div class="w"><h2 data-i="ar_h">Learn more</h2><p data-i="ar_p">Short guides on getting the most out of one link.</p><div class="ag"><article class="ar"><h3 data-i="a1t">What is a link-in-bio page?</h3><p data-i="a1p1">Platforms like Instagram and TikTok only let you place one clickable link in your profile. A link-in-bio page solves this: that single link opens a small page that gathers everything you want to share, such as your store, latest video, WhatsApp, or booking form.</p><p data-i="a1p2">Instead of changing your bio every time you have something new, you update one page and your followers always find the latest links in the same place.</p></article><article class="ar"><h3 data-i="a2t">Why one link beats many</h3><p data-i="a2p1">A crowded bio confuses visitors, and people who are confused rarely click. One clean page with clearly named buttons guides them to the next step, whether that is buying, booking, or following you.</p><p data-i="a2p2">It also gives you numbers. With visits and clicks per link, you can see what your audience actually cares about and put the best link at the top.</p></article><article class="ar"><h3 data-i="a3t">Five tips for a page that gets clicks</h3><p data-i="a3p1">Put your most important link first, use short and specific button names, add a clear photo or logo, and pick a theme that matches your brand.</p><p data-i="a3p2">Keep the list short, around five to eight links, and review your statistics every week. Remove what nobody clicks and move up what works.</p></article></div></div></section>
+<section class="sec"><div class="w"><h2 data-i="q_h">Frequently asked questions</h2><p></p><div class="fq"><details><summary data-i="q1">Is Vynka really free?</summary><p data-i="r1">Yes. You can create an account, build your page, and use every feature at no cost.</p></details><details><summary data-i="q2">Where do I put my Vynka link?</summary><p data-i="r2">Paste it in your Instagram, TikTok, YouTube, or WhatsApp bio, and print the QR code on cards or posters.</p></details><details><summary data-i="q3">Can I change the look of my page?</summary><p data-i="r3">Yes. Pick from 15 themes, change colors, fonts, and button shapes, or use the cover photo layout.</p></details><details><summary data-i="q4">Do I need to know how to code?</summary><p data-i="r4">No. Everything is done from a simple dashboard, and you can preview your page live while you edit.</p></details></div></div></section>
+<section class="sec"><div class="w"><div class="cta"><h2 data-i="c_h">Ready to share one link?</h2><p data-i="c_p">Create your free page in under a minute.</p><a class="bt" href="/masuk/#daftar" id="ctaGo" data-i="n_signup">Sign up free</a></div></div></section>
+<div class="w"><div class="ft" data-i="ft">© Vynka · Made for creators and small businesses</div></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script src="/config.js"></script>
 <script src="/vynka.js"></script>
+<script src="/i18n.js"></script>
 <script>
 (async()=>{
   const {data:{session}}=await sb.auth.getSession();
-  // Tautan konfirmasi email langsung ke dashboard; selain itu pengguna yang sudah masuk tetap boleh melihat landing page
+  // Tautan konfirmasi email langsung ke dashboard
   if(session && /access_token|type=/.test(location.hash)){ location.replace("/dashboard/"); return; }
-  const masuk=!!session;
-  const $=i=>document.getElementById(i);
+  const masuk=!!session, $=i=>document.getElementById(i);
   $("host").textContent=location.host+"/";
-
-  // contoh halaman di ponsel
-  const demo=[
-    {p:{username:"raka",display_name:"Raka",bio:"Streamer & content creator",tema:"noir",layout:"cover",theme:"#d08f78",font:"grotesk",socials:{tiktok:"x",instagram:"x",youtube:"x"}},l:["Dukung di SociaBuzz","Jadwal live minggu ini","Panduan instalasi lengkap"]},
-    {p:{username:"sinta",display_name:"Sinta Studio",bio:"Desainer grafis & ilustrator",tema:"aurora",layout:"standar",theme:"#ec4899",font:"outfit",socials:{instagram:"x",whatsapp:"x"}},l:["Lihat portofolio","Pesan jasa desain","Template gratis"]},
-    {p:{username:"mawar",display_name:"Toko Mawar",bio:"Bunga segar tiap hari",tema:"sakura",layout:"standar",theme:"#db2777",font:"lora",socials:{whatsapp:"x",instagram:"x"}},l:["Pesan via WhatsApp","Katalog bunga","Lokasi toko"]}
-  ];
-  $("phs").replaceChildren(...demo.map(d=>{ const f=el("div",{className:"ph"}), box=el("div"); f.dataset.tema=d.p.tema; f.append(box); renderPublik(box,d.p,d.l.map(t=>({title:t})),{preview:true,home:false}); return f; }));
-
-  // galeri tema
+  const DEMO={
+    en:[{p:{username:"raka",display_name:"Raka",bio:"Streamer & content creator",tema:"noir",layout:"cover",theme:"#d08f78",font:"grotesk",socials:{tiktok:"x",instagram:"x",youtube:"x"}},l:["Support me","This week's live schedule","Full setup guide"]},
+        {p:{username:"sinta",display_name:"Sinta Studio",bio:"Graphic designer & illustrator",tema:"aurora",layout:"standar",theme:"#ec4899",font:"outfit",socials:{instagram:"x",whatsapp:"x"}},l:["View portfolio","Book a design","Free templates"]},
+        {p:{username:"mawar",display_name:"Mawar Flowers",bio:"Fresh flowers every day",tema:"sakura",layout:"standar",theme:"#db2777",font:"lora",socials:{whatsapp:"x",instagram:"x"}},l:["Order on WhatsApp","Flower catalog","Store location"]}],
+    id:[{p:{username:"raka",display_name:"Raka",bio:"Streamer & content creator",tema:"noir",layout:"cover",theme:"#d08f78",font:"grotesk",socials:{tiktok:"x",instagram:"x",youtube:"x"}},l:["Dukung di SociaBuzz","Jadwal live minggu ini","Panduan instalasi lengkap"]},
+        {p:{username:"sinta",display_name:"Sinta Studio",bio:"Desainer grafis & ilustrator",tema:"aurora",layout:"standar",theme:"#ec4899",font:"outfit",socials:{instagram:"x",whatsapp:"x"}},l:["Lihat portofolio","Pesan jasa desain","Template gratis"]},
+        {p:{username:"mawar",display_name:"Toko Mawar",bio:"Bunga segar tiap hari",tema:"sakura",layout:"standar",theme:"#db2777",font:"lora",socials:{whatsapp:"x",instagram:"x"}},l:["Pesan via WhatsApp","Katalog bunga","Lokasi toko"]}]};
+  const demos=()=>$("phs").replaceChildren(...DEMO[LANG].map(d=>{ const f=el("div",{className:"ph"}), box=el("div"); f.dataset.tema=d.p.tema; f.append(box); renderPublik(box,d.p,d.l.map(t=>({title:t})),{preview:true,home:false}); return f; }));
   $("tg").replaceChildren(...Object.entries(TEMA).map(([k,t])=>{ const b=el("div",{className:"tt"},el("span",{textContent:t.n}),el("i"),el("i")); b.dataset.tema=k; return b; }));
-
-  // auth
-  let daftar=false;
-  const mode=d=>{ daftar=d; $("jd").textContent=d?"Daftar gratis":"Masuk"; $("sj").textContent=d?"Buat akun dalam hitungan detik.":"Selamat datang kembali."; $("go").textContent=d?"Daftar":"Masuk"; $("sw").textContent=d?"Sudah punya akun? Masuk":"Belum punya akun? Daftar"; $("er").textContent=""; };
-  $("sw").onclick=()=>mode(!daftar);
-  if(!masuk){ $("nMasuk").onclick=()=>mode(false); $("nDaftar").onclick=()=>mode(true); }
-  $("klaim").onclick=()=>{ if(masuk){ location.href="/dashboard/"; return; } const v=$("un").value.trim().toLowerCase(); if(v) sessionStorage.setItem("vynka_un",v); mode(true); $("mulai").scrollIntoView({behavior:"smooth"}); setTimeout(()=>$("em").focus(),500); };
-  $("go").onclick=async()=>{
-    $("er").textContent=""; $("go").disabled=true;
-    const r=daftar?await sb.auth.signUp({email:$("em").value,password:$("pw").value}):await sb.auth.signInWithPassword({email:$("em").value,password:$("pw").value});
-    $("go").disabled=false;
-    if(r.error){ $("er").textContent=r.error.message; return; }
-    if(daftar&&!r.data.session){ $("er").textContent="Cek email kamu untuk konfirmasi, lalu masuk."; return; }
-    location.replace("/dashboard/");
-  };
   if(masuk){
-    $("nMasuk").textContent="Buka dashboard"; $("nMasuk").href="/dashboard/"; $("nDaftar").style.display="none";
-    $("klaim").textContent="Ke dashboard";
-    document.querySelector("#mulai .card").replaceChildren(el("h2",{textContent:"Kamu sudah masuk"}),el("p",{className:"m",textContent:session.user.email}),el("a",{className:"bt",href:"/dashboard/",textContent:"Buka dashboard",style:"text-align:center"}));
+    $("nLogin").href="/dashboard/"; $("nLogin").dataset.i="n_dash"; $("nSignup").style.display="none";
+    $("ctaGo").href="/dashboard/"; $("ctaGo").dataset.i="n_dash"; $("klaim").dataset.i="c_dash";
   }
+  $("klaim").onclick=()=>{ if(masuk){ location.href="/dashboard/"; return; } const v=$("un").value.trim().toLowerCase(); if(v) sessionStorage.setItem("vynka_un",v); location.href="/masuk/#daftar"; };
+  initLang(); demos();
+  document.addEventListener("langchange",demos);
 })();
 </script>
 </body>
