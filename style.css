@@ -83,3 +83,7 @@ body[data-tema]{background:var(--pbg);background-attachment:fixed;color:var(--pt
 .sp{transform-box:fill-box;transform-origin:center}
 @keyframes vsp{50%{transform:rotate(90deg) scale(1.5)}100%{transform:rotate(180deg) scale(1)}}
 .logo:hover .sp,.me:hover .sp,.vlogo:hover .sp{animation:vsp .7s ease}
+
+.lang{display:inline-flex;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:3px}
+.lang button{border:0;background:none;color:var(--muted);font-weight:700;font-size:12px;padding:5px 10px;border-radius:999px}
+.lang button.on{background:linear-gradient(135deg,#7c3aed,#ec4899);color:#fff}
