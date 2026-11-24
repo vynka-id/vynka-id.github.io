@@ -21,11 +21,16 @@
   if(!/^[a-z0-9_]{3,30}$/.test(u)) return tidakAda();
   const {data:p}=await sb.from("profiles").select("*").eq("username",u).maybeSingle();
   if(!p) return tidakAda();
-  document.title=(p.display_name||p.username)+" · Vynka"; document.body.dataset.tema=TEMA[p.tema]?p.tema:"klasik";
-  sb.auth.getSession().then(({data:{session}})=>{ if(!session||session.user.id!==p.id) sb.rpc("increment_view",{uname:u}); });
+  document.title=p.seo_title||((p.display_name||p.username)+" · Vynka");
+  const mt=(n,v,a)=>{ let m=document.querySelector("meta["+a+'="'+n+'"]'); if(!m){ m=document.createElement("meta"); m.setAttribute(a,n); document.head.append(m); } m.content=v; };
+  const dsc=p.seo_desc||p.bio||""; mt("description",dsc,"name"); mt("og:title",document.title,"property"); mt("og:description",dsc,"property"); document.body.dataset.tema=TEMA[p.tema]?p.tema:"klasik";
+  const rf=(()=>{ try{ const h=new URL(document.referrer).hostname.replace(/^www\./,""); if(!h||h===location.hostname) return "direct"; const k=["instagram","tiktok","youtube","facebook","twitter","t.co","whatsapp","google","linkedin","telegram","threads"].find(x=>h.includes(x)); return (k==="t.co"||k==="twitter")?"x":(k||h); }catch(e){ return "direct"; } })();
+  const dv=/Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)?"mobile":"desktop";
+  sb.auth.getSession().then(({data:{session}})=>{ if(!session||session.user.id!==p.id) sb.rpc("track_view",{uname:u,r:rf,d:dv}).then(r=>{ if(r.error) sb.rpc("increment_view",{uname:u}); }); });
   const {data:ls}=await sb.from("links").select("*").eq("user_id",p.id).order("position");
   app.className="pgwrap"; const box=el("div"); app.replaceChildren(box);
-  renderPublik(box,p,ls||[],{track:l=>sb.rpc("increment_click",{link_id:l.id})});
+  renderPublik(box,p,ls||[],{track:l=>sb.rpc("track_click",{link_id:l.id,r:rf,d:dv}).then(r=>{ if(r.error) sb.rpc("increment_click",{link_id:l.id}); })});
+  { const bv=box.style.getPropertyValue("--pbg"); if(bv) document.body.style.setProperty("--pbg",bv); }
 })();
 </script>
 </body>
