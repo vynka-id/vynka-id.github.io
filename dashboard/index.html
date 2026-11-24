@@ -264,18 +264,18 @@ function latar(mark,f){
 }
 
 async function simpan(save,status){
-  const L=S.links;
+  const LS=S.links;
   const pl=x=>({title:x.l.title.trim(),url:x.l.kind==="header"?"#":x.l.url.trim(),image_url:(x.l.image_url||"").trim()||null,kind:x.l.kind||"link",active:x.l.active!==false,starts_at:x.l.starts_at||null,ends_at:x.l.ends_at||null,position:x.i});
-  if(L.some(l=>!l.title.trim()||(l.kind==="header"?false:l.kind==="whatsapp"?!(l.wa_number||"").replace(/\D/g,""):(!l.url.trim()||l.url.trim()==="https://")))){ status.textContent=L("Isi judul dan URL semua link, atau hapus yang kosong."); return; }
+  if(LS.some(l=>!l.title.trim()||(l.kind==="header"?false:l.kind==="whatsapp"?!(l.wa_number||"").replace(/\D/g,""):(!l.url.trim()||l.url.trim()==="https://")))){ status.textContent=L("Isi judul dan URL semua link, atau hapus yang kosong."); return; }
   save.disabled=true; status.textContent=L("Menyimpan…");
   try{
     const f=S.prof; let r=await sb.from("profiles").update({display_name:f.display_name,bio:f.bio,theme:f.theme,font:f.font,btn_style:f.btn_style,tema:f.tema,layout:f.layout,avatar_url:f.avatar_url||null,socials:f.socials,bg_mode:f.bg_mode,bg_a:f.bg_a,bg_b:f.bg_b,bg_image:f.bg_image||null,seo_title:f.seo_title||null,seo_desc:f.seo_desc||null,collect_email:!!f.collect_email,email_title:f.email_title||null}).eq("id",S.user.id); if(r.error) throw r.error;
     if(S.deleted.length){ r=await sb.from("links").delete().in("id",S.deleted); if(r.error) throw r.error; S.deleted=[]; }
-    const lama=L.map((l,i)=>({l,i})).filter(x=>x.l.id);
+    const lama=LS.map((l,i)=>({l,i})).filter(x=>x.l.id);
     if(lama.length){ const hs=await Promise.all(lama.map(x=>sb.from("links").update(pl(x)).eq("id",x.l.id))); const bad=hs.find(h=>h.error); if(bad) throw bad.error; }
-    const baru=L.map((l,i)=>({l,i})).filter(x=>!x.l.id);
+    const baru=LS.map((l,i)=>({l,i})).filter(x=>!x.l.id);
     if(baru.length){ r=await sb.from("links").insert(baru.map(x=>({user_id:S.user.id,...pl(x)}))).select(); if(r.error) throw r.error; r.data.forEach((row,k)=>{ baru[k].l.id=row.id; }); }
-    if(S.oldFotos.length){ const cur=[f.avatar_url,f.bg_image,...L.map(l=>l.image_url)].join(" "); const hp=S.oldFotos.filter(x=>!cur.includes(x)); if(hp.length) sb.storage.from("avatars").remove(hp); S.oldFotos=[]; }
+    if(S.oldFotos.length){ const cur=[f.avatar_url,f.bg_image,...LS.map(l=>l.image_url)].join(" "); const hp=S.oldFotos.filter(x=>!cur.includes(x)); if(hp.length) sb.storage.from("avatars").remove(hp); S.oldFotos=[]; }
       S.dirty=false; S.p={...S.p,...f}; status.textContent=L("Tersimpan ✓ Perubahan sudah tampil di halaman publik.");
   }catch(e){ status.textContent=L("Gagal menyimpan: ")+(e.message||e); }
   save.disabled=false;
