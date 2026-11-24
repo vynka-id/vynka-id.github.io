@@ -94,3 +94,11 @@ body[data-tema]{background:var(--pbg);background-attachment:fixed;color:var(--pt
 .pg .bio{overflow-wrap:anywhere;line-height:1.5;position:relative;z-index:1}
 
 .pg[data-l=standar] .nm{font-size:22px;letter-spacing:-.3px}
+
+.pg .sh{margin:22px 0 -4px;text-align:center;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--pmuted);font-weight:700}
+.pg .lk.don{background:var(--accent);color:var(--on);border-color:var(--accent)}
+.pg .subs{margin-top:18px;padding:14px;border-radius:min(var(--pr),22px);background:var(--pcard);border:var(--pborder);box-shadow:var(--pshadow);color:var(--pbtext)}
+.pg .subs b{display:block;margin-bottom:8px;font-size:14px;text-align:center}
+.pg .subs input{border-radius:999px;background:rgba(255,255,255,.92);color:#111;border:0;padding:10px 14px;font-size:14px}
+.pg .sbtn{border:0;border-radius:999px;padding:10px 16px;background:var(--accent);color:var(--on);font-weight:700;white-space:nowrap}
+.pg .subs .bio{font-size:13px;margin-top:6px;min-height:1em}
