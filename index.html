@@ -115,9 +115,9 @@ h1,h2,h3,.logo{font-family:Outfit,'Plus Jakarta Sans',sans-serif}
   const WARN=["#0f766e","#6d28d9","#c2410c","#1d4ed8","#db2777"];
   const marquee=()=>{
     const bio=LANG==="id"?"Kreator & desainer":"Creator & designer", ls=LANG==="id"?["Portofolio saya","Pesan jadwal","Video terbaru"]:["My portfolio","Book a call","Latest video"];
-    const CH=[["Raka","raka"],["Sinta","sinta"],["Dimas","dimas"],["Mawar","mawar"]];
+    const CH=[["Raka","raka"],["Sinta","sinta"],["Mawar","mawar"]];
     const set=Object.entries(TEMA).map(([k,t],i)=>{
-      const [cn,ca]=CH[i%4];
+      const [cn,ca]=CH[i%3];
       const f=el("div",{className:"mp"}), inn=el("div",{className:"in"}), box=el("div");
       f.dataset.tema=k; inn.append(box); f.append(inn);
       renderPublik(box,{username:ca,display_name:cn,avatar_url:"demo:"+ca,bio,tema:k,layout:t.layout||"standar",theme:t.acc||WARN[i%5],font:t.font,socials:{instagram:"x",tiktok:"x",youtube:"x"}},ls.map(x=>({title:x})),{preview:true,home:false});
