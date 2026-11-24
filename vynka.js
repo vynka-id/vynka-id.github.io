@@ -25,6 +25,17 @@ function renderPublik(c, p, links, o={}){
   const acc=hexOf(p.theme), nama=p.display_name||p.username||"?", huruf=nama.charAt(0).toUpperCase();
   c.className="pg"; c.dataset.b=p.btn_style||"bulat"; c.dataset.tema=tm; c.dataset.l=cover?"cover":"standar";
   c.style.setProperty("--accent",acc); c.style.setProperty("--on",onOf(acc));
+  // latar kustom
+  const hx=v=>/^#[0-9a-f]{6}$/i.test(v||""), lum=h=>{ const n=parseInt(h.slice(1),16); return ((n>>16)*299+((n>>8)&255)*587+(n&255)*114)/1000; };
+  let bg="",fade="",dark=null;
+  if(p.bg_mode==="warna"&&hx(p.bg_a)){ bg=p.bg_a; fade=p.bg_a; dark=lum(p.bg_a)<150; }
+  else if(p.bg_mode==="gradasi"&&hx(p.bg_a)&&hx(p.bg_b)){ bg="linear-gradient(160deg,"+p.bg_a+","+p.bg_b+")"; fade=p.bg_b; dark=(lum(p.bg_a)+lum(p.bg_b))/2<150; }
+  else if(p.bg_mode==="gambar"&&/^https:\/\//.test(p.bg_image||"")){ bg="linear-gradient(rgba(0,0,0,.38),rgba(0,0,0,.38)),url("+JSON.stringify(p.bg_image)+") center/cover"; fade="#000"; dark=true; }
+  if(bg){
+    c.style.setProperty("--pbg",bg); c.style.setProperty("--pfade",fade); c.style.setProperty("--pname","var(--ptext)");
+    const t=dark?["#fff","rgba(255,255,255,.8)","rgba(255,255,255,.14)","#fff","1px solid rgba(255,255,255,.32)"]:["#111827","#4b5563","rgba(255,255,255,.75)","#111827","1px solid rgba(0,0,0,.14)"];
+    ["--ptext","--pmuted","--pcard","--pbtext","--pborder"].forEach((k,i)=>c.style.setProperty(k,t[i]));
+  }
   c.style.fontFamily=(FONTS[p.font]||FONTS.jakarta)+",system-ui,sans-serif";
   const av0=p.avatar_url||"", foto=av0.startsWith("demo:")?((typeof AVATAR!=="undefined"&&AVATAR[av0.slice(5)])||""):(/^https:\/\//.test(av0)?av0:""), url=location.origin+"/"+(p.username||"");
   // logo Vynka (pojok kiri atas) -> landing page
@@ -49,17 +60,32 @@ function renderPublik(c, p, links, o={}){
     const e=o.preview?el("span",{className:"sc",title:SOSIAL[k]}):el("a",{className:"sc",title:SOSIAL[k],href:socUrl(k,v),target:"_blank",rel:"noopener noreferrer"});
     e.setAttribute("aria-label",SOSIAL[k]); e.innerHTML=ikon(k); return e;
   });
-  const ls=links.filter(l=>(l.title||"").trim()).map(l=>{
+  const now=Date.now();
+  const tampil=l=>(l.title||"").trim()&&l.active!==false&&(!l.starts_at||new Date(l.starts_at)<=now)&&(!l.ends_at||new Date(l.ends_at)>=now);
+  const ls=links.filter(tampil).map(l=>{
+    if(l.kind==="header") return el("h3",{className:"sh",textContent:l.title});
     const th=/^https:\/\//.test(l.image_url||"")?el("img",{className:"th",src:l.image_url,alt:""}):null;
     const dt=el("span",{className:"dt",textContent:"⋮",title:isID()?"Salin link":"Copy link"});
-    const isi=[...(th?[th]:[]),el("span",{textContent:l.title}),dt], cls="lk"+(th?" hasth":"");
+    const isi=[...(th?[th]:[]),el("span",{textContent:(l.kind==="donate"?"❤ ":"")+l.title}),dt], cls="lk"+(th?" hasth":"")+(l.kind==="donate"?" don":"");
     if(o.preview) return el("div",{className:cls},...isi);
     const a=el("a",{className:cls,href:fixUrl(l.url),target:"_blank",rel:"noopener noreferrer"},...isi);
     dt.addEventListener("click",e=>{ e.preventDefault(); e.stopPropagation(); try{ navigator.clipboard.writeText(fixUrl(l.url)); dt.textContent="✓"; setTimeout(()=>dt.textContent="⋮",1200); }catch(x){} });
     if(o.track) a.addEventListener("click",()=>o.track(l));
     return a;
   });
+  let sub=[];
+  if(p.collect_email){
+    const em=el("input",{type:"email",placeholder:isID()?"Email kamu":"Your email"}), bt=el("button",{className:"sbtn",textContent:isID()?"Berlangganan":"Subscribe"}), ms=el("p",{className:"bio c"});
+    if(!o.preview) bt.onclick=async()=>{
+      ms.textContent=""; const m=em.value.trim();
+      if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(m)){ ms.textContent=isID()?"Email tidak valid.":"Invalid email."; return; }
+      bt.disabled=true; const r=await sb.rpc("subscribe",{uname:p.username,mail:m}); bt.disabled=false;
+      if(r.error||!r.data){ ms.textContent=isID()?"Gagal. Coba lagi.":"Failed. Try again."; return; }
+      em.value=""; ms.textContent=isID()?"Terima kasih! ✓":"Thank you! ✓";
+    };
+    sub=[el("div",{className:"subs"},el("b",{textContent:p.email_title||(isID()?"Berlangganan info terbaru":"Get the latest updates")}),el("div",{className:"row"},em,bt),ms)];
+  }
   const ftx=(()=>{ try{ return localStorage.getItem("vynka_lang")==="id"; }catch(e){ return false; } })()?"Buat halaman Vynka-mu":"Create your own Vynka page";
   const foot=o.preview?el("span",{className:"pfoot",textContent:ftx}):el("a",{className:"pfoot",href:"/",textContent:ftx});
-  c.replaceChildren(...parts, el("h1",{className:"c nm",textContent:nama}), el("p",{className:"bio c",textContent:p.bio||""}), ...(soc.length?[el("div",{className:"soc"},...soc)]:[]), ...ls, foot);
+  c.replaceChildren(...parts, el("h1",{className:"c nm",textContent:nama}), el("p",{className:"bio c",textContent:p.bio||""}), ...(soc.length?[el("div",{className:"soc"},...soc)]:[]), ...ls, ...sub, foot);
 }
