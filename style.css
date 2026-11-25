@@ -37,7 +37,7 @@ a.back{color:var(--accent);word-break:break-all}
 [data-tema=sunset]{--pfade:#c026d3;--pbg:linear-gradient(180deg,#ff9a56,#ff5e7e 58%,#c026d3);--ptext:#fff;--pmuted:rgba(255,255,255,.88);--pcard:#fff;--pbtext:#7c1d4a;--pborder:0 solid transparent;--pr:999px;--pshadow:0 10px 24px -12px rgba(124,29,74,.6)}
 [data-tema=mint]{--pfade:#e0f2fe;--pbg:linear-gradient(180deg,#ecfccb,#ccfbf1 45%,#e0f2fe);--ptext:#064e3b;--pmuted:#3f7d6a;--pcard:#fff;--pbtext:#064e3b;--pborder:1px solid #b7ecd6;--pr:20px;--pshadow:0 8px 18px -12px #10b981}
 [data-tema=brutal]{--pfade:#fde047;--pbg:#fde047;--ptext:#111;--pmuted:#333;--pcard:#fff;--pbtext:#111;--pborder:3px solid #111;--pr:6px;--pshadow:5px 5px 0 #111}
-[data-tema=mono]{--pfade:#fafafa;--pbg:#fafafa;--ptext:#111;--pmuted:#666;--pcard:transparent;--pbtext:#111;--pborder:1px solid #111;--pr:0;--pshadow:none}
+[data-tema=mono]{--pfade:#fafafa;--pbg:#fafafa;--ptext:#111;--pmuted:#666;--pcard:transparent;--pbtext:#111;--pborder:1px solid #111;--pr:0px;--pshadow:none}
 [data-tema=ocean]{--pfade:#082f49;--pbg:linear-gradient(180deg,#0ea5e9,#0369a1 55%,#082f49);--ptext:#fff;--pmuted:rgba(255,255,255,.85);--pcard:rgba(255,255,255,.14);--pbtext:#fff;--pborder:1px solid rgba(255,255,255,.32);--pr:16px;--pshadow:0 10px 26px -14px rgba(0,0,0,.6);--pblur:blur(10px)}
 [data-tema=sakura]{--pfade:#f5d0fe;--pbg:linear-gradient(180deg,#ffe4ef,#fbcfe8 58%,#f5d0fe);--ptext:#831843;--pmuted:#9d4d70;--pcard:rgba(255,255,255,.78);--pbtext:#831843;--pborder:1px solid #f9a8d4;--pr:22px;--pshadow:0 8px 18px -12px #ec4899}
 [data-tema=forest]{--pfade:#14301f;--pbg:radial-gradient(520px 320px at 85% 0%,#3f621299,transparent),#14301f;--ptext:#f1f5e9;--pmuted:#a3b99a;--pcard:#1d4030;--pbtext:#f1f5e9;--pborder:1px solid #2f5e43;--pr:12px;--pshadow:none}
@@ -102,3 +102,8 @@ body[data-tema]{background:var(--pbg);background-attachment:fixed;color:var(--pt
 .pg .subs input{border-radius:999px;background:rgba(255,255,255,.92);color:#111;border:0;padding:10px 14px;font-size:14px}
 .pg .sbtn{border:0;border-radius:999px;padding:10px 16px;background:var(--accent);color:var(--on);font-weight:700;white-space:nowrap}
 .pg .subs .bio{font-size:13px;margin-top:6px;min-height:1em}
+
+/* gambar kecil di tombol mengikuti bentuk tombol */
+.pg .th{border-radius:min(max(calc(var(--pr) - 6px),0px),50%)}
+.pg[data-b=kotak] .th{border-radius:3px}
+.pg[data-b=pil] .th{border-radius:50%}
